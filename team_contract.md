@@ -25,4 +25,4 @@
  + Majority votes will resolve conflicts.
 
 **Signatures**
-
+Luke Boelke
