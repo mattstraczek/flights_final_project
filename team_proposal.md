@@ -1,4 +1,4 @@
-# lboelke2-aosepek2-junryuf2-mstrac4
+# Team Proposal (lboelke2-aosepek2-junryuf2-mstrac4)
 1. **Leading Question**
 + The main goal of our final project is to operate an airline as efficiently as possible. We will use the airport and route data from openflights.org and store this data in an adjacency matrix, which can then be represented by a graph. The vertices of this graph will be the airports and the edges will be the flight paths from one airport to another. The specific problem we are trying to solve is to minimize the amount of service routes as much as possible, while still being able to connect all of the airports in a region. We will be focusing on US airports, but our data structure would be able to store all the airports in the world if necessary.
 
