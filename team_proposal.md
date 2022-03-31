@@ -19,7 +19,7 @@
 + **BFS Traversal**:
 + Function Inputs: The input for this function would be the entire adjacency matrix - represented graph and a starting node (airport).
 + Function Outputs: The expected output is expected to produce a Breadth-first Search.
-+ Function Efficiency: Time complexity: O(A + F), where A is the airport nodes, and F is the flights connecting two airports.
++ Function Efficiency: Time complexity: O(A + F), where A is the airport nodes, and F is the flights connecting two airports. This is desired over DFS since the time complexity of that traversal on an adjacency matrix is O(A^2).
 
 4. **Timeline**
 + Complete lab contract and lab proposal and submit (Friday of week 1)
