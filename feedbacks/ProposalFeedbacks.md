@@ -13,3 +13,6 @@ between two airports to calculate that distance.
 it the same way you described the other two. Speficially, this means you need to specify the input, output, run time, and preferrably a brief discussion on some implementation details.
 
 **Timeline** Looks fine to me. 
+
+### Grade update
+Sophisticated (100%). Since a 10% regrade penalty is applied, the actual grade is 90%. Your project is approved, please move onto the development phase, don't forget to update your development log weekly. 
