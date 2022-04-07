@@ -15,9 +15,11 @@ class Routes {
         std::vector<double> cart_coordinates(double lat1, double long1);
         double getMagnitude(std::vector<double> loc);
         double getDistance(std::vector<double> loc1, std::vector<double> loc2);
+        std::string getStart();
+        std::string getDest();
 
     private:
-        std::string departure;
+        std::string start;
         std::string destination;
         double distance;
 };

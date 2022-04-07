@@ -42,3 +42,10 @@ double Routes::getDistance(std::vector<double> loc1, std::vector<double> loc2) {
     //and radius of the earth gives curve length assuming earth is a uniform sphere
     return (acos(dotProduct/magProduct))*re;
 }
+
+std::string Routes::getStart() {
+    return start;
+}
+std::string Routes::getDest() {
+    return destination;
+}
