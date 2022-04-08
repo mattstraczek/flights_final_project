@@ -10,7 +10,9 @@ using namespace std;
 class Parsing {
     public:
         std::vector<Airport> extractAirports(string fileName);
+        std::vector<Routes> extractRoutes(string fileName);
     private:
+        std::vector<string> parseLine(string line);
         unordered_map<string, Airport> airport_map;
         unordered_map<Routes, int> route_map;
 };
