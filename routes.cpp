@@ -1,6 +1,18 @@
 #include "routes.h"
 
-
+Routes::Routes(Airport dep, Airport dest) {
+    departure_ = dep;
+    destination_ = dest;
+    distance_ = calculateDistance(departure_, destination_);
+}
+/**
+ * @brief calculates the distance between the routes departure and destination 
+ * 
+ * @param dep 
+ * @param dest 
+ * 
+ * @return double
+ */
 double Routes::calculateDistance(Airport dep, Airport dest) {
     return getDistance(cart_coordinates(dep.getLatitude(), dep.getLongitude()), cart_coordinates(dest.getLatitude(), dest.getLongitude());
 }
@@ -43,9 +55,9 @@ double Routes::getDistance(std::vector<double> loc1, std::vector<double> loc2) {
     return (acos(dotProduct/magProduct))*re;
 }
 
-std::string Routes::getStart() {
-    return start;
+std::string Routes::getDeparture() {
+    return departure_.getID();
 }
-std::string Routes::getDest() {
-    return destination;
+std::string Routes::getDestination() {
+    return destination_.getID();
 }

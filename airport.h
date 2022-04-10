@@ -3,7 +3,7 @@
 
 class Airport {
     public:
-        Airport();
+        Airport(string id, double lat, double longi);
         double getLatitude();
         double getLongitude();
         void setLatitude(double lat_);

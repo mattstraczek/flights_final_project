@@ -1,10 +1,13 @@
 #include "airport.h"
-double Airport::getLatitude() {
-    return latitude;
+#include <string>
+using namespace std;
+
+Airport::Airport(string id, double lat, double longi) {
+    setID(id);
+    setLatitude(lat);
+    setLongitude(longi);
 }
-double Airport::getLongitude() {
-    return longitude;
-}
+
 void Airport::setLatitude(double lat_) {
     latitude = lat_;
 }
@@ -13,6 +16,12 @@ void Airport::setLongitude(double long_) {
 }
 void Airport::setID(std::string id) {
     ID = id;
+}
+double Airport::getLatitude() {
+    return latitude;
+}
+double Airport::getLongitude() {
+    return longitude;
 }
 std::string Airport::getID() {
     return ID;
