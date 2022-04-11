@@ -1,10 +1,10 @@
 #Executable names:
-EXE = 
+EXE = out
 TEST = test
 
 #Add all object files needed for compiling:
 EXE_OBJ = main.o 
-OBJS = airport.o routes.o parsing.o graph.o
+OBJS = main.o airport.o routes.o parsing.o graph.o
 
 #Generated files
 
