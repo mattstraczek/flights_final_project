@@ -3,7 +3,8 @@
 
 class Airport {
     public:
-        Airport(string id, double lat, double longi);
+        Airport();
+        Airport(std::string id, double lat, double longi);
         double getLatitude();
         double getLongitude();
         void setLatitude(double lat_);
@@ -15,5 +16,5 @@ class Airport {
         double latitude;
         double longitude;
         std::string ID;
-        int index;
+        //int index;
 };

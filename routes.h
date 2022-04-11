@@ -10,6 +10,7 @@
 
 class Routes {
     public:
+        Routes();
         Routes(Airport dep, Airport dest);
         double calculateDistance(Airport dep, Airport dest);
         std::vector<double> cart_coordinates(double lat1, double long1);

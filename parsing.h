@@ -19,6 +19,7 @@ class Parsing {
 
         bool isInUS(vector<string> line);
 
-        unordered_map<string, Airport> airport_map;
-        unordered_map<Routes, int> route_map;
+        std::unordered_map<std::string, int> airport_map; //int = Airport index for now
+        std::unordered_map<std::string, int> route_map; //route_map key == departure string + destination string
+                                                        //eg. "ORDLAX"
 };

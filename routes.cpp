@@ -1,5 +1,10 @@
 #include "routes.h"
 
+Routes::Routes() {
+    departure_ = Airport();
+    destination_ = Airport();
+    distance_ = 0.0;
+}
 Routes::Routes(Airport dep, Airport dest) {
     departure_ = dep;
     destination_ = dest;
@@ -14,7 +19,7 @@ Routes::Routes(Airport dep, Airport dest) {
  * @return double
  */
 double Routes::calculateDistance(Airport dep, Airport dest) {
-    return getDistance(cart_coordinates(dep.getLatitude(), dep.getLongitude()), cart_coordinates(dest.getLatitude(), dest.getLongitude());
+    return getDistance(cart_coordinates(dep.getLatitude(), dep.getLongitude()), cart_coordinates(dest.getLatitude(), dest.getLongitude()));
 }
 
 std::vector<double> Routes::cart_coordinates(double lat1, double long1) {

@@ -44,6 +44,7 @@ vector<Airport> Parsing::extractAirports(string fileName) {
     }
   }
   fclose(data);
+  return airports;
 }
 /**
  * @brief all the United States routes are extracted
@@ -67,11 +68,12 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
         }
         myroutes.close();
     }
-
+  return routeList;
 }
 Routes Parsing::createRoutes(vector<string> data) {
     
-    Routes route(airport_map.find(data[2])->second, airport_map.find(data[4])->second);
+    //Routes route(airport_map.find(data[2])->second, airport_map.find(data[4])->second);
+    Routes route;
     return route;
 }
 

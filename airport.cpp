@@ -2,6 +2,12 @@
 #include <string>
 using namespace std;
 
+Airport::Airport() {
+    latitude = 0;
+    longitude = 0;
+    ID = "";
+}
+
 Airport::Airport(string id, double lat, double longi) {
     setID(id);
     setLatitude(lat);
