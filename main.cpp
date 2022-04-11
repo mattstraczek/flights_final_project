@@ -4,5 +4,5 @@
 #include "graph.h"
 
 int main() {
-    
+    Parsing parse;
 }

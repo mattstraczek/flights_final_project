@@ -9,6 +9,7 @@ using namespace std;
 
 class Parsing {
     public:
+        Parsing();
         std::vector<Airport> extractAirports(string fileName);
         std::vector<Routes> extractRoutes(string fileName);
     private:
