@@ -5,5 +5,5 @@
 #include <iostream>
 
 int main() {
-
+    Parsing parse;
 }

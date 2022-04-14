@@ -1,5 +1,9 @@
 #include <fstream>
 #include "parsing.h"
+
+Parsing::Parsing() {
+  
+}
 vector<string> Parsing::parseLine(string line) {
     vector<string> parsed;
     string curr;
