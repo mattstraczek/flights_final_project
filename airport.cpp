@@ -8,10 +8,11 @@ Airport::Airport() {
     ID = "";
 }
 
-Airport::Airport(string id, double lat, double longi) {
+Airport::Airport(string id, double lat, double longi, int index_) {
     setID(id);
     setLatitude(lat);
     setLongitude(longi);
+    index = index_;
 }
 
 void Airport::setLatitude(double lat_) {
@@ -31,4 +32,7 @@ double Airport::getLongitude() {
 }
 std::string Airport::getID() {
     return ID;
+}
+int Airport::getIndex() {
+    return index;
 }
