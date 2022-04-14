@@ -33,11 +33,11 @@ bool Parsing::isInUS(vector<string> line) {
 }
 
 void Parsing::extractAirports(string fileName) {
-  FILE * data = fopen(fileName.c_str(), "r");
-  string line = "";
-  while(!feof(data)) {
-    line.push_back(getc(data));
-    if (getc(data) == '\n') {
+  ifstream data(fileName);
+  if (data.is_open()) {
+    string line;
+    while (getline(data, line)) {
+      line.push_back(getc(data));
       vector<string> converted = parseLine(line);
       if (isInUS(converted)) {
         Airport airport = createAirport(converted);
