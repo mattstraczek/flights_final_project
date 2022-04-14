@@ -33,7 +33,6 @@ bool Parsing::isInUS(vector<string> line) {
 }
 
 void Parsing::extractAirports(string fileName) {
-  vector<Airport> airports;
   FILE * data = fopen(fileName.c_str(), "r");
   string line = "";
   while(!feof(data)) {
