@@ -36,10 +36,8 @@ bool Parsing::isInUS(vector<string> line) {
 }
 
 void Parsing::extractAirports(string fileName) {
-//<<<<<<< HEAD
   FILE * data = fopen(fileName.c_str(), "r");
   string line = "";
-
   ifstream myAirports(fileName);
   if(myAirports.is_open()) {
       while(getline(myAirports, line)) {
@@ -53,38 +51,9 @@ void Parsing::extractAirports(string fileName) {
               airport_map[airport.getID()] = airport;
             }
           }
-//=======
-  ifstream data(fileName);
-  if (data.is_open()) {
-    string line;
-    while (getline(data, line)) {
-      line.push_back(getc(data));
-      vector<string> converted = parseLine(line);
-      if (isInUS(converted)) {
-        Airport airport = createAirport(converted);
-        if (airport_map.find(airport.getID()) == airport_map.end()) {
-          airport_map[airport.getID()] = airport;
-        }
-//>>>>>>> 6826a9cd7236042c13420e47939e1d10c9b95f1f
       }
       myAirports.close();
   }
-  // while(!feof(data)) {
-  //   line.push_back(getc(data));
-  //   std::cout << line << std::endl;
-  //   if (getc(data) == '\n') {
-  //     vector<string> converted = parseLine(line);
-  //     // std::cout << converted[3] << std::endl;
-  //     if (isInUS(converted)) {
-  //       Airport airport = createAirport(converted);
-  //       if (airport_map.find(airport.getID()) == airport_map.end()) {
-  //         airport_map[airport.getID()] = airport;
-  //       }
-  //     }
-  //     line = "";
-  //   }
-  // }
-  // fclose(data);
 }
 /**
  * @brief all the United States routes are extracted
