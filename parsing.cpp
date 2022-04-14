@@ -57,27 +57,28 @@ void Parsing::extractAirports(string fileName) {
  * @return vector<Routes> 
  */
 vector<Routes> Parsing::extractRoutes(string fileName) {
-    string line;
-    vector<Routes> routeList;
-    ifstream myroutes(fileName);
-    if(myroutes.is_open()) {
-        while(getline(myroutes, line)) {
-            vector<string> parsed = parseLine(line);
-            //should sort or decide whether the airports both are in the US
-            if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
-                //that means the airport exists in the map, only then I can add 
-                routeList.push_back(createRoutes(parsed));
-            }
+  string line;
+  vector<Routes> routeList;
+  ifstream myroutes(fileName);
+  if(myroutes.is_open()) {
+      while(getline(myroutes, line)) {
+        std::cout << line << std::endl;
+          vector<string> parsed = parseLine(line);
+          //should sort or decide whether the airports both are in the US
+          if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
+              //that means the airport exists in the map, only then I can add 
+              routeList.push_back(createRoutes(parsed));
+          }
 
-        }
-        myroutes.close();
-    }
+      }
+      myroutes.close();
+  }
   return routeList;
 }
 Routes Parsing::createRoutes(vector<string> data) {
     
-    //Routes route(airport_map.find(data[2])->second, airport_map.find(data[4])->second);
-    Routes route;
+    Routes route(airport_map.find(data[2])->second, airport_map.find(data[4])->second);
+    
     return route;
 }
 
