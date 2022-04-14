@@ -36,22 +36,6 @@ bool Parsing::isInUS(vector<string> line) {
 }
 
 void Parsing::extractAirports(string fileName) {
-<<<<<<< HEAD
-  ifstream data(fileName);
-  if (data.is_open()) {
-    string line;
-    while (getline(data, line)) {
-      line.push_back(getc(data));
-      vector<string> converted = parseLine(line);
-      if (isInUS(converted)) {
-        Airport airport = createAirport(converted);
-        if (airport_map.find(airport.getID()) == airport_map.end()) {
-          airport_map[airport.getID()] = airport;
-        }
-      }
-      myAirports.close();
-  }
-=======
   FILE * data = fopen(fileName.c_str(), "r");
   string line = "";
 
@@ -87,7 +71,6 @@ void Parsing::extractAirports(string fileName) {
   //   }
   // }
   // fclose(data);
->>>>>>> 7761efcba6f51fb68026ec8d25c20d89e0ea3498
 }
 /**
  * @brief all the United States routes are extracted
