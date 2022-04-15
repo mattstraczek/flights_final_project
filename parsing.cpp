@@ -1,5 +1,6 @@
 #include <fstream>
 #include "parsing.h"
+#include <map>
 
 Parsing::Parsing() {
   
@@ -55,22 +56,20 @@ void Parsing::extractAirports(string fileName) {
       }
       myAirports.close();
   }
-  // while(!feof(data)) {
-  //   line.push_back(getc(data));
-  //   std::cout << line << std::endl;
-  //   if (getc(data) == '\n') {
-  //     vector<string> converted = parseLine(line);
-  //     // std::cout << converted[3] << std::endl;
-  //     if (isInUS(converted)) {
-  //       Airport airport = createAirport(converted);
-  //       if (airport_map.find(airport.getID()) == airport_map.end()) {
-  //         airport_map[airport.getID()] = airport;
-  //       }
-  //     }
-  //     line = "";
-  //   }
-  // }
-  // fclose(data);
+}
+
+
+void Parsing::writeAirports(string fileName) {
+  ofstream USAirports;
+  USAirports.open(fileName);
+
+  unordered_map<string, Airport>::iterator it;
+
+  for(it = airport_map.begin(); it != airport_map.end(); it++) {
+    Airport current = (*it).second;
+    USAirports << current.getID() << "," << current.getLatitude() << "," << current.getLongitude() << "\n";
+  }
+  USAirports.close();
 }
 /**
  * @brief all the United States routes are extracted
