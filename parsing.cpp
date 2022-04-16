@@ -48,11 +48,15 @@ void Parsing::extractAirports(string fileName) {
             Airport airport = createAirport(parsed);
             if(airport_map.find(airport.getID()) == airport_map.end()) {
               airport_map[airport.getID()] = airport;
-              std::cout << airport_map[airport.getID()].getID() << std::endl;
             }
           }
       }
       myAirports.close();
+  }
+  std::unordered_map<std::string, Airport>::iterator it;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    Airport current = (*it).second;
+    std::cout << current.getID() << std::endl;
   }
 }
 
