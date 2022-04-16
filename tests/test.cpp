@@ -83,10 +83,10 @@ TEST_CASE("Adjacency matrix construction", "[weight=10][part2]") {
 	graph.printRouteMatrix();
 
 	//Solution (Expected) Matrix
-	//            SEA      ORD       MIA       
-	// SEA       -1        1932      -1        
-	// ORD       -1        -1        4384      
-	// MIA       2764      -1        -1       
+	//            ORD      MIA       SEA       
+	// ORD       -1        1932      -1        
+	// MIA       -1        -1        4384      
+	// SEA       2764      -1        -1       
 
 	//Creating solution graph
 	std::vector<std::vector<int> >& route_matrix = graph.getRouteMatrix();
