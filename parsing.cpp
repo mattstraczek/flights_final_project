@@ -43,10 +43,10 @@ void Parsing::extractAirports(string fileName) {
   ifstream myAirports(fileName);
   if(myAirports.is_open()) {
       while(getline(myAirports, line)) {
-        std::cout << line << std::endl;
+        // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
-          std::cout << "country is ";
-          std::cout << parsed[3] << std::endl;
+          // std::cout << "country is ";
+          // std::cout << parsed[3] << std::endl;
           if(isInUS(parsed)) {
             Airport airport = createAirport(parsed);
             if(airport_map.find(airport.getID()) == airport_map.end()) {
@@ -83,7 +83,7 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
   ifstream myroutes(fileName);
   if(myroutes.is_open()) {
       while(getline(myroutes, line)) {
-        std::cout << line << std::endl;
+        // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
           //should sort or decide whether the airports both are in the US
           if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
@@ -111,4 +111,6 @@ Routes Parsing::createRoutes(vector<string> data) {
     return route;
 }
 
-
+std::unordered_map<std::string, Airport> Parsing::getAirportMap() {
+  return airport_map;
+}

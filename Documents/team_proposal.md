@@ -10,11 +10,11 @@
 3. **Graph Algorithms**
 + **Prim’s algorithm**:
 + Function Inputs: The input for this function would be the entire adjacency matrix - represented graph.
-+ Function Outputs: The expected output is still unknown, however it is expected to produce a minimum spanning tree between all of the airlines. An adjacency list can be used to store the output, since the number of edges will drastically decrease once a minimum spanning tree is found.
++ Function Outputs: A minimum spanning tree between all of the airlines. An adjacency list can be used to store the output, since the number of edges will drastically decrease once a minimum spanning tree is found.
 + Function Efficiency: Time complexity: O(A^2), where A is the airport nodes.
 + **Graphic output of graph (Project onto map based on data):**
-+ Function Inputs: We will input all The input for this function would be the adjacency list output of running Prim’s algorithm.
-+ Function Outputs: outputs an image (map) with airports nodes and vertices connecting different routes, and for the output of Prim’s algorithm, it will display it differently, for example, in red. 
++ Function Inputs: The input for this function would be the adjacency list output of running Prim’s algorithm.
++ Function Outputs: Outputs an image (map) with airports nodes and vertices connecting different routes, and for the output of Prim’s algorithm, it will display it differently, for example, in red. 
 + Function Efficiency: Time complexity: O(A + F), where A is the airport nodes, and F is the flights connecting two airports. 
 + **BFS Traversal**:
 + Function Inputs: The input for this function would be the entire adjacency matrix - represented graph and a starting node (airport).
