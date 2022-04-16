@@ -1,5 +1,6 @@
 #include <fstream>
 #include "parsing.h"
+#include <map>
 
 Parsing::Parsing() {
   
@@ -38,13 +39,14 @@ bool Parsing::isInUS(vector<string> line) {
 void Parsing::extractAirports(string fileName) {
   FILE * data = fopen(fileName.c_str(), "r");
   string line = "";
+
   ifstream myAirports(fileName);
   if(myAirports.is_open()) {
       while(getline(myAirports, line)) {
-        std::cout << line << std::endl;
+        // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
-          std::cout << "country is ";
-          std::cout << parsed[3] << std::endl;
+          // std::cout << "country is ";
+          // std::cout << parsed[3] << std::endl;
           if(isInUS(parsed)) {
             Airport airport = createAirport(parsed);
             if(airport_map.find(airport.getID()) == airport_map.end()) {
@@ -54,6 +56,20 @@ void Parsing::extractAirports(string fileName) {
       }
       myAirports.close();
   }
+}
+
+
+void Parsing::writeAirports(string fileName) {
+  ofstream USAirports;
+  USAirports.open(fileName);
+
+  unordered_map<string, Airport>::iterator it;
+
+  for(it = airport_map.begin(); it != airport_map.end(); it++) {
+    Airport current = (*it).second;
+    USAirports << current.getID() << "," << current.getLatitude() << "," << current.getLongitude() << "\n";
+  }
+  USAirports.close();
 }
 /**
  * @brief all the United States routes are extracted
@@ -67,7 +83,7 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
   ifstream myroutes(fileName);
   if(myroutes.is_open()) {
       while(getline(myroutes, line)) {
-        std::cout << line << std::endl;
+        // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
           //should sort or decide whether the airports both are in the US
           if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
@@ -93,6 +109,10 @@ Routes Parsing::createRoutes(vector<string> data) {
     Routes route(airport_map.find(data[2])->second, airport_map.find(data[4])->second);
     
     return route;
+}
+
+std::unordered_map<std::string, Airport> Parsing::getAirportMap() {
+  return airport_map;
 }
 
 
