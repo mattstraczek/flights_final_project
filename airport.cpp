@@ -36,3 +36,6 @@ std::string Airport::getID() {
 int Airport::getIndex() const {
     return index;
 }
+void Airport::setIndex(int idx) {
+    index = idx;
+}

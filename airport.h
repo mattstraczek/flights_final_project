@@ -12,6 +12,7 @@ class Airport {
         void setID(std::string id);
         std::string getID();
         int getIndex() const;
+        void setIndex(int idx);
     private:
         double latitude;
         double longitude;
