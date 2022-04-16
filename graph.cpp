@@ -22,12 +22,16 @@ Graph::Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<R
     }
 }
 void Graph::printRouteMatrix() {
-    std::vector<std::string> airport_ids;
+    std::cout << "Route Matrix Size: " << route_matrix.size() << std::endl;
+    std::vector<std::string> airport_ids(route_matrix.size());
 
     std::cout << std::setw(10) << "";
     for (const auto it : airport_map) {
-        std::cout << std::setw(10) << std::left << it.first;
-        airport_ids.push_back(it.first);
+        int index = it.second.getIndex();
+        airport_ids[index] = it.first;
+    }
+    for (unsigned long i = 0; i < route_matrix.size(); i++) {
+        std::cout << std::setw(10) << std::left << airport_ids[i];
     }
     std::cout << std::endl;
 
@@ -41,15 +45,19 @@ void Graph::printRouteMatrix() {
 
 }
 void Graph::printRouteMatrixLimited(int limit) {
-    std::vector<std::string> airport_ids;
+    std::cout << "Route Matrix Size: " << route_matrix.size() << std::endl;
+    std::vector<std::string> airport_ids(route_matrix.size());
 
     std::cout << std::setw(10) << "";
     int i = 0;
     for (const auto it : airport_map) {
-        std::cout << std::setw(10) << std::left << it.first;
-        airport_ids.push_back(it.first);
-        i++;
-        if (i >= limit) break;
+        int index = it.second.getIndex();
+        airport_ids[index] = it.first;
+        // i++;
+        // if (i >= limit) break;
+    }
+    for (int i = 0; i < limit; i++) {
+        std::cout << std::setw(10) << std::left << airport_ids[i];
     }
     std::cout << std::endl;
 
