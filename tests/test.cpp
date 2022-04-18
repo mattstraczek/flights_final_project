@@ -83,10 +83,10 @@ TEST_CASE("Adjacency matrix construction", "[weight=10][part2]") {
 	graph.printRouteMatrix();
 
 	//Solution (Expected) Matrix
-	//            SEA      ORD       MIA       
-	// SEA       -1        1932      -1        
-	// ORD       -1        -1        4384      
-	// MIA       2764      -1        -1       
+	//            ORD      MIA       SEA       
+	// ORD       -1        1932      -1        
+	// MIA       -1        -1        4384      
+	// SEA       2764      -1        -1       
 
 	//Creating solution graph
 	std::vector<std::vector<int> >& route_matrix = graph.getRouteMatrix();
@@ -113,4 +113,45 @@ TEST_CASE("Adjacency matrix construction", "[weight=10][part2]") {
 
 	//Test that resultant matrix matches solution
 	REQUIRE(solution == route_matrix);
+}
+
+TEST_CASE("Extract airport single line", "[weight=10][part3]") {
+  Parsing output;
+  output.extractAirports("tests/single_airport.txt");
+  std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
+  Airport airport = airport_map["ORL"];
+  REQUIRE(airport.getLatitude() == 28.5455);
+  std::cout << airport.getLatitude() << std::endl;
+  REQUIRE(airport.getLongitude() == -81.332901);
+  std::cout << airport.getLongitude() << std::endl;
+  REQUIRE(airport.getID() == "ORL");
+  std::cout << airport.getID() << std::endl;
+}
+
+TEST_CASE("Extract airport hard", "[weight=10][part4]") {
+  Airport ITO = Airport("ITO", 19.721399307250977, -155.04800415039062, 0);
+  Airport PIZ = Airport("PIZ", 69.73290253, -163.0050049, 0);
+  Airport BTI = Airport("BTI", 70.1340026855, -143.582000732, 0);
+  Airport LUR = Airport("LUR", 68.87509918, -166.1100006, 0);
+  std::vector<Airport> airports;
+  airports.push_back(ITO);
+  airports.push_back(PIZ);
+  airports.push_back(BTI);
+  airports.push_back(LUR);
+  Parsing output;
+  output.extractAirports("tests/test_extract_hard.txt");
+  std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
+  std::unordered_map<std::string, Airport>::iterator it;
+  unsigned i = 0;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    if (i >= airports.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    Airport current = (*it).second;
+    REQUIRE(airports[i].getID() == current.getID());
+    REQUIRE(airports[i].getLatitude() == current.getLatitude());
+    REQUIRE(airports[i].getLongitude() == current.getLongitude());
+    i++;
+  }
 }

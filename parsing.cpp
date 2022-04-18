@@ -37,16 +37,13 @@ bool Parsing::isInUS(vector<string> line) {
 }
 
 void Parsing::extractAirports(string fileName) {
-  FILE * data = fopen(fileName.c_str(), "r");
+  /*FILE * data = fopen(fileName.c_str(), "r");*/
   string line = "";
-
   ifstream myAirports(fileName);
   if(myAirports.is_open()) {
       while(getline(myAirports, line)) {
         // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
-          // std::cout << "country is ";
-          // std::cout << parsed[3] << std::endl;
           if(isInUS(parsed)) {
             Airport airport = createAirport(parsed);
             if(airport_map.find(airport.getID()) == airport_map.end()) {
@@ -55,6 +52,11 @@ void Parsing::extractAirports(string fileName) {
           }
       }
       myAirports.close();
+  }
+  std::unordered_map<std::string, Airport>::iterator it;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    Airport current = (*it).second;
+    std::cout << current.getID() << std::endl;
   }
 }
 
