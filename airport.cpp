@@ -33,6 +33,9 @@ double Airport::getLongitude() {
 std::string Airport::getID() {
     return ID;
 }
-int Airport::getIndex() {
+int Airport::getIndex() const {
     return index;
+}
+void Airport::setIndex(int idx) {
+    index = idx;
 }

@@ -1,5 +1,6 @@
 #include <fstream>
 #include "parsing.h"
+#include <map>
 
 Parsing::Parsing() {
   
@@ -36,16 +37,13 @@ bool Parsing::isInUS(vector<string> line) {
 }
 
 void Parsing::extractAirports(string fileName) {
-  FILE * data = fopen(fileName.c_str(), "r");
+  /*FILE * data = fopen(fileName.c_str(), "r");*/
   string line = "";
-
   ifstream myAirports(fileName);
   if(myAirports.is_open()) {
       while(getline(myAirports, line)) {
-        std::cout << line << std::endl;
+        // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
-          std::cout << "country is ";
-          std::cout << parsed[3] << std::endl;
           if(isInUS(parsed)) {
             Airport airport = createAirport(parsed);
             if(airport_map.find(airport.getID()) == airport_map.end()) {
@@ -55,22 +53,25 @@ void Parsing::extractAirports(string fileName) {
       }
       myAirports.close();
   }
-  // while(!feof(data)) {
-  //   line.push_back(getc(data));
-  //   std::cout << line << std::endl;
-  //   if (getc(data) == '\n') {
-  //     vector<string> converted = parseLine(line);
-  //     // std::cout << converted[3] << std::endl;
-  //     if (isInUS(converted)) {
-  //       Airport airport = createAirport(converted);
-  //       if (airport_map.find(airport.getID()) == airport_map.end()) {
-  //         airport_map[airport.getID()] = airport;
-  //       }
-  //     }
-  //     line = "";
-  //   }
-  // }
-  // fclose(data);
+  std::unordered_map<std::string, Airport>::iterator it;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    Airport current = (*it).second;
+    std::cout << current.getID() << std::endl;
+  }
+}
+
+
+void Parsing::writeAirports(string fileName) {
+  ofstream USAirports;
+  USAirports.open(fileName);
+
+  unordered_map<string, Airport>::iterator it;
+
+  for(it = airport_map.begin(); it != airport_map.end(); it++) {
+    Airport current = (*it).second;
+    USAirports << current.getID() << "," << current.getLatitude() << "," << current.getLongitude() << "\n";
+  }
+  USAirports.close();
 }
 /**
  * @brief all the United States routes are extracted
@@ -84,7 +85,7 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
   ifstream myroutes(fileName);
   if(myroutes.is_open()) {
       while(getline(myroutes, line)) {
-        std::cout << line << std::endl;
+        // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
           //should sort or decide whether the airports both are in the US
           if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
@@ -112,4 +113,6 @@ Routes Parsing::createRoutes(vector<string> data) {
     return route;
 }
 
-
+std::unordered_map<std::string, Airport> Parsing::getAirportMap() {
+  return airport_map;
+}

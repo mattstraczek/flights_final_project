@@ -12,6 +12,9 @@ class Parsing {
         Parsing();
         void extractAirports(string fileName);
         std::vector<Routes> extractRoutes(string fileName);
+
+        void writeAirports(string fileName);
+        std::unordered_map<std::string, Airport> getAirportMap();
     private:
         Airport createAirport(vector<string> data);
         Routes createRoutes(vector<string> data);
