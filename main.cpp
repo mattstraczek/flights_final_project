@@ -17,7 +17,10 @@ int main() {
     //     std::cout << route.getDeparture() << " --> " << route.getDestination() << std::endl;
     // }
     std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+    std::cout << list[0].getDeparture() << std::endl;
+    std::cout << airport_map[list[0].getDeparture()].getID() << std::endl;
     Graph graph(airport_map, list);
+
 
 	graph.printRouteMatrixLimited(10);
 }

@@ -47,14 +47,14 @@ bool testFiles(string f1, string f2) {
 	return true;
 }
 
-TEST_CASE("Parse airport data", "[weight=10][part1]") {
-	Parsing parse_test;
+// TEST_CASE("Parse airport data", "[weight=10][part1]") {
+// 	Parsing parse_test;
 
-	parse_test.extractAirports("test_airport.txt");
-	parse_test.writeAirports("test_airport_returning.txt");
+// 	parse_test.extractAirports("test_airport.txt");
+// 	parse_test.writeAirports("test_airport_returning.txt");
 
-	REQUIRE(testFiles("/workspaces/CS 225/junryuf2/lboelke2-aosepek2-junryuf2-mstrac4/tests/test_airport_soln.txt", "workspaces/CS 225/junryuf2/lboelke2-aosepek2-junryuf2-mstrac4/tests/test_airport_returning.txt"));
-}
+// 	REQUIRE(testFiles("/workspaces/CS 225/junryuf2/lboelke2-aosepek2-junryuf2-mstrac4/tests/test_airport_soln.txt", "workspaces/CS 225/junryuf2/lboelke2-aosepek2-junryuf2-mstrac4/tests/test_airport_returning.txt"));
+// }
 
 TEST_CASE("Adjacency matrix construction", "[weight=10][part2]") {
 	std::unordered_map<std::string, Airport> airport_map;
@@ -62,7 +62,7 @@ TEST_CASE("Adjacency matrix construction", "[weight=10][part2]") {
 
 	//Creating airport map
 	Airport ORD("ORD", 41.9786, -87.9048, 0);
-	Airport MIA("MIA", 25.79319953918457, -80.29060363769531, 1);
+	Airport MIA("MIA", 25.7931, -80.2906, 1);
 	Airport SEA("SEA", 47.449001, -122.308998, 2);
 
 	airport_map[ORD.getID()] = ORD;
