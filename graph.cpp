@@ -98,8 +98,8 @@ std::vector<std::vector<int> >& Graph::getRouteMatrix() {
     return route_matrix;
 }
 //Algorithms
-//std::vector<std::list<int> >& Graph::primsMST() {
-    // read from adjacency matrix 
+// std::vector<std::list<int> >& Graph::primsMST() {
+   // read from adjacency matrix 
     //  in route_matrix each cell acts as an edge in the graph
     //  where the edges weight is determined by its geographical distance between airports (vertices)
     
@@ -133,15 +133,19 @@ std::vector<std::vector<int> >& Graph::getRouteMatrix() {
     // Go back to top of loop
     //
 
+<<<<<<< HEAD
 
 //}
+=======
+// }
+>>>>>>> 0cff84adca864f7cad77909bf0f2ac3b8f2f4fb0
 // cs225::PNG * Graph::printRoutes() {
 
 // }
 // std::vector<std::list<int> >& Graph::bfs_traversal(string start_airport, string end_airport) {
 
 //testing reduced matrix
-void Graph::reduceAirportMap(std::vector<Routes> route_list) {
+void Graph::reduceAirportMap(std::vector<Routes>& route_list) {
     std::unordered_map<std::string, int> route_departures;
     std::unordered_map<std::string, int> route_destinations;
     //Populate route maps with their corresponding airports
@@ -163,7 +167,7 @@ void Graph::reduceAirportMap(std::vector<Routes> route_list) {
     }
     std::cout << "Reduced airport_map size: " << airport_map_reduced.size() << std::endl;
 }
-void Graph::reduceAirportMatrix(std::vector<Routes> route_list) {
+void Graph::reduceAirportMatrix(std::vector<Routes>& route_list) {
     int airPortSize = airport_map_reduced.size();
     route_matrix_reduced.resize(airPortSize);
 

@@ -22,8 +22,8 @@ class Graph{
       cs225::PNG * printRoutes();
       std::vector<std::list<int> >& bfs_traversal(string start_airport, string end_airport);
       //testing reduced matrix
-      void reduceAirportMap(std::vector<Routes> route_list);
-      void reduceAirportMatrix(std::vector<Routes> route_list);
+      void reduceAirportMap(std::vector<Routes> &route_list);
+      void reduceAirportMatrix(std::vector<Routes> &route_list);
       void writeReducedMatrixToFile();
     private:
         std::vector<std::vector<int> > route_matrix;

@@ -155,3 +155,27 @@ TEST_CASE("Extract airport hard", "[weight=10][part4]") {
     i++;
   }
 }
+
+//Correct: "ADE", "ORD", etc
+//Incorrect: "ade", "aDe", "a5d", "adee", "AD", "ADEE", "", "AD5"
+TEST_CASE("Airport ID parsing: Error-checking", "[weight=10][part4]") {
+
+}
+
+//Correct: " 0.9..., 10.9..., -0.9..., -10.9...", [-90.0, 90]
+//Incorrect: "Periods: -0.98.36, 0..983, 0.98.36, 0983, .983; Negatives: -876.5, 0-.908, 0.9-08, 0.9-0-8; No characters: 0.98a54, 19.54b3, p.492; In range: -92.398, 15923.8356"
+TEST_CASE("Airport Latitude parsing: Error-checking", "[weight=10][part5]") {
+
+}
+
+//Correct: "0.9..., 10.9..., 109.5..., -0.9..., -10.9..., -109.5...", [-180.0, 180]
+//Incorrect: "Periods: -0.98.36, 0..983, 0.98.36, 0983, .983, 0983.937; Negatives: -876.5, 0-.908, 0.9-08, 0.9-0-8; No characters: 0.98a54, 19.54b3, p.492; In range: -192.398, 15923.8356"
+TEST_CASE("Airport Longitude parsing: Error-checking", "[weight=10][part6]") {
+
+}
+
+//Correct: "ADE", "ORD"; "MIA", "SEA" etc
+//Incorrect: "ord", "mIa"; "s5a", "adee"; "OR", "MIAA"; "", "AD5"
+TEST_CASE("Route ID parsing: Error-checking", "[weight=10][part7]") {
+
+}
