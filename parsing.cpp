@@ -70,7 +70,6 @@ Airport Parsing::createAirport(vector<string> line) {
   if (index_period == 1) {
     if (!(lat_str[0] >= 48 && lat_str[0] <= 57)) {
       valid_data = false;
-      break;
     }
   }
   //10.9, -0.9
@@ -78,31 +77,25 @@ Airport Parsing::createAirport(vector<string> line) {
     if (lat_str[0] == '-') {
       if(lat_str[1] < 48 || lat_str[1] > 57) {
         valid_data = false;
-        break;
       }
     } else if (lat_str[0] >= 48 && lat_str[0] <= 57) {
       if (lat_str[1] < 48 || lat_str[1] > 57) {
         valid_data = false;
-        break;
       }
     } else {
       valid_data = false;
-      break;
     }
   }
   //-10.9
   if (index_period == 3) {
     if (lat_str[0] != '-') {
       valid_data = false;
-      break;
     }
     if (lat_str[1] < 48 || lat_str[1] > 57) {
       valid_data = false;
-      break;
     }
     if (lat_str[2] < 48 || lat_str[2] > 57) {
       valid_data = false;
-      break;
     }
   }
 
@@ -112,6 +105,7 @@ Airport Parsing::createAirport(vector<string> line) {
     if (lat_str[1] < 48 || lat_str[1] > 57) {
       valid_data = false;
       break;
+    }
   }
 
   if (!valid_data) return Airport();
@@ -131,8 +125,8 @@ Airport Parsing::createAirport(vector<string> line) {
   //2. 0.9, 10.9, 109.5, -0.9, -10.9, -109.5 -> only one period in the string, and only in positions 1, 2, 3, 4 (0-indexed) : -.1
   //3. check in range [-90, 90]
   std::string long_str = line[6];
-  bool duplicate_periods = false;
-  size_t index_period = 0;
+  duplicate_periods = false;
+  index_period = 0;
 
   for (size_t i = 0; i < long_str.size(); i++) {
     if (long_str[i] == '.') {
@@ -149,7 +143,6 @@ Airport Parsing::createAirport(vector<string> line) {
   if (index_period == 1) {
     if (!(long_str[0] >= 48 && long_str[0] <= 57)) {
       valid_data = false;
-      break;
     }
   }
   //10.9, -0.9
@@ -157,16 +150,13 @@ Airport Parsing::createAirport(vector<string> line) {
     if (long_str[0] == '-') {
       if(long_str[1] < 48 || long_str[1] > 57) {
         valid_data = false;
-        break;
       }
     } else if (long_str[0] >= 48 && long_str[0] <= 57) {
       if (long_str[1] < 48 || long_str[1] > 57) {
         valid_data = false;
-        break;
       }
     } else {
       valid_data = false;
-      break;
     }
   }
   //109.5, -10.9, 
@@ -174,43 +164,34 @@ Airport Parsing::createAirport(vector<string> line) {
     if (long_str[0] == '-') {
       if(long_str[1] < 48 || long_str[1] > 57) {
         valid_data = false;
-        break;
       }
       if(long_str[2] < 48 || long_str[2] > 57) {
         valid_data = false;
-        break;
       }
     } else if (long_str[0] >= 48 && long_str[0] <= 57) {
       if (long_str[1] < 48 || long_str[1] > 57) {
         valid_data = false;
-        break;
       }
       if(long_str[2] < 48 || long_str[2] > 57) {
         valid_data = false;
-        break;
       }
     } else {
       valid_data = false;
-      break;
     }
   }
   //-109.5
   if (index_period == 4) {
     if (long_str[0] != '-') {
       valid_data = false;
-      break;
     }
     if (long_str[1] < 48 || long_str[1] > 57) {
       valid_data = false;
-      break;
     }
     if (long_str[2] < 48 || long_str[2] > 57) {
       valid_data = false;
-      break;
     }
     if (long_str[3] < 48 || long_str[3] > 57) {
       valid_data = false;
-      break;
     }
   }
 
@@ -220,6 +201,7 @@ Airport Parsing::createAirport(vector<string> line) {
     if (long_str[1] < 48 || long_str[1] > 57) {
       valid_data = false;
       break;
+    }
   }
 
   if (!valid_data) return Airport();
