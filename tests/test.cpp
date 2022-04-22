@@ -246,7 +246,28 @@ TEST_CASE("Airport Longitude parsing: Error-checking", "[weight=10][part6]") {
 //Correct: [ADE, ORD]; [MIA, SEA], etc
 //Incorrect: [ord, mIa]; [s5a, adee]; [OR, MIAA]; [ , AD5]
 TEST_CASE("Route ID parsing: Error-checking", "[weight=10][part7]") {
-
+  Airport AER = Airport("AER", 43.449902, 39.9566, 0);
+  Airport KZN = Airport("KZN", 55.606201171875, 49.278701782227, 1);
+  Airport CEK = Airport("CEK", 55.305801, 61.5033, 2);
+  Airport OVB = Airport("OVB", 55.012599945068, 82.650703430176, 3);
+  std::vector<Routes> routes;
+  Routes one = Routes(AER, KZN);
+  Routes two = Routes(CEK, OVB);
+  Routes three = Routes(OVB, CEK);
+  routes.push_back(one);
+  routes.push_back(two);
+  routes.push_back(three);
+  Parsing output;
+  output.extractAirports("airports.txt");
+  std::vector<Routes> extracted = output.extractRoutes("tests/test_extract_routes.txt");
+  for (unsigned i = 0; i < extracted.size(); i++) {
+    if (i >= routes.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    REQUIRE (extracted[i].getDeparture() == routes[i].getDeparture());
+    REQUIRE (extracted[i].getDestination() == routes[i].getDestination());
+  }
 }
 
 //Correct: 3416,"Orlando Executive Airport","Orlando","United States","ORL","KORL",28.5455,-81.332901,113,-5,"A","America/New_York","airport","OurAirports"

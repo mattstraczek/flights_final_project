@@ -143,10 +143,6 @@ Airport Parsing::createAirport(vector<string> line) {
   std::string long_str = line[7];
   duplicate_periods = false;
   index_period = -1;
-<<<<<<< HEAD
-=======
-
->>>>>>> bcf85633f935f0dff03f7de402b0b7695e57a368
   for (size_t i = 0; i < long_str.size(); i++) {
     if (long_str[i] == '.') {
       if (duplicate_periods) {
@@ -156,10 +152,7 @@ Airport Parsing::createAirport(vector<string> line) {
       index_period = i;
     }
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> bcf85633f935f0dff03f7de402b0b7695e57a368
   if (index_period == 0) return Airport();
   if (!valid_data || !duplicate_periods) return Airport();
  
@@ -320,8 +313,8 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
           //should sort or decide whether the airports both are in the US
           if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
               //that means the airport exists in the map, only then I can add 
-              Routes route = createRoutes(parsed);
-              //if route == Routes(), data is invalid so skip ***ADD THIS***
+            Routes route = createRoutes(parsed);
+            if (route.getDeparture() != "") {//, data is invalid so skip ***ADD THIS***
               string routeID = route.getDeparture() + route.getDestination();
               if(route_map.find(routeID) == route_map.end()) {
 
@@ -329,6 +322,7 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
                 route_map[routeID] = 420;
                 routeList.push_back(route);
               }
+            }
           }
           
 
