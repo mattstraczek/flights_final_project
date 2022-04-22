@@ -121,22 +121,27 @@ TEST_CASE("Extract airport single line", "[weight=10][part3]") {
   std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
   Airport airport = airport_map["ORL"];
   REQUIRE(airport.getLatitude() == 28.5455);
-  std::cout << airport.getLatitude() << std::endl;
   REQUIRE(airport.getLongitude() == -81.332901);
-  std::cout << airport.getLongitude() << std::endl;
   REQUIRE(airport.getID() == "ORL");
-  std::cout << airport.getID() << std::endl;
 }
 
 TEST_CASE("Extract airport hard", "[weight=10][part4]") {
-  Airport ITO = Airport("ITO", 19.721399307250977, -155.04800415039062, 0);
-  Airport PIZ = Airport("PIZ", 69.73290253, -163.0050049, 0);
-  Airport BTI = Airport("BTI", 70.1340026855, -143.582000732, 0);
-  Airport LUR = Airport("LUR", 68.87509918, -166.1100006, 0);
+  Airport YFS = Airport("YFS", 61.76020050048828, -121.23699951171875, 0);
+  Airport ITO = Airport("ITO", 19.721399307250977, -155.04800415039062, 1);
+  Airport KAU = Airport("KAU", 63.127102, 23.051399, 2);
+  Airport PIZ = Airport("PIZ", 69.73290253, -163.0050049, 3);
+  Airport CVT = Airport("CVT", 52.3697013855, -1.4797199964499999, 4);
+  Airport BTI = Airport("BTI", 70.1340026855, -143.582000732, 5);
+  Airport AAL = Airport("AAL", 57.0927589138, 9.84924316406, 6);
+  Airport LUR = Airport("LUR", 68.87509918, -166.1100006, 7);
   std::vector<Airport> airports;
+  airports.push_back(YFS);
   airports.push_back(ITO);
+  airports.push_back(KAU);
   airports.push_back(PIZ);
+  airports.push_back(CVT);
   airports.push_back(BTI);
+  airports.push_back(AAL);
   airports.push_back(LUR);
   Parsing output;
   output.extractAirports("tests/test_extract_hard.txt");
@@ -159,19 +164,83 @@ TEST_CASE("Extract airport hard", "[weight=10][part4]") {
 //Correct: "ADE", "ORD", etc
 //Incorrect: "ade", "aDe", "a5d", "adee", "AD", "ADEE", "", "AD5", ADE, ORD
 TEST_CASE("Airport ID parsing: Error-checking", "[weight=10][part4]") {
-
+  Airport SFJ = Airport("SFJ", 67.0122218992, -50.7116031647, 0);
+  Airport THU = Airport("THU", 76.5311965942, -68.7032012939, 1);
+  std::vector<Airport> airports;
+  airports.push_back(SFJ);
+  airports.push_back(THU);
+  Parsing output;
+  output.extractAirports("tests/test_airport_id.txt");
+  std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
+  std::unordered_map<std::string, Airport>::iterator it;
+  unsigned i = 0;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    if (i >= airports.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    Airport current = (*it).second;
+    REQUIRE(airports[i].getID() == current.getID());
+    REQUIRE(airports[i].getLatitude() == current.getLatitude());
+    REQUIRE(airports[i].getLongitude() == current.getLongitude());
+    i++;
+  }
 }
 
 //Correct: " 0.9..., 10.9..., -0.9..., -10.9...", [-90.0, 90]
 //Incorrect: "Periods: -0.98.36, 0..983, 0.98.36, 0983, .983; Negatives: -876.5, 0-.908, 0.9-08, 0.9-0-8; No characters: 0.98a54, 19.54b3, p.492; In range: -92.398, 15923.8356"
 TEST_CASE("Airport Latitude parsing: Error-checking", "[weight=10][part5]") {
-
+  Airport TCN = Airport("TCN", 18.49720001220703, -97.4198989868164, 0);
+  Airport CYA = Airport("CYA", 18.271099090576172, -73.78829956054688, 1);
+  Airport BCA = Airport("BCA", 20.365299224853516, -74.5062026977539, 2);
+  std::vector<Airport> airports;
+  airports.push_back(TCN);
+  airports.push_back(CYA);
+  airports.push_back(BCA);
+  Parsing output;
+  output.extractAirports("tests/test_latitude.txt");
+  std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
+  std::unordered_map<std::string, Airport>::iterator it;
+  unsigned i = 0;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    if (i >= airports.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    Airport current = (*it).second;
+    REQUIRE(airports[i].getID() == current.getID());
+    REQUIRE(airports[i].getLatitude() == current.getLatitude());
+    REQUIRE(airports[i].getLongitude() == current.getLongitude());
+    i++;
+  }
 }
 
 //Correct: "0.9..., 10.9..., 109.5..., -0.9..., -10.9..., -109.5...", [-180.0, 180]
 //Incorrect: "Periods: -0.98.36, 0..983, 0.98.36, 0983, .983, 0983.937; Negatives: -876.5, 0-.908, 0.9-08, 0.9-0-8; No characters: 0.98a54, 19.54b3, p.492; In range: -192.398, 15923.8356"
 TEST_CASE("Airport Longitude parsing: Error-checking", "[weight=10][part6]") {
-
+  Airport NAW = Airport("NAW", 6.5199198722839355, 101.74299621582031, 0);
+  Airport KGI = Airport("KGI", -30.789400100699996, 121.461997986, 1);
+  Airport JHB = Airport("JHB", 1.64131, 103.669998, 2);
+  std::vector<Airport> airports;
+  airports.push_back(NAW);
+  airports.push_back(KGI);
+  airports.push_back(JHB);
+  Parsing output;
+  output.extractAirports("tests/test_longitude.txt");
+  std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
+  std::unordered_map<std::string, Airport>::iterator it;
+  unsigned i = 0;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    if (i >= airports.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    Airport current = (*it).second;
+    REQUIRE(airports[i].getID() == current.getID());
+    REQUIRE(airports[i].getLatitude() == current.getLatitude());
+    REQUIRE(airports[i].getLongitude() == current.getLongitude());
+    i++;
+  }
 }
 
 //Correct: [ADE, ORD]; [MIA, SEA], etc
