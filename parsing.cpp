@@ -29,7 +29,7 @@ Airport Parsing::createAirport(vector<string> line) {
   bool valid_data = true;
 
   //check that line.size() == 14
-  //if (line.size() != 14) return Airport(); *******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL************
+  if (line.size() != 14) return Airport(); //*******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL, BUT NECESSARY FOR FORMAT CHECK************
 
   //Check that id is 3 chars
   //Check that id is string
@@ -306,6 +306,7 @@ Routes Parsing::createRoutes(vector<string> data) {
   //"a-z": 97-122
   //"A-Z": 65-90
   bool valid_data = true;
+  if (data.size() != 9) return Routes(); //Added for format check
 
   std::string DEP = data[2];
   //Check that id is 3 chars

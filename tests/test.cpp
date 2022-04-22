@@ -157,7 +157,7 @@ TEST_CASE("Extract airport hard", "[weight=10][part4]") {
 }
 
 //Correct: "ADE", "ORD", etc
-//Incorrect: "ade", "aDe", "a5d", "adee", "AD", "ADEE", "", "AD5"
+//Incorrect: "ade", "aDe", "a5d", "adee", "AD", "ADEE", "", "AD5", ADE, ORD
 TEST_CASE("Airport ID parsing: Error-checking", "[weight=10][part4]") {
 
 }
@@ -174,8 +174,40 @@ TEST_CASE("Airport Longitude parsing: Error-checking", "[weight=10][part6]") {
 
 }
 
-//Correct: "ADE", "ORD"; "MIA", "SEA" etc
-//Incorrect: "ord", "mIa"; "s5a", "adee"; "OR", "MIAA"; "", "AD5"
+//Correct: [ADE, ORD]; [MIA, SEA], etc
+//Incorrect: [ord, mIa]; [s5a, adee]; [OR, MIAA]; [ , AD5]
 TEST_CASE("Route ID parsing: Error-checking", "[weight=10][part7]") {
 
+}
+
+//Correct: 3416,"Orlando Executive Airport","Orlando","United States","ORL","KORL",28.5455,-81.332901,113,-5,"A","America/New_York","airport","OurAirports"
+//Incorrect: 3426;"St Paul Island Airport","St. Paul Island"="United States","SNP"-"PASN",57.167301177978516+-170.22000122070312,63,-9,"A";"America/Anchorage","airport","OurAirports"
+//Incorrectly formatted entries SKIPPED
+TEST_CASE("Data formatting: Not comma seperated (airports.txt)", "[weight=10][part8]") {
+
+}
+
+//Correct: 2I,8359,AYP,2786,LIM,2789,,0,142
+//Incorrect: 2I;8359,PEM-2808,CUZ+2812,/0,142
+//Incorrectly formatted entries SKIPPED
+TEST_CASE("Data formatting: Not comma seperated (routes.txt)", "[weight=10][part9]") {
+
+}
+
+//Correct: 3416,"Orlando Executive Airport","Orlando","United States","ORL","KORL",28.5455,-81.332901,113,-5,"A","America/New_York","airport","OurAirports"
+//Incorrect: 3426,"St Paul Island Airport","St. Paul Island","United States","SNP","PASN",57.167301177978516,-170.22000122070312,63,-9,"A","America/Anchorage"
+		   //3426,"St Paul Island Airport","St. Paul Island","United States"
+		   // (blank)
+//Incorrectly formatted entries SKIPPED
+TEST_CASE("Data formatting: Deficient data entries (airports.txt)", "[weight=10][part10]") {
+	
+}
+
+//Correct: 2I,8359,AYP,2786,LIM,2789,,0,142
+//Incorrect: 2I,8359,PEM-2808,CUZ,2812
+		   //2I,8359,PEM-2808
+		   // (blank)
+//Incorrectly formatted entries SKIPPED
+TEST_CASE("Data formatting: Deficient data entries (routes.txt)", "[weight=10][part11]") {
+	
 }
