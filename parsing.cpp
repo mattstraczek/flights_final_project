@@ -29,7 +29,7 @@ Airport Parsing::createAirport(vector<string> line) {
   bool valid_data = true;
 
   //check that line.size() == 14
-  if (line.size() != 14) return Airport(); //*******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL, BUT NECESSARY FOR FORMAT CHECK************
+//  if (line.size() != 14) return Airport(); *******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL, BUT NECESSARY FOR FORMAT CHECK************
 
   //Check that id is 3 chars
   //Check that id is string
@@ -53,7 +53,7 @@ Airport Parsing::createAirport(vector<string> line) {
   //3. check in range [-90, 90]
   std::string lat_str = line[6];
   bool duplicate_periods = false;
-  size_t index_period = 0;
+  int index_period = -1;
 
   for (size_t i = 0; i < lat_str.size(); i++) {
     if (lat_str[i] == '.') {
@@ -64,7 +64,23 @@ Airport Parsing::createAirport(vector<string> line) {
       index_period = i;
     }
   }
+  if (index_period == 0) return Airport();
   if (!valid_data || !duplicate_periods) return Airport();
+
+  bool duplicate_hyphens = false;
+  int index_hyphen = -1;
+
+  for (size_t i = 0; i < lat_str.size(); i++) {
+    if (lat_str[i] == '-') {
+      if (duplicate_hyphens) {
+        valid_data = false;
+      }
+      duplicate_hyphens = true;
+      index_hyphen = i;
+    }
+  }
+  if (!(index_hyphen == 0 || index_hyphen == -1)) return Airport();
+  if (!valid_data) return Airport();
 
   //0.9
   if (index_period == 1) {
@@ -102,7 +118,7 @@ Airport Parsing::createAirport(vector<string> line) {
   if (!valid_data) return Airport();
 
   for (size_t i = index_period + 1; i < lat_str.size(); i++) {
-    if (lat_str[1] < 48 || lat_str[1] > 57) {
+    if (lat_str[i] < 48 || lat_str[i] > 57) {
       valid_data = false;
       break;
     }
@@ -126,7 +142,7 @@ Airport Parsing::createAirport(vector<string> line) {
   //3. check in range [-90, 90]
   std::string long_str = line[6];
   duplicate_periods = false;
-  index_period = 0;
+  index_period = -1;
 
   for (size_t i = 0; i < long_str.size(); i++) {
     if (long_str[i] == '.') {
@@ -137,6 +153,8 @@ Airport Parsing::createAirport(vector<string> line) {
       index_period = i;
     }
   }
+
+  if (index_period == 0) return Airport();
   if (!valid_data || !duplicate_periods) return Airport();
 
   //0.9
@@ -234,9 +252,9 @@ void Parsing::extractAirports(string fileName) {
       while(getline(myAirports, line)) {
         // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
-          if(isInUS(parsed)) { //***DELETE THIS***
-            Airport airport = createAirport(parsed);
-            //if airport != Airport(), data is invalid so skip this ***ADD THIS***
+          //if(isInUS(parsed)) { //***DELETE THIS***
+          Airport airport = createAirport(parsed);
+          if (airport.getID() != "") {//, data is invalid so skip this ***ADD THIS***
             if(airport_map.find(airport.getID()) == airport_map.end()) {
               airport_map[airport.getID()] = airport;
             }
