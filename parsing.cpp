@@ -20,10 +20,218 @@ vector<string> Parsing::parseLine(string line) {
     return parsed;
 }
 Airport Parsing::createAirport(vector<string> line) {
+  //ASCII Values:
+  //"-": 45
+  //".": 46
+  //"0-9": 48-57
+  //"a-z": 97-122
+  //"A-Z": 65-90
+  bool valid_data = true;
+
+  //check that line.size() == 14
+  //if (line.size() != 14) return Airport(); *******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL************
+
+  //Check that id is 3 chars
+  //Check that id is string
+  //Check that all chars are uppercase and letters
+  if (line[4].size() != 5) return Airport();
   string id_ = line[4].substr(1, 3);
+  for (size_t i = 0; i < 3; i++) {
+    if (id_[i] < 65 || id_[i] > 90) {
+      valid_data = false;
+      break;
+    }
+  }
+  if (!valid_data) return Airport();
+
+  //double lat_ = std::stod(line[6]);
+  //check that its a double (iterate through chars and make sure that are chars between "0-9", ".", or "-")
+  //iterating process:
+  //1.check if "-" is first
+  //a. whether it is or isnt, make sure it never appears again: -0.908 yes, 0-.908 no, 0.9-08 no
+  //2. 0.9, 10.9, -0.9, -10.9 -> only one period in the string, and only in positions 1, 2, 3 (0-indexed) : -.1
+  //3. check in range [-90, 90]
+  std::string lat_str = line[6];
+  bool duplicate_periods = false;
+  size_t index_period = 0;
+
+  for (size_t i = 0; i < lat_str.size(); i++) {
+    if (lat_str[i] == '.') {
+      if (duplicate_periods) {
+        valid_data = false;
+      }
+      duplicate_periods = true;
+      index_period = i;
+    }
+  }
+  if (!valid_data || !duplicate_periods) return Airport();
+
+  //0.9
+  if (index_period == 1) {
+    if (!(lat_str[0] >= 48 && lat_str[0] <= 57)) {
+      valid_data = false;
+      break;
+    }
+  }
+  //10.9, -0.9
+  if (index_period == 2) {
+    if (lat_str[0] == '-') {
+      if(lat_str[1] < 48 || lat_str[1] > 57) {
+        valid_data = false;
+        break;
+      }
+    } else if (lat_str[0] >= 48 && lat_str[0] <= 57) {
+      if (lat_str[1] < 48 || lat_str[1] > 57) {
+        valid_data = false;
+        break;
+      }
+    } else {
+      valid_data = false;
+      break;
+    }
+  }
+  //-10.9
+  if (index_period == 3) {
+    if (lat_str[0] != '-') {
+      valid_data = false;
+      break;
+    }
+    if (lat_str[1] < 48 || lat_str[1] > 57) {
+      valid_data = false;
+      break;
+    }
+    if (lat_str[2] < 48 || lat_str[2] > 57) {
+      valid_data = false;
+      break;
+    }
+  }
+
+  if (!valid_data) return Airport();
+
+  for (size_t i = index_period + 1; i < lat_str.size(); i++) {
+    if (lat_str[1] < 48 || lat_str[1] > 57) {
+      valid_data = false;
+      break;
+  }
+
+  if (!valid_data) return Airport();
+
   double lat_ = std::stod(line[6]);
+  if (lat_ < -90.0 || lat_ > 90) {
+    return Airport();
+  }
+
+  //check if its in range [-90, 90]
+
+  //double long_ = std::stod(line[7]);
+  //check that its a double (iterate through chars and make sure that are chars between "0-9", ".", or "-")
+  //iterating process:
+  //1.check if "-" is first
+  //a. whether it is or isnt, make sure it never appears again: -0.908 yes, 0-.908 no, 0.9-08 no
+  //2. 0.9, 10.9, 109.5, -0.9, -10.9, -109.5 -> only one period in the string, and only in positions 1, 2, 3, 4 (0-indexed) : -.1
+  //3. check in range [-90, 90]
+  std::string long_str = line[6];
+  bool duplicate_periods = false;
+  size_t index_period = 0;
+
+  for (size_t i = 0; i < long_str.size(); i++) {
+    if (long_str[i] == '.') {
+      if (duplicate_periods) {
+        valid_data = false;
+      }
+      duplicate_periods = true;
+      index_period = i;
+    }
+  }
+  if (!valid_data || !duplicate_periods) return Airport();
+
+  //0.9
+  if (index_period == 1) {
+    if (!(long_str[0] >= 48 && long_str[0] <= 57)) {
+      valid_data = false;
+      break;
+    }
+  }
+  //10.9, -0.9
+  if (index_period == 2) {
+    if (long_str[0] == '-') {
+      if(long_str[1] < 48 || long_str[1] > 57) {
+        valid_data = false;
+        break;
+      }
+    } else if (long_str[0] >= 48 && long_str[0] <= 57) {
+      if (long_str[1] < 48 || long_str[1] > 57) {
+        valid_data = false;
+        break;
+      }
+    } else {
+      valid_data = false;
+      break;
+    }
+  }
+  //109.5, -10.9, 
+  if (index_period == 3) {
+    if (long_str[0] == '-') {
+      if(long_str[1] < 48 || long_str[1] > 57) {
+        valid_data = false;
+        break;
+      }
+      if(long_str[2] < 48 || long_str[2] > 57) {
+        valid_data = false;
+        break;
+      }
+    } else if (long_str[0] >= 48 && long_str[0] <= 57) {
+      if (long_str[1] < 48 || long_str[1] > 57) {
+        valid_data = false;
+        break;
+      }
+      if(long_str[2] < 48 || long_str[2] > 57) {
+        valid_data = false;
+        break;
+      }
+    } else {
+      valid_data = false;
+      break;
+    }
+  }
+  //-109.5
+  if (index_period == 4) {
+    if (long_str[0] != '-') {
+      valid_data = false;
+      break;
+    }
+    if (long_str[1] < 48 || long_str[1] > 57) {
+      valid_data = false;
+      break;
+    }
+    if (long_str[2] < 48 || long_str[2] > 57) {
+      valid_data = false;
+      break;
+    }
+    if (long_str[3] < 48 || long_str[3] > 57) {
+      valid_data = false;
+      break;
+    }
+  }
+
+  if (!valid_data) return Airport();
+
+  for (size_t i = index_period + 1; i < long_str.size(); i++) {
+    if (long_str[1] < 48 || long_str[1] > 57) {
+      valid_data = false;
+      break;
+  }
+
+  if (!valid_data) return Airport();
+
   double long_ = std::stod(line[7]);
+  if (long_ < -180.0 || long_ > 180) {
+    return Airport();
+  }
+
+  //check if its in range [-180 <-> 180]
   int index = airport_map.size();
+
   Airport airport = Airport(id_, lat_, long_, index);
   return airport;
 }
@@ -44,8 +252,9 @@ void Parsing::extractAirports(string fileName) {
       while(getline(myAirports, line)) {
         // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
-          if(isInUS(parsed)) {
+          if(isInUS(parsed)) { //DELETE THIS
             Airport airport = createAirport(parsed);
+            //if airport != Airport()
             if(airport_map.find(airport.getID()) == airport_map.end()) {
               airport_map[airport.getID()] = airport;
             }
@@ -107,10 +316,43 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
   return routeList;
 }
 Routes Parsing::createRoutes(vector<string> data) {
-    
-    Routes route(airport_map.find(data[2])->second, airport_map.find(data[4])->second);
-    
-    return route;
+  //ASCII Values:
+  //"-": 45
+  //".": 46
+  //"0-9": 48-57
+  //"a-z": 97-122
+  //"A-Z": 65-90
+  bool valid_data = true;
+
+  std::string DEP = data[2];
+  //Check that id is 3 chars
+  //Check that id is string
+  //Check that all chars are uppercase and letters
+  if (DEP.size() != 3) return Routes();
+  for (size_t i = 0; i < 3; i++) {
+    if (DEP[i] < 65 || DEP[i] > 90) {
+      valid_data = false;
+      break;
+    }
+  }
+  if (!valid_data) return Routes();
+
+  std::string DEST = data[4];
+  //Check that id is 3 chars
+  //Check that id is string
+  //Check that all chars are uppercase and letters
+  if (DEST.size() != 3) return Routes();
+  for (size_t i = 0; i < 3; i++) {
+    if (DEST[i] < 65 || DEST[i] > 90) {
+      valid_data = false;
+      break;
+    }
+  }
+  if (!valid_data) return Routes();
+
+  Routes route(airport_map.find(DEP)->second, airport_map.find(DEST)->second);
+  
+  return route;
 }
 
 std::unordered_map<std::string, Airport> Parsing::getAirportMap() {

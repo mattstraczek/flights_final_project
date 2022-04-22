@@ -107,7 +107,7 @@ std::vector<std::vector<int> >& Graph::getRouteMatrix() {
 // std::vector<std::list<int> >& Graph::bfs_traversal(string start_airport, string end_airport) {
 
 //testing reduced matrix
-void Graph::reduceAirportMap(std::vector<Routes> route_list) {
+void Graph::reduceAirportMap(std::vector<Routes>& route_list) {
     std::unordered_map<std::string, int> route_departures;
     std::unordered_map<std::string, int> route_destinations;
     //Populate route maps with their corresponding airports
@@ -129,7 +129,7 @@ void Graph::reduceAirportMap(std::vector<Routes> route_list) {
     }
     std::cout << "Reduced airport_map size: " << airport_map_reduced.size() << std::endl;
 }
-void Graph::reduceAirportMatrix(std::vector<Routes> route_list) {
+void Graph::reduceAirportMatrix(std::vector<Routes>& route_list) {
     int airPortSize = airport_map_reduced.size();
     route_matrix_reduced.resize(airPortSize);
 
