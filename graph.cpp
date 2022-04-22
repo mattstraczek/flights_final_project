@@ -99,6 +99,39 @@ std::vector<std::vector<int> >& Graph::getRouteMatrix() {
 }
 //Algorithms
 // std::vector<std::list<int> >& Graph::primsMST() {
+   // read from adjacency matrix 
+    //  in route_matrix each cell acts as an edge in the graph
+    //  where the edges weight is determined by its geographical distance between airports (vertices)
+    
+    // set an arbitrary airport within route_matrix as the start matrix
+
+    // create a distance vector to keep track of distance from previous airport
+    // create a predecessor vector to keep track of previous airport
+    // to initialize set all airport (vertices)... 
+    //  -> distance[i] = infinity
+    //  -> pred[i] = null;
+    // For Start:
+    //      -> dist[start_index] = 0
+    //      -> pred[start_index] = null
+    // can maybe avoid using multiple vectors if each element within the priority queue holds distance and predecessor value  
+
+    // create a priority queue, where each element in the queue holds two values: distance and predecessor 
+    // -> distance describes the geographical distance between airport and neighboring airport 
+    // -> predecessor describes the previous airport
+    // the priority queue is sorted by the distance characteristic of each element in the queue
+    // Offers insight how to create a min-heap using C++'s STL of priority queues  https://www.geeksforgeeks.org/implement-min-heap-using-stl/
+
+    // LOOP thru until the queue is empty
+    //
+    // pop the minimum element from the heap, meaning the airport with the minimum distance  
+    // at first the starting airport is popped because 0 <<< infinity
+    //
+    // add the popped element, aiport,   to the MST vector 
+    // for all adjacent (neighboring) airports of popped airport update their distances using the data from the adjacency matrix
+    // update their distance in the priority queue, so the airport with the smallest distance is placed at the top of the 
+    // priority queue
+    // Go back to top of loop
+    //
 
 // }
 // cs225::PNG * Graph::printRoutes() {
