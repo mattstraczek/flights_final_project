@@ -163,7 +163,7 @@ TEST_CASE("Extract airport hard", "[weight=10][part4]") {
 
 //Correct: "ADE", "ORD", etc
 //Incorrect: "ade", "aDe", "a5d", "adee", "AD", "ADEE", "", "AD5", ADE, ORD
-TEST_CASE("Airport ID parsing: Error-checking", "[weight=10][part4]") {
+TEST_CASE("Airport ID parsing: Error-checking", "[weight=10][part5]") {
   Airport SFJ = Airport("SFJ", 67.0122218992, -50.7116031647, 0);
   Airport THU = Airport("THU", 76.5311965942, -68.7032012939, 1);
   std::vector<Airport> airports;
@@ -189,7 +189,7 @@ TEST_CASE("Airport ID parsing: Error-checking", "[weight=10][part4]") {
 
 //Correct: " 0.9..., 10.9..., -0.9..., -10.9...", [-90.0, 90]
 //Incorrect: "Periods: -0.98.36, 0..983, 0.98.36, 0983, .983; Negatives: -876.5, 0-.908, 0.9-08, 0.9-0-8; No characters: 0.98a54, 19.54b3, p.492; In range: -92.398, 15923.8356"
-TEST_CASE("Airport Latitude parsing: Error-checking", "[weight=10][part5]") {
+TEST_CASE("Airport Latitude parsing: Error-checking", "[weight=10][part6]") {
   Airport TCN = Airport("TCN", 18.49720001220703, -97.4198989868164, 0);
   Airport CYA = Airport("CYA", 18.271099090576172, -73.78829956054688, 1);
   Airport BCA = Airport("BCA", 20.365299224853516, -74.5062026977539, 2);
@@ -217,7 +217,7 @@ TEST_CASE("Airport Latitude parsing: Error-checking", "[weight=10][part5]") {
 
 //Correct: "0.9..., 10.9..., 109.5..., -0.9..., -10.9..., -109.5...", [-180.0, 180]
 //Incorrect: "Periods: -0.98.36, 0..983, 0.98.36, 0983, .983, 0983.937; Negatives: -876.5, 0-.908, 0.9-08, 0.9-0-8; No characters: 0.98a54, 19.54b3, p.492; In range: -192.398, 15923.8356"
-TEST_CASE("Airport Longitude parsing: Error-checking", "[weight=10][part6]") {
+TEST_CASE("Airport Longitude parsing: Error-checking", "[weight=10][part7]") {
   Airport NAW = Airport("NAW", 6.5199198722839355, 101.74299621582031, 0);
   Airport KGI = Airport("KGI", -30.789400100699996, 121.461997986, 1);
   Airport JHB = Airport("JHB", 1.64131, 103.669998, 2);
@@ -245,46 +245,7 @@ TEST_CASE("Airport Longitude parsing: Error-checking", "[weight=10][part6]") {
 
 //Correct: [ADE, ORD]; [MIA, SEA], etc
 //Incorrect: [ord, mIa]; [s5a, adee]; [OR, MIAA]; [ , AD5]
-TEST_CASE("Route ID parsing: Error-checking", "[weight=10][part7]") {
-<<<<<<< HEAD
-
-  Airport CUZ = Airport("CUZ", -13.535699844400002, -71.9387969971, 0);
-  Airport PEM = Airport("PEM", -12.6135997772, -69.2285995483, 1);
-  Airport LIM = Airport("LIM", -12.0219, -77.114305, 2);
-
-  Routes route1 = Routes(CUZ, LIM);
-  Routes route2 = Routes(CUZ, PEM);
-
-  // only two routes should be parsed from the test routes file
-  
-  std::vector<Routes> routes_sol;
-  routes_sol.push_back(route1);
-  routes_sol.push_back(route2);
-
-  Parsing output; 
-  // add airports to airport_map
-  output.extractAirports("aiports.txt"); 
-  //std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
-  //std::cout << "airport's included in route size "<<airport_map.size() << endl;
-
-  std::vector<Routes> routes_test = output.extractRoutes("tests/test_route_id.txt");
-
-  //std::cout << "Route 1" <<routes_test[0].getDeparture() << endl;
-  //std::cout << " Route 1"<<routes_test[0].getDestination() << endl;
-
-  // check to see if solution vector and parsed vector are of the same size
-  //REQUIRE(routes_test.size() == routes_sol.size());
-
-  for(int i = 0; i < (int)routes_test.size(); i++){
-    if (i >= (int)routes_sol.size()) {
-      REQUIRE(0 == 1);
-      break;
-    }
-    REQUIRE(routes_test[i].getDeparture() == routes_sol[i].getDeparture());
-    REQUIRE(routes_test[i].getDestination() == routes_sol[i].getDestination());
-  }
-
-=======
+TEST_CASE("Route ID parsing: Error-checking", "[weight=10][part8]") {
   Airport AER = Airport("AER", 43.449902, 39.9566, 0);
   Airport KZN = Airport("KZN", 55.606201171875, 49.278701782227, 1);
   Airport CEK = Airport("CEK", 55.305801, 61.5033, 2);
@@ -292,10 +253,8 @@ TEST_CASE("Route ID parsing: Error-checking", "[weight=10][part7]") {
   std::vector<Routes> routes;
   Routes one = Routes(AER, KZN);
   Routes two = Routes(CEK, OVB);
-  Routes three = Routes(OVB, CEK);
   routes.push_back(one);
   routes.push_back(two);
-  routes.push_back(three);
   Parsing output;
   output.extractAirports("airports.txt");
   std::vector<Routes> extracted = output.extractRoutes("tests/test_extract_routes.txt");
@@ -307,13 +266,12 @@ TEST_CASE("Route ID parsing: Error-checking", "[weight=10][part7]") {
     REQUIRE (extracted[i].getDeparture() == routes[i].getDeparture());
     REQUIRE (extracted[i].getDestination() == routes[i].getDestination());
   }
->>>>>>> 11cfac032fcae1d8c3d3474e02e48e71d1d4577a
 }
 
 //Correct: 3416,"Orlando Executive Airport","Orlando","United States","ORL","KORL",28.5455,-81.332901,113,-5,"A","America/New_York","airport","OurAirports"
 //Incorrect: 3426;"St Paul Island Airport","St. Paul Island"="United States","SNP"-"PASN",57.167301177978516+-170.22000122070312,63,-9,"A";"America/Anchorage","airport","OurAirports"
 //Incorrectly formatted entries SKIPPED
-TEST_CASE("Data formatting: Not comma seperated (airports.txt)", "[weight=10][part8]") {
+TEST_CASE("Data formatting: Not comma seperated (airports.txt)", "[weight=10][part9]") {
   Airport GKA = Airport("GKA",-6.081689834590001, 145.391998291, 0);
   Airport LAE = Airport("LAE", -6.569803, 146.725977, 1);
   Airport SFJ = Airport("SFJ", 67.0122218992,-50.7116031647, 2);
@@ -339,15 +297,32 @@ TEST_CASE("Data formatting: Not comma seperated (airports.txt)", "[weight=10][pa
     REQUIRE(airports[i].getLongitude() == current.getLongitude());
     i++;
   }
-	
-
 }
 
 //Correct: 2I,8359,AYP,2786,LIM,2789,,0,142
 //Incorrect: 2I;8359,PEM-2808,CUZ+2812,/0,142
 //Incorrectly formatted entries SKIPPED
-TEST_CASE("Data formatting: Not comma seperated (routes.txt)", "[weight=10][part9]") {
-
+TEST_CASE("Data formatting: Not comma seperated (routes.txt)", "[weight=10][part10]") {
+  Airport AER = Airport("AER", 43.449902, 39.9566, 0);
+  Airport KZN = Airport("KZN", 55.606201171875, 49.278701782227, 1);
+  Airport CEK = Airport("CEK", 55.305801, 61.5033, 2);
+  Airport OVB = Airport("OVB", 55.012599945068, 82.650703430176, 3);
+  std::vector<Routes> routes;
+  Routes one = Routes(AER, KZN);
+  Routes two = Routes(CEK, OVB);
+  routes.push_back(one);
+  routes.push_back(two);
+  Parsing output;
+  output.extractAirports("airports.txt");
+  std::vector<Routes> extracted = output.extractRoutes("tests/test_routes_non_comma.txt");
+  for (unsigned i = 0; i < extracted.size(); i++) {
+    if (i >= routes.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    REQUIRE (extracted[i].getDeparture() == routes[i].getDeparture());
+    REQUIRE (extracted[i].getDestination() == routes[i].getDestination());
+  }
 }
 
 //Correct: 3416,"Orlando Executive Airport","Orlando","United States","ORL","KORL",28.5455,-81.332901,113,-5,"A","America/New_York","airport","OurAirports"
@@ -355,7 +330,7 @@ TEST_CASE("Data formatting: Not comma seperated (routes.txt)", "[weight=10][part
 		   //3426,"St Paul Island Airport","St. Paul Island","United States"
 		   // (blank)
 //Incorrectly formatted entries SKIPPED
-TEST_CASE("Data formatting: Deficient data entries (airports.txt)", "[weight=10][part10]") {
+TEST_CASE("Data formatting: Deficient data entries (airports.txt)", "[weight=10][part11]") {
   Airport GKA = Airport("GKA",-6.081689834590001, 145.391998291, 0);
   Airport LAE = Airport("LAE", -6.569803, 146.725977, 1);
   Airport SFJ = Airport("SFJ", 67.0122218992,-50.7116031647, 2);
@@ -389,6 +364,26 @@ TEST_CASE("Data formatting: Deficient data entries (airports.txt)", "[weight=10]
 		   //2I,8359,PEM-2808
 		   // (blank)
 //Incorrectly formatted entries SKIPPED
-TEST_CASE("Data formatting: Deficient data entries (routes.txt)", "[weight=10][part11]") {
+TEST_CASE("Data formatting: Deficient data entries (routes.txt)", "[weight=10][part12]") {
+  Airport AER = Airport("AER", 43.449902, 39.9566, 0);
+  Airport KZN = Airport("KZN", 55.606201171875, 49.278701782227, 1);
+  Airport CEK = Airport("CEK", 55.305801, 61.5033, 2);
+  Airport OVB = Airport("OVB", 55.012599945068, 82.650703430176, 3);
+  std::vector<Routes> routes;
+  Routes one = Routes(AER, KZN);
+  Routes two = Routes(CEK, OVB);
+  routes.push_back(one);
+  routes.push_back(two);
+  Parsing output;
+  output.extractAirports("airports.txt");
+  std::vector<Routes> extracted = output.extractRoutes("tests/test_routes_missing.txt");
+  for (unsigned i = 0; i < extracted.size(); i++) {
+    if (i >= routes.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    REQUIRE (extracted[i].getDeparture() == routes[i].getDeparture());
+    REQUIRE (extracted[i].getDestination() == routes[i].getDestination());
+  }
 	
 }

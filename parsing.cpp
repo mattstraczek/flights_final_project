@@ -154,10 +154,6 @@ Airport Parsing::createAirport(vector<string> line) {
       index_period = i;
     }
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> 11cfac032fcae1d8c3d3474e02e48e71d1d4577a
   if (index_period == 0) return Airport();
   if (!valid_data || !duplicate_periods) return Airport();
  
@@ -344,7 +340,9 @@ Routes Parsing::createRoutes(vector<string> data) {
   //"a-z": 97-122
   //"A-Z": 65-90
   bool valid_data = true;
-  if (data.size() != 9) return Routes(); //Added for format check
+  if (data.size() != 8) {
+    return Routes();
+    } //Added for format check
 
   std::string DEP = data[2];
   //Check that id is 3 chars
