@@ -154,6 +154,10 @@ Airport Parsing::createAirport(vector<string> line) {
       index_period = i;
     }
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 11cfac032fcae1d8c3d3474e02e48e71d1d4577a
   if (index_period == 0) return Airport();
   if (!valid_data || !duplicate_periods) return Airport();
  
@@ -314,8 +318,8 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
           //should sort or decide whether the airports both are in the US
           if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
               //that means the airport exists in the map, only then I can add 
-              Routes route = createRoutes(parsed);
-              //if route == Routes(), data is invalid so skip ***ADD THIS***
+            Routes route = createRoutes(parsed);
+            if (route.getDeparture() != "") {//, data is invalid so skip ***ADD THIS***
               string routeID = route.getDeparture() + route.getDestination();
               if(route_map.find(routeID) == route_map.end()) {
 
@@ -323,6 +327,7 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
                 route_map[routeID] = 420;
                 routeList.push_back(route);
               }
+            }
           }
           
 
