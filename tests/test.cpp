@@ -247,12 +247,74 @@ TEST_CASE("Airport Longitude parsing: Error-checking", "[weight=10][part6]") {
 //Incorrect: [ord, mIa]; [s5a, adee]; [OR, MIAA]; [ , AD5]
 TEST_CASE("Route ID parsing: Error-checking", "[weight=10][part7]") {
 
+  Airport CUZ = Airport("CUZ", -13.535699844400002, -71.9387969971, 0);
+  Airport PEM = Airport("PEM", -12.6135997772, -69.2285995483, 1);
+  Airport LIM = Airport("LIM", -12.0219, -77.114305, 2);
+
+  Routes route1 = Routes(CUZ, LIM);
+  Routes route2 = Routes(CUZ, PEM);
+
+  // only two routes should be parsed from the test routes file
+  
+  std::vector<Routes> routes_sol;
+  routes_sol.push_back(route1);
+  routes_sol.push_back(route2);
+
+  Parsing output; 
+  // add airports to airport_map
+  output.extractAirports("aiports.txt"); 
+  //std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
+  //std::cout << "airport's included in route size "<<airport_map.size() << endl;
+
+  std::vector<Routes> routes_test = output.extractRoutes("tests/test_route_id.txt");
+
+  //std::cout << "Route 1" <<routes_test[0].getDeparture() << endl;
+  //std::cout << " Route 1"<<routes_test[0].getDestination() << endl;
+
+  // check to see if solution vector and parsed vector are of the same size
+  //REQUIRE(routes_test.size() == routes_sol.size());
+
+  for(int i = 0; i < (int)routes_test.size(); i++){
+    if (i >= (int)routes_sol.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    REQUIRE(routes_test[i].getDeparture() == routes_sol[i].getDeparture());
+    REQUIRE(routes_test[i].getDestination() == routes_sol[i].getDestination());
+  }
+
 }
 
 //Correct: 3416,"Orlando Executive Airport","Orlando","United States","ORL","KORL",28.5455,-81.332901,113,-5,"A","America/New_York","airport","OurAirports"
 //Incorrect: 3426;"St Paul Island Airport","St. Paul Island"="United States","SNP"-"PASN",57.167301177978516+-170.22000122070312,63,-9,"A";"America/Anchorage","airport","OurAirports"
 //Incorrectly formatted entries SKIPPED
 TEST_CASE("Data formatting: Not comma seperated (airports.txt)", "[weight=10][part8]") {
+  Airport GKA = Airport("GKA",-6.081689834590001, 145.391998291, 0);
+  Airport LAE = Airport("LAE", -6.569803, 146.725977, 1);
+  Airport SFJ = Airport("SFJ", 67.0122218992,-50.7116031647, 2);
+
+  std::vector<Airport> airports;
+  airports.push_back(GKA);
+  airports.push_back(LAE);
+  airports.push_back(SFJ);
+
+  Parsing output;
+  output.extractAirports("tests/test_airport_non_comma.txt");
+  std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
+  std::unordered_map<std::string, Airport>::iterator it;
+  unsigned i = 0;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    if (i >= airports.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    Airport current = (*it).second;
+    REQUIRE(airports[i].getID() == current.getID());
+    REQUIRE(airports[i].getLatitude() == current.getLatitude());
+    REQUIRE(airports[i].getLongitude() == current.getLongitude());
+    i++;
+  }
+	
 
 }
 
@@ -269,6 +331,31 @@ TEST_CASE("Data formatting: Not comma seperated (routes.txt)", "[weight=10][part
 		   // (blank)
 //Incorrectly formatted entries SKIPPED
 TEST_CASE("Data formatting: Deficient data entries (airports.txt)", "[weight=10][part10]") {
+  Airport GKA = Airport("GKA",-6.081689834590001, 145.391998291, 0);
+  Airport LAE = Airport("LAE", -6.569803, 146.725977, 1);
+  Airport SFJ = Airport("SFJ", 67.0122218992,-50.7116031647, 2);
+
+  std::vector<Airport> airports;
+  airports.push_back(GKA);
+  airports.push_back(LAE);
+  airports.push_back(SFJ);
+
+  Parsing output;
+  output.extractAirports("tests/test_airport_missing.txt");
+  std::unordered_map<std::string, Airport> airport_map = output.getAirportMap();
+  std::unordered_map<std::string, Airport>::iterator it;
+  unsigned i = 0;
+  for (it = airport_map.begin(); it != airport_map.end(); it++) {
+    if (i >= airports.size()) {
+      REQUIRE(0 == 1);
+      break;
+    }
+    Airport current = (*it).second;
+    REQUIRE(airports[i].getID() == current.getID());
+    REQUIRE(airports[i].getLatitude() == current.getLatitude());
+    REQUIRE(airports[i].getLongitude() == current.getLongitude());
+    i++;
+  }
 	
 }
 

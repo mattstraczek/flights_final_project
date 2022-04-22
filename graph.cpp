@@ -133,12 +133,8 @@ std::vector<std::vector<int> >& Graph::getRouteMatrix() {
     // Go back to top of loop
     //
 
-<<<<<<< HEAD
 
 //}
-=======
-// }
->>>>>>> 0cff84adca864f7cad77909bf0f2ac3b8f2f4fb0
 // cs225::PNG * Graph::printRoutes() {
 
 // }

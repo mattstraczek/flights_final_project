@@ -29,8 +29,10 @@ Airport Parsing::createAirport(vector<string> line) {
   bool valid_data = true;
 
   //check that line.size() == 14
-//  if (line.size() != 14) return Airport(); *******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL, BUT NECESSARY FOR FORMAT CHECK************
-
+  if (line.size() != 13){
+    return Airport();// *******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL, BUT NECESSARY FOR FORMAT CHECK************
+  }
+  //std::cout << " "<<airport_map.size() << endl;
   //Check that id is 3 chars
   //Check that id is string
   //Check that all chars are uppercase and letters
@@ -143,10 +145,6 @@ Airport Parsing::createAirport(vector<string> line) {
   std::string long_str = line[7];
   duplicate_periods = false;
   index_period = -1;
-<<<<<<< HEAD
-=======
-
->>>>>>> bcf85633f935f0dff03f7de402b0b7695e57a368
   for (size_t i = 0; i < long_str.size(); i++) {
     if (long_str[i] == '.') {
       if (duplicate_periods) {
@@ -156,10 +154,6 @@ Airport Parsing::createAirport(vector<string> line) {
       index_period = i;
     }
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> bcf85633f935f0dff03f7de402b0b7695e57a368
   if (index_period == 0) return Airport();
   if (!valid_data || !duplicate_periods) return Airport();
  

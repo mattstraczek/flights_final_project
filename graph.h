@@ -18,9 +18,9 @@ class Graph{
       void writeRouteMatrixToFile();
       std::vector<std::vector<int> >& getRouteMatrix();
       //Algorithms
-      std::vector<std::list<int> >& primsMST();
-      cs225::PNG * printRoutes();
-      std::vector<std::list<int> >& bfs_traversal(string start_airport, string end_airport);
+      //std::vector<std::list<int> >& primsMST();
+      //cs225::PNG * printRoutes();
+      //std::vector<std::list<int> >& bfs_traversal(string start_airport, string end_airport);
       //testing reduced matrix
       void reduceAirportMap(std::vector<Routes> &route_list);
       void reduceAirportMatrix(std::vector<Routes> &route_list);
