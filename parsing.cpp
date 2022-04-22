@@ -234,9 +234,9 @@ void Parsing::extractAirports(string fileName) {
       while(getline(myAirports, line)) {
         // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
-          if(isInUS(parsed)) { //DELETE THIS
+          if(isInUS(parsed)) { //***DELETE THIS***
             Airport airport = createAirport(parsed);
-            //if airport != Airport()
+            //if airport != Airport(), data is invalid so skip this ***ADD THIS***
             if(airport_map.find(airport.getID()) == airport_map.end()) {
               airport_map[airport.getID()] = airport;
             }
@@ -282,6 +282,7 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
           if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
               //that means the airport exists in the map, only then I can add 
               Routes route = createRoutes(parsed);
+              //if route == Routes(), data is invalid so skip ***ADD THIS***
               string routeID = route.getDeparture() + route.getDestination();
               if(route_map.find(routeID) == route_map.end()) {
 
