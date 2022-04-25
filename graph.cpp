@@ -205,3 +205,9 @@ void Graph::writeReducedMatrixToFile() {
     }
 
 }
+
+//creates a geoMap based on the minimum spanning tree of the world
+void Graph::geoMap() {
+    PNG * newMaze = new PNG(1280, 993);
+    
+}

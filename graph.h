@@ -25,6 +25,8 @@ class Graph{
       void reduceAirportMap(std::vector<Routes> &route_list);
       void reduceAirportMatrix(std::vector<Routes> &route_list);
       void writeReducedMatrixToFile();
+
+      void geoMap();
     private:
         std::vector<std::vector<int> > route_matrix;
         std::unordered_map<std::string, Airport> airport_map; //route_map key == departure string + destination string
