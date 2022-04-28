@@ -1,4 +1,6 @@
 #include "graph.h"
+using namespace cs225;
+
 
 Graph::Graph() {
     
@@ -133,7 +135,8 @@ std::vector<std::vector<int> >& Graph::getRouteMatrix() {
     // Go back to top of loop
     //
 
-// }
+
+//}
 // cs225::PNG * Graph::printRoutes() {
 
 // }
@@ -204,3 +207,127 @@ void Graph::writeReducedMatrixToFile() {
     }
 
 }
+
+void Graph::initgeoMap() {
+    geoMap = new PNG();
+    geoMap->readFromFile("mercator_map.png");
+    geoMap->scale(3);
+}
+//creates a geoMap based on the minimum spanning tree of the world
+void Graph::plotgeoMap() {
+    //create a new canvas by reading from existing map base
+    std::cout << "the size of the map is in order of width height, " << geoMap->width() << ", " << geoMap->height() << std::endl;
+    //plot on Map CHICAGO
+    // std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, 41.8781,-87.6298);
+
+    //plot on Map YOKOHAMA
+    std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, -33.8688, 151.2093);
+    // std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, 0, -15);
+    // std::pair<int, int> map_coordinates2 = plotOnMap(geoMap, 15, 0);
+    // std::pair<int, int> map_coordinates3 = plotOnMap(geoMap, 30, 0);
+    // std::pair<int, int> map_coordinates4 = plotOnMap(geoMap, 45, 0);
+    // std::pair<int, int> map_coordinates5 = plotOnMap(geoMap, 75, 0);
+
+    // std::cout << map_coordinates1.first << ", " << map_coordinates1.second << std::endl;
+    // HSLAPixel& curr = geoMap->getPixel(map_coordinates1.first, map_coordinates1.second);
+    // int temp_x = map_coordinates1.first;
+    // int temp_y = map_coordinates1.second;
+    // for(size_t i = temp_y; i < geoMap->height(); i++) {
+    //     HSLAPixel& curr = geoMap->getPixel(temp_x, i);
+    //     curr.h = 0;
+    //     curr.s = 1;
+    //     curr.l = 0.5;
+    // }
+    // std::cout << map_coordinates2.first << ", " << map_coordinates2.second << std::endl;
+
+    // temp_x = map_coordinates2.first;
+    // temp_y = map_coordinates2.second;
+    // for(size_t i = temp_x; i < geoMap->width(); i++) {
+    //     HSLAPixel& curr = geoMap->getPixel(i, temp_y);
+    //     curr.h = 0;
+    //     curr.s = 1;
+    //     curr.l = 0.5;
+    // }
+    // std::cout << map_coordinates3.first << ", " << map_coordinates3.second << std::endl;
+
+    // temp_x = map_coordinates3.first;
+    // temp_y = map_coordinates3.second;
+    // for(size_t i = temp_x; i < geoMap->width(); i++) {
+    //     HSLAPixel& curr = geoMap->getPixel(i, temp_y);
+    //     curr.h = 0;
+    //     curr.s = 1;
+    //     curr.l = 0.5;
+    // }
+
+    // temp_x = map_coordinates4.first;
+    // temp_y = map_coordinates4.second;
+    // for(size_t i = temp_x; i < geoMap->width(); i++) {
+    //     HSLAPixel& curr = geoMap->getPixel(i, temp_y);
+    //     curr.h = 0;
+    //     curr.s = 1;
+    //     curr.l = 0.5;
+    // }
+
+    // temp_x = map_coordinates5.first;
+    // temp_y = map_coordinates5.second;
+    // for(size_t i = temp_x; i < geoMap->width(); i++) {
+    //     HSLAPixel& curr = geoMap->getPixel(i, temp_y);
+    //     curr.h = 0;
+    //     curr.s = 1;
+    //     curr.l = 0.5;
+    // }
+
+    std::unordered_map<std::string, Airport>::iterator it;
+
+    for(it = airport_map.begin(); it != airport_map.end(); it++) {
+        Airport current = it->second;
+        if((it->first) == "ORD") {
+            std::pair<int, int> map_coordinate = plotOnMap(geoMap, current.getLatitude(), current.getLongitude());
+            HSLAPixel& curr = geoMap->getPixel(map_coordinate.first, map_coordinate.second);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
+        } else {
+            std::pair<int, int> map_coordinate = plotOnMap(geoMap, current.getLatitude(), current.getLongitude());
+            HSLAPixel& curr = geoMap->getPixel(map_coordinate.first, map_coordinate.second);
+            curr.h = 0;
+            curr.s = 1;
+            curr.l = 0.5;
+        }
+        
+        
+    }
+
+    //output the image to the final file
+    geoMap->writeToFile("geographic_map.png");
+    delete geoMap;   
+}
+
+std::pair<int, int> Graph::plotOnMap(PNG * map, double lat_, double long_) {
+    double long_step = (map->width() -28)/360.0; //pixels per degrees
+    double lat_step = map->height()/180.0; //pixels per degrees
+
+    std::cout << lat_step << ", " << long_step << std::endl;
+    double origin_x = map->width()/2.0;
+    double origin_y = map->height()/2.0;
+
+    int x = origin_x + (long_step * long_);
+    double theta = lat_*3.14159265/180;
+    double val = sqrt(sqrt(1/cos(theta)));
+    std::cout << "the continuous scale factor is: " << 1/cos(theta) << std::endl;
+    int y = (origin_y - (long_step * lat_));
+    std::cout << "y before scaling is " << y << std::endl;
+
+    y = (origin_y - (long_step * lat_)*pow(val, 1.28));
+    std::cout << "y after scaling is " << y << std::endl;
+
+
+    std::pair<int, int> coord(x,y);
+
+    return coord;
+}
+
+// //draw line between two points on a 2D cartesian coordinate map
+// void drawLine(int x1, int y1, int x2, int y2) {
+
+// }

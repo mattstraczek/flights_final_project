@@ -1,0 +1,15 @@
+Development log week of Apr17-Apr24
+
+**Goals for this week and whether they were accomplished**
+Created thorough test cases for our parsing class 
+Responsibility: Everyone
+Achieved? : YES
+Problems encountered during this process: None
+
+Still developing pseudocode for our algorithms and delegated which algorithms each person focuses on 
+Responsibility: Everyone
+Achieved?: YES
+Problems encountered during this process: No problems encountered
+
+Plans for next week
+Get BFS and Prim's algorithm working and have some form of working graphical output, investigate map projection as well. 

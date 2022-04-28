@@ -29,8 +29,10 @@ Airport Parsing::createAirport(vector<string> line) {
   bool valid_data = true;
 
   //check that line.size() == 14
-//  if (line.size() != 14) return Airport(); *******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL, BUT NECESSARY FOR FORMAT CHECK************
-
+  if (line.size() != 13){
+    return Airport();// *******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL, BUT NECESSARY FOR FORMAT CHECK************
+  }
+  //std::cout << " "<<airport_map.size() << endl;
   //Check that id is 3 chars
   //Check that id is string
   //Check that all chars are uppercase and letters
@@ -312,8 +314,8 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
           //should sort or decide whether the airports both are in the US
           if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
               //that means the airport exists in the map, only then I can add 
-              Routes route = createRoutes(parsed);
-              //if route == Routes(), data is invalid so skip ***ADD THIS***
+            Routes route = createRoutes(parsed);
+            if (route.getDeparture() != "") {//, data is invalid so skip ***ADD THIS***
               string routeID = route.getDeparture() + route.getDestination();
               if(route_map.find(routeID) == route_map.end()) {
 
@@ -321,6 +323,7 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
                 route_map[routeID] = 420;
                 routeList.push_back(route);
               }
+            }
           }
           
 
@@ -337,7 +340,9 @@ Routes Parsing::createRoutes(vector<string> data) {
   //"a-z": 97-122
   //"A-Z": 65-90
   bool valid_data = true;
-  if (data.size() != 9) return Routes(); //Added for format check
+  if (data.size() != 8) {
+    return Routes();
+    } //Added for format check
 
   std::string DEP = data[2];
   //Check that id is 3 chars

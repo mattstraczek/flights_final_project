@@ -20,12 +20,15 @@ int main() {
     
     Graph graph(airport_map, list);
     std::cout << "Size of Routes: " << list.size() << std::endl;
-	graph.printRouteMatrixLimited(10);
-    graph.writeRouteMatrixToFile();
+	// graph.printRouteMatrixLimited(10);
+    // graph.writeRouteMatrixToFile();
 
     //testing reduce matrix
-    graph.reduceAirportMap(list);
-    graph.reduceAirportMatrix(list);
-    graph.writeReducedMatrixToFile();
+    // graph.reduceAirportMap(list);
+    // graph.reduceAirportMatrix(list);
+    // graph.writeReducedMatrixToFile();
+    graph.initgeoMap();
+    graph.plotgeoMap();
+    
 }
 
