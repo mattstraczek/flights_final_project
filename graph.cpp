@@ -6,98 +6,115 @@ Graph::Graph() {
     
 }
 Graph::Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<Routes> route_list) {
-    int airPortSize = airport_map.size();
-    this->airport_map = airport_map;
-    route_matrix.resize(airPortSize);
+    // int airPortSize = airport_map.size();
+    // this->airport_map = airport_map;
+    // route_matrix.resize(airPortSize);
 
-    for(unsigned long i = 0; i < route_matrix.size(); i++) {
-        route_matrix[i].resize(airPortSize, -1);
+    // for(unsigned long i = 0; i < route_matrix.size(); i++) {
+    //     route_matrix[i].resize(airPortSize, -1);
+    // }
+
+    // for(unsigned long i = 0; i < route_list.size(); i++) {
+    //     std::string start = route_list[i].getDeparture(); //check routes class for functions
+    //     std::string dest = route_list[i].getDestination();
+    //     int start_idx = airport_map[start].getIndex();
+    //     int dest_idx = airport_map[dest].getIndex();
+    //     route_matrix[start_idx][dest_idx] = route_list[i].calculateDistance(airport_map[start], airport_map[dest]); // write/check function exists 
+    //                                                                            // FIX getDistance() PARAMETERS, maps have slightly changed in types, need to adjust
+    // }
+    this->airport_map = airport_map;
+    reduceAirportMap(route_list);
+    size_t airPortSize = airport_map_reduced.size();
+    for (size_t i = 0; i < airPortSize; i++) {
+        adj_list_reduced.push_back(std::list<RouteEdge>());
     }
+    //route_list_reduced.resize(airPortSize);
 
     for(unsigned long i = 0; i < route_list.size(); i++) {
         std::string start = route_list[i].getDeparture(); //check routes class for functions
         std::string dest = route_list[i].getDestination();
-        int start_idx = airport_map[start].getIndex();
-        int dest_idx = airport_map[dest].getIndex();
-        route_matrix[start_idx][dest_idx] = route_list[i].calculateDistance(airport_map[start], airport_map[dest]); // write/check function exists 
-                                                                               // FIX getDistance() PARAMETERS, maps have slightly changed in types, need to adjust
+        int start_idx = airport_map_reduced[start].getIndex();
+        //int dest_idx = airport_map[dest].getIndex();
+        double distance = route_list[i].calculateDistance(airport_map_reduced[start], airport_map_reduced[dest]);
+        RouteEdge temp_route_node(dest, distance);
+        adj_list_reduced[start_idx].insert(adj_list_reduced[start_idx].begin(), temp_route_node); 
     }
 }
-void Graph::printRouteMatrix() {
-    std::cout << "Route Matrix Size: " << route_matrix.size() << std::endl;
-    std::vector<std::string> airport_ids(route_matrix.size());
+// void Graph::printRouteMatrix() {
+//     std::cout << "Route Matrix Size: " << route_matrix.size() << std::endl;
+//     std::vector<std::string> airport_ids(route_matrix.size());
 
-    std::cout << std::setw(10) << "";
-    for (const auto it : airport_map) {
-        int index = it.second.getIndex();
-        airport_ids[index] = it.first;
-    }
-    for (unsigned long i = 0; i < route_matrix.size(); i++) {
-        std::cout << std::setw(10) << std::left << airport_ids[i];
-    }
-    std::cout << std::endl;
+//     std::cout << std::setw(10) << "";
+//     for (const auto it : airport_map) {
+//         int index = it.second.getIndex();
+//         airport_ids[index] = it.first;
+//     }
+//     for (unsigned long i = 0; i < route_matrix.size(); i++) {
+//         std::cout << std::setw(10) << std::left << airport_ids[i];
+//     }
+//     std::cout << std::endl;
 
-    for (unsigned long i = 0; i < route_matrix.size(); i++) {
-        std::cout << std::setw(10) << airport_ids[i];
-        for (unsigned long j = 0; j < route_matrix[i].size(); j++) {
-            std::cout << std::setw(10) << std::left << route_matrix[i][j];
-        }
-        std::cout << std::endl;
-    }
+//     for (unsigned long i = 0; i < route_matrix.size(); i++) {
+//         std::cout << std::setw(10) << airport_ids[i];
+//         for (unsigned long j = 0; j < route_matrix[i].size(); j++) {
+//             std::cout << std::setw(10) << std::left << route_matrix[i][j];
+//         }
+//         std::cout << std::endl;
+//     }
 
-}
-void Graph::writeRouteMatrixToFile() {
-    std::vector<std::string> airport_ids(route_matrix.size());
+// }
+void Graph::writeAdjListToFile() {
+    std::vector<std::string> airport_ids(adj_list_reduced.size());
 
     std::ofstream route_matrix_stream;
-    route_matrix_stream.open("Route_Matrix.txt");
+    route_matrix_stream.open("Adj_list.txt");
 
-    route_matrix_stream << std::setw(10) << "";
-    for (const auto it : airport_map) {
+    //route_matrix_stream << std::setw(10) << "";
+    for (const auto it : airport_map_reduced) {
         int index = it.second.getIndex();
         airport_ids[index] = it.first;
     }
-    for (unsigned long i = 0; i < route_matrix.size(); i++) {
-        route_matrix_stream << std::setw(10) << std::left << airport_ids[i];
-    }
-    route_matrix_stream << std::endl;
+    // for (unsigned long i = 0; i < adj_list_reduced.size(); i++) {
+    //     route_matrix_stream << std::setw(10) << std::left << airport_ids[i];
+    // }
+    //route_matrix_stream << std::endl;
 
-    for (unsigned long i = 0; i < route_matrix.size(); i++) {
-        route_matrix_stream << std::setw(10) << airport_ids[i];
-        for (unsigned long j = 0; j < route_matrix[i].size(); j++) {
-            route_matrix_stream << std::setw(10) << std::left << route_matrix[i][j];
+    for (unsigned long i = 0; i < adj_list_reduced.size(); i++) {
+        route_matrix_stream << std::setw(7) << std::left << airport_ids[i];
+        for (auto route : adj_list_reduced[i]) {
+            route_matrix_stream << std::setw(7) << std::left << "-->" << "[" << route.airport_dest << ", " << route.distance_km << "]";
         }
         route_matrix_stream << std::endl;
     }
 
 }
-void Graph::printRouteMatrixLimited(int limit) {
-    std::cout << "Route Matrix Size: " << route_matrix.size() << std::endl;
-    std::vector<std::string> airport_ids(route_matrix.size());
+// void Graph::printRouteMatrixLimited(int limit) {
+//     std::cout << "Route Matrix Size: " << route_matrix.size() << std::endl;
+//     std::vector<std::string> airport_ids(route_matrix.size());
 
-    std::cout << std::setw(10) << "";
-    int i = 0;
-    for (const auto it : airport_map) {
-        int index = it.second.getIndex();
-        airport_ids[index] = it.first;
-        // i++;
-        // if (i >= limit) break;
-    }
-    for (int i = 0; i < limit; i++) {
-        std::cout << std::setw(10) << std::left << airport_ids[i];
-    }
-    std::cout << std::endl;
+//     std::cout << std::setw(10) << "";
+//     int i = 0;
+//     for (const auto it : airport_map) {
+//         int index = it.second.getIndex();
+//         airport_ids[index] = it.first;
+//         // i++;
+//         // if (i >= limit) break;
+//     }
+//     for (int i = 0; i < limit; i++) {
+//         std::cout << std::setw(10) << std::left << airport_ids[i];
+//     }
+//     std::cout << std::endl;
 
-    for (int i = 0; i < limit; i++) {
-        std::cout << std::setw(10) << airport_ids[i];
-        for (int j = 0; j < limit; j++) {
-            std::cout << std::setw(10) << std::left << route_matrix[i][j];
-        }
-        std::cout << std::endl;
-    }
-}
-std::vector<std::vector<int> >& Graph::getRouteMatrix() {
-    return route_matrix;
+//     for (int i = 0; i < limit; i++) {
+//         std::cout << std::setw(10) << airport_ids[i];
+//         for (int j = 0; j < limit; j++) {
+//             std::cout << std::setw(10) << std::left << route_matrix[i][j];
+//         }
+//         std::cout << std::endl;
+//     }
+// }
+std::vector<std::list<Graph::RouteEdge> >& Graph::getAdjList() {
+    return adj_list_reduced;
 }
 //Algorithms
 // std::vector<std::list<int> >& Graph::primsMST() {
@@ -165,48 +182,48 @@ void Graph::reduceAirportMap(std::vector<Routes>& route_list) {
     }
     std::cout << "Reduced airport_map size: " << airport_map_reduced.size() << std::endl;
 }
-void Graph::reduceAirportMatrix(std::vector<Routes>& route_list) {
-    int airPortSize = airport_map_reduced.size();
-    route_matrix_reduced.resize(airPortSize);
+// void Graph::reduceAirportMatrix(std::vector<Routes>& route_list) {
+//     int airPortSize = airport_map_reduced.size();
+//     route_matrix_reduced.resize(airPortSize);
 
-    for(unsigned long i = 0; i < route_matrix_reduced.size(); i++) {
-        route_matrix_reduced[i].resize(airPortSize, -1);
-    }
+//     for(unsigned long i = 0; i < route_matrix_reduced.size(); i++) {
+//         route_matrix_reduced[i].resize(airPortSize, -1);
+//     }
 
-    for(unsigned long i = 0; i < route_list.size(); i++) {
-        std::string start = route_list[i].getDeparture(); //check routes class for functions
-        std::string dest = route_list[i].getDestination();
-        int start_idx = airport_map_reduced[start].getIndex();
-        int dest_idx = airport_map_reduced[dest].getIndex();
-        route_matrix_reduced[start_idx][dest_idx] = route_list[i].calculateDistance(airport_map_reduced[start], airport_map_reduced[dest]); // write/check function exists 
-                                                                               // FIX getDistance() PARAMETERS, maps have slightly changed in types, need to adjust
-    }
-}
-void Graph::writeReducedMatrixToFile() {
-    std::vector<std::string> airport_ids(route_matrix_reduced.size());
+//     for(unsigned long i = 0; i < route_list.size(); i++) {
+//         std::string start = route_list[i].getDeparture(); //check routes class for functions
+//         std::string dest = route_list[i].getDestination();
+//         int start_idx = airport_map_reduced[start].getIndex();
+//         int dest_idx = airport_map_reduced[dest].getIndex();
+//         route_matrix_reduced[start_idx][dest_idx] = route_list[i].calculateDistance(airport_map_reduced[start], airport_map_reduced[dest]); // write/check function exists 
+//                                                                                // FIX getDistance() PARAMETERS, maps have slightly changed in types, need to adjust
+//     }
+// }
+// void Graph::writeReducedMatrixToFile() {
+//     std::vector<std::string> airport_ids(route_matrix_reduced.size());
 
-    std::ofstream route_matrix_stream;
-    route_matrix_stream.open("Reduced_Matrix.txt");
+//     std::ofstream route_matrix_stream;
+//     route_matrix_stream.open("Reduced_Matrix.txt");
 
-    route_matrix_stream << std::setw(10) << "";
-    for (const auto it : airport_map_reduced) {
-        int index = it.second.getIndex();
-        airport_ids[index] = it.first;
-    }
-    for (unsigned long i = 0; i < route_matrix_reduced.size(); i++) {
-        route_matrix_stream << std::setw(10) << std::left << airport_ids[i];
-    }
-    route_matrix_stream << std::endl;
+//     route_matrix_stream << std::setw(10) << "";
+//     for (const auto it : airport_map_reduced) {
+//         int index = it.second.getIndex();
+//         airport_ids[index] = it.first;
+//     }
+//     for (unsigned long i = 0; i < route_matrix_reduced.size(); i++) {
+//         route_matrix_stream << std::setw(10) << std::left << airport_ids[i];
+//     }
+//     route_matrix_stream << std::endl;
 
-    for (unsigned long i = 0; i < route_matrix_reduced.size(); i++) {
-        route_matrix_stream << std::setw(10) << airport_ids[i];
-        for (unsigned long j = 0; j < route_matrix_reduced[i].size(); j++) {
-            route_matrix_stream << std::setw(10) << std::left << route_matrix_reduced[i][j];
-        }
-        route_matrix_stream << std::endl;
-    }
+//     for (unsigned long i = 0; i < route_matrix_reduced.size(); i++) {
+//         route_matrix_stream << std::setw(10) << airport_ids[i];
+//         for (unsigned long j = 0; j < route_matrix_reduced[i].size(); j++) {
+//             route_matrix_stream << std::setw(10) << std::left << route_matrix_reduced[i][j];
+//         }
+//         route_matrix_stream << std::endl;
+//     }
 
-}
+// }
 
 void Graph::initgeoMap() {
     geoMap = new PNG();
