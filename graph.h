@@ -7,6 +7,10 @@
 #include "cs225/PNG.h"
 #include <iomanip>
 #include <fstream>
+#include <cmath>
+#include <math.h>
+#include <iterator>
+using namespace cs225;
 
 class Graph{
     public:
@@ -25,8 +29,9 @@ class Graph{
       void reduceAirportMap(std::vector<Routes> &route_list);
       void reduceAirportMatrix(std::vector<Routes> &route_list);
       void writeReducedMatrixToFile();
-
-      void geoMap();
+      void initgeoMap();
+      void plotgeoMap();
+      std::pair<int, int> plotOnMap(PNG * map, double lat_, double long_);
     private:
         std::vector<std::vector<int> > route_matrix;
         std::unordered_map<std::string, Airport> airport_map; //route_map key == departure string + destination string
@@ -39,5 +44,6 @@ class Graph{
         std::vector<std::vector<int> > route_matrix_reduced;
         std::unordered_map<std::string, Airport> airport_map_reduced;
         //testing reduced matrix
+        PNG * geoMap;
 };
 

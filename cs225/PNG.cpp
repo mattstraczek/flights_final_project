@@ -229,4 +229,27 @@ namespace cs225 {
     return os;
   }
 
+  void PNG::scale(double factor) {
+
+    PNG * original_img = new PNG(*this);
+
+    double new_width_ = factor * width();
+    double new_height_ = factor * height();
+
+    resize(new_width_, new_height_);
+    for(unsigned x = 0; x < width(); x++) {
+        for(unsigned y = 0; y < height(); y++) {
+            cs225::HSLAPixel& old_pixel_ = original_img->getPixel((int)(x/factor), (int)(y/factor));
+
+            cs225::HSLAPixel& new_pixel_ = getPixel(x, y);
+
+            new_pixel_ = old_pixel_;
+
+        }
+    }
+
+    delete original_img;
+    original_img = nullptr;
+
+  }
 }
