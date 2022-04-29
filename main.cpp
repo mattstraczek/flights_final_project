@@ -28,8 +28,8 @@ int main() {
     // graph.reduceAirportMap(list);
     // graph.reduceAirportMatrix(list);
     // graph.writeReducedMatrixToFile();
-    //graph.initgeoMap();
-    //graph.plotgeoMap();
+    graph.initgeoMap();
+    graph.plotgeoMap();
     
 }
 

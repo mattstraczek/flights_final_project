@@ -191,7 +191,7 @@ std::vector<std::list<int> >& Graph::primsMST() {
         
     }
 */
-    }
+    // }
 // cs225::PNG * Graph::printRoutes() {
 
 // }
@@ -357,6 +357,15 @@ void Graph::plotgeoMap() {
     std::vector<std::pair<double, double>> path = drawLine(10);
     for(size_t i = 0; i < path.size(); i++) {
         std::pair<int, int> path_coordinate = plotOnMap(geoMap, path[i].first, path[i].second);
+        // std::cout << path_coordinate.first << ", " << path_coordinate.second << std::endl;
+        // for (int i = path_coordinate.first-1; i < 2; i++) {
+        //     for (int j = path_coordinate.second-1; j < 2; j++) {
+        //         HSLAPixel& curr = geoMap->getPixel(i,j);
+        //         curr.h = 120;
+        //         curr.s = 1;
+        //         curr.l = 0.5;
+        //     }
+        // }
         HSLAPixel& curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second);
         curr.h = 120;
         curr.s = 1;
@@ -369,23 +378,33 @@ void Graph::plotgeoMap() {
     delete geoMap;   
 }
 
+void Graph::thickenDot(int x, int y) {
+    for (int i = x-1; i < 2; i++) {
+        for (int  j = y-1; j < 2; j++) {
+            HSLAPixel& curr = geoMap->getPixel(i,j);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
+        }
+    }
+}
 std::pair<int, int> Graph::plotOnMap(PNG * map, double lat_, double long_) {
     double long_step = (map->width() -28)/360.0; //pixels per degrees
     double lat_step = map->height()/180.0; //pixels per degrees
 
-    std::cout << lat_step << ", " << long_step << std::endl;
+    // std::cout << lat_step << ", " << long_step << std::endl;
     double origin_x = map->width()/2.0;
     double origin_y = map->height()/2.0;
 
     int x = origin_x + (long_step * long_);
     double theta = lat_*3.14159265/180;
     double val = sqrt(sqrt(1/cos(theta)));
-    std::cout << "the continuous scale factor is: " << 1/cos(theta) << std::endl;
+    // std::cout << "the continuous scale factor is: " << 1/cos(theta) << std::endl;
     int y = (origin_y - (long_step * lat_));
-    std::cout << "y before scaling is " << y << std::endl;
+    // std::cout << "y before scaling is " << y << std::endl;
 
     y = (origin_y - (long_step * lat_)*pow(val, 1.28));
-    std::cout << "y after scaling is " << y << std::endl;
+    // std::cout << "y after scaling is " << y << std::endl;
 
 
     std::pair<int, int> coord(x,y);
@@ -411,25 +430,32 @@ std::vector<std::pair<double, double>> Graph::drawLine(int n) {
     a1.setLatitude(41.8781);
     a1.setLongitude(-87.6298);
 
-    a2.setLatitude(34.0522);
-    a2.setLongitude(-118.2437);
+    a2.setLatitude(29.7604);
+    a2.setLongitude(-95.3698);
     //*************************
     std::vector<double> threeDCoord1 = cart_coordinates(a1.getLatitude(), a1.getLongitude());
     std::vector<double> threeDCoord2 = cart_coordinates(a2.getLatitude(), a2.getLongitude());
 
-    std::vector<double> unit_product = crossProd(threeDCoord1, threeDCoord2);
+    std::vector<double> unit_product;
 
     std::vector<std::pair<double, double>> recorded_path;
     std::vector<double> current = threeDCoord1;
+
+    std::cout << "========================line427========================" << std::endl;
     bool not_arrived = true;
-    for (int i = 0; i < 200; i++) {
+    //set i boundary by calculating the distance between to come up with optimal sample size
+    
+    for (int i = 0; i < 8000; i++) {
+        unit_product = findVec(current, threeDCoord2);
         current[0] += unit_product[0] * n;
         current[1] += unit_product[1] * n;
         current[2] += unit_product[2] * n;
         normalize(current);
-        if(getDistance(current, threeDCoord2) < 1000) {
+        if(getDistance(current, threeDCoord2) < 10) {
+            std::cout << "<--l---arrived!----------P" << std::endl;
             break;
         }
+        std::cout << "========================437========================" << std::endl;
 
         std::cout << "the path lat long are " << cart_to_lat_long(current[0], current[1], current[2]).first<< ", " << cart_to_lat_long(current[0], current[1], current[2]).second<< std::endl;
         recorded_path.push_back(cart_to_lat_long(current[0], current[1], current[2]));
@@ -481,18 +507,27 @@ std::pair<double, double> Graph::cart_to_lat_long(double x, double y, double z) 
 
     double phi = asin(z / re);
 
-    std::cout << "testing number ========> " << y - re * cos(phi) << std::endl;
-    double lda = asin((y/(re * cos(phi))));
+    // std::cout << "testing number ========> " << y - re * cos(phi) << std::endl;
+    double neg = 1.0;
+    if(y < 0) {
+        neg = -1.0;
+    }
+    double lda = neg*acos((x/(re * cos(phi))));
     double lat_ = phi * 180 / pi;
     double long_ = lda * 180 / pi;
-
     std::cout << std::endl;
-    std::cout << "printing lat_ " << lat_ <<std::endl;
-    std::cout << "printing long_ " << long_ <<std::endl;
+    std::cout << "===================================================" << std::endl;
+    std::cout << "phi = " << phi << std::endl;
+    std::cout << "lda = " << lda << std::endl;
+    std::cout << "x,y,z" << x << ", " << y << ", " << z << std::endl;
+    std::cout << "===================================================" << std::endl;
+    // std::cout << std::endl;
+    // std::cout << "printing lat_ " << lat_ <<std::endl;
+    // std::cout << "printing long_ " << long_ <<std::endl;
     lat_long.first = lat_;
     lat_long.second = long_;
-    std::cout << "inside cart_to_lat_long" << std::endl;
-    std::cout << lat_ << ", " << long_ << std::endl;
+    // std::cout << "inside cart_to_lat_long" << std::endl;
+    // std::cout << lat_ << ", " << long_ << std::endl;
 
     return lat_long;
 }
@@ -526,5 +561,22 @@ std::vector<double> Graph::crossProd(std::vector<double> c1, std::vector<double>
     product.push_back(ax*by - ay*bx);
     
     return product;
+}
+
+
+std::vector<double> Graph::findVec(std::vector<double> c1, std::vector<double> c2) {
+    std::vector<double> direction;
+    double ax = c1[0];
+    double bx = c2[0];
+    double ay = c1[1];
+    double by = c2[1];
+    double az = c1[2];
+    double bz = c2[2];
+
+    direction.push_back((bx-ax)/6378.1);
+    direction.push_back((by-ay)/6378.1);
+    direction.push_back((bz-az)/6378.1);
+
+    return direction;
 }
 

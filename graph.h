@@ -49,8 +49,9 @@ class Graph{
       std::vector<double> crossProd(std::vector<double> c1, std::vector<double> c2);
       double getDistance(std::vector<double> loc1, std::vector<double> loc2);
       double getMagnitude(std::vector<double> loc);
+      std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
+      void thickenDot(int x, int y);
     private:
-        
         std::vector<std::vector<int> > route_matrix;
         std::unordered_map<std::string, Airport> airport_map; //route_map key == departure string + destination string
                                                               //eg. "ORDLAX"
