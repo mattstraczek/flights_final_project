@@ -13,14 +13,24 @@
 using namespace cs225;
 
 class Graph{
+    private:
+      struct RouteEdge {
+          RouteEdge(std::string airport_dest_, int distance_km_) {
+            airport_dest = airport_dest_;
+            distance_km = distance_km_;
+          }
+          std::string airport_dest;
+          int distance_km;
+        };
+        
     public:
       Graph();
       Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<Routes> route_list);
       //Helper functions
-      void printRouteMatrix();
-      void printRouteMatrixLimited(int limit);
-      void writeRouteMatrixToFile();
-      std::vector<std::vector<int> >& getRouteMatrix();
+      //void printRouteMatrix();
+      //void printRouteMatrixLimited(int limit);
+      void writeAdjListToFile();
+      std::vector<std::list<RouteEdge> >& getAdjList();
       //Algorithms
       //std::vector<std::list<int> >& primsMST();
       //cs225::PNG * printRoutes();
@@ -40,9 +50,11 @@ class Graph{
       double getDistance(std::vector<double> loc1, std::vector<double> loc2);
       double getMagnitude(std::vector<double> loc);
     private:
+        
         std::vector<std::vector<int> > route_matrix;
         std::unordered_map<std::string, Airport> airport_map; //route_map key == departure string + destination string
                                                               //eg. "ORDLAX"
+        //vector of routes
         std::vector<std::list<int> > route_mst;
         std::vector<std::list<int> > route_bfs;
         cs225::PNG route_img;
@@ -51,6 +63,10 @@ class Graph{
         std::vector<std::vector<int> > route_matrix_reduced;
         std::unordered_map<std::string, Airport> airport_map_reduced;
         //testing reduced matrix
+
+        //adjacency list
+        std::vector<std::list<RouteEdge> > adj_list_reduced;
+
         PNG * geoMap;
 };
 
