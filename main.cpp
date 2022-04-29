@@ -30,6 +30,7 @@ int main() {
     // graph.writeReducedMatrixToFile();
     //graph.initgeoMap();
     //graph.plotgeoMap();
-    
+    std::vector<std::string> vec;
+    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYC"]);
 }
 

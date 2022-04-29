@@ -348,3 +348,48 @@ std::pair<int, int> Graph::plotOnMap(PNG * map, double lat_, double long_) {
 // void drawLine(int x1, int y1, int x2, int y2) {
 
 // }
+
+std::vector<std::string> Graph::BFS(Airport start, Airport end) {
+  std::vector<std::string> path;
+  std::unordered_map<std::string, std::string> pathMap;
+  std::vector<bool> visited;
+  visited.resize(airport_map_reduced.size(), false);
+  std::queue<std::list<RouteEdge>::iterator> queue;
+  int startIndex = start.getIndex();
+  std::list<RouteEdge>::iterator it = adj_list_reduced[startIndex].begin();
+  queue.push(it);
+  visited[startIndex] = true;
+  while (!queue.empty()) {
+    std::list<RouteEdge>::iterator current = queue.front();
+    std::list<RouteEdge>::iterator it = current;
+    queue.pop();
+    if (it->airport_dest == end.getID()) {
+      pathMap[it->airport_dest] = current->airport_dest;
+      std::string currentAirport = pathMap[start.getID()];
+      while (currentAirport != end.getID()) {
+        path.push_back(currentAirport);
+        currentAirport = pathMap[currentAirport];
+      }
+      path.push_back(start.getID());
+      reverse(path.begin(), path.end());
+      for (unsigned i = 0; i < path.size(); i++) {
+        std::cout << path[i] << std::endl;
+      }
+      return path;
+    }
+    while (it != adj_list_reduced[startIndex].end()) {
+      int index = airport_map[it->airport_dest].getIndex();
+      if (!visited[index]) {
+        pathMap[it->airport_dest] = current->airport_dest;
+        visited[index] = true;
+        queue.push(it);
+      }
+      it++;
+    }
+  }
+  return std::vector<std::string>();
+}
+
+std::unordered_map<std::string, Airport> Graph::getReducedMap() {
+ return airport_map_reduced;
+}

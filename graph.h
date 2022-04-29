@@ -10,6 +10,7 @@
 #include <cmath>
 #include <math.h>
 #include <iterator>
+#include <queue>
 using namespace cs225;
 
 class Graph{
@@ -38,10 +39,12 @@ class Graph{
       //testing reduced matrix
       void reduceAirportMap(std::vector<Routes> &route_list);
       void reduceAirportMatrix(std::vector<Routes> &route_list);
+      std::unordered_map<std::string, Airport> getReducedMap();
       void writeReducedMatrixToFile();
       void initgeoMap();
       void plotgeoMap();
       std::pair<int, int> plotOnMap(PNG * map, double lat_, double long_);
+      std::vector<std::string> BFS(Airport start, Airport end);
     private:
         
         std::vector<std::vector<int> > route_matrix;
