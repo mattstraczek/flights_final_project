@@ -151,9 +151,47 @@ std::vector<std::list<Graph::RouteEdge> >& Graph::getAdjList() {
     // priority queue
     // Go back to top of loop
     //
-
-
 //}
+/*
+std::vector<std::list<int> >& Graph::primsMST() {
+    //std::vector<std::list<RouteEdge> > adj_list_reduced;
+    int sizeOfGraph =  adj_list_reduced.size(); // number of vertices in the graph
+    RouteEdge previous[sizeOfGraph] // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
+    int key[sizeOfGraph]; // intialie an array that holds the key value for each vertex in the graph
+
+    for(int i = 0; i < sizeOfGraph; i++){
+        previous[i] = NULL;
+        key[i] = +inf;
+    }
+    //figure out start airport**********
+    key[start_index] = 0;
+    //inlcude an index, with each key value
+    // so know where to find it in the adjacency list
+    
+    priority_queue <int, vector<pair<int, int>>, greater<pair<int, int>>> min_heap;
+    //builds heap
+    for(int i = 0; i < sizeOfGraph; i++){
+        min_heap.push(std::make_pair(key[i],i));
+    }
+    //initialize return vector T
+
+    while(!min.heap.empty()){
+        std::pair<int, int> smallest_route = min_heap.top(); //remove vertix from the graph with the smallest distance between airports
+        min_heap.pop();
+        //add to return vector T
+        //find neighbors of currently removed vertex
+        //list of neighboring edges of smallest element
+        // adj_list_reduced[smallest_route.first];
+        std::list<RouteEdge>iterator it;
+        for(it = adj_list_reduced[smallest_route.first].begin(); it != adj_list_reduced[smallest_route.first].end(); it++){
+            if (cost(*it,adj_list_reduced[smallest_route.first]){
+                d[]
+            }
+        }
+        
+    }
+*/
+    }
 // cs225::PNG * Graph::printRoutes() {
 
 // }
