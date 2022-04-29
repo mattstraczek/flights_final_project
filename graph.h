@@ -22,7 +22,7 @@ class Graph{
           std::string airport_dest;
           int distance_km;
         };
-        
+
     public:
       Graph();
       Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<Routes> route_list);
@@ -47,8 +47,8 @@ class Graph{
         std::vector<std::vector<int> > route_matrix;
         std::unordered_map<std::string, Airport> airport_map; //route_map key == departure string + destination string
                                                               //eg. "ORDLAX"
-        std::vector<std::list<int> > route_mst;
-        std::vector<std::list<int> > route_bfs;
+        // std::vector<std::list<int> > route_mst;
+        // std::vector<std::list<int> > route_bfs;
         cs225::PNG route_img;
 
         //testing reduced matrix
