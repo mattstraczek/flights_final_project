@@ -44,7 +44,17 @@ class Graph{
       void initgeoMap();
       void plotgeoMap();
       std::pair<int, int> plotOnMap(PNG * map, double lat_, double long_);
+<<<<<<< HEAD
       std::vector<std::string> BFS(Airport start, Airport end);
+=======
+      std::vector<std::pair<double, double>> drawLine(int n);
+      std::vector<double> cart_coordinates(double lat1, double long1);
+      std::pair<double, double> cart_to_lat_long(double x, double y, double z);
+      void normalize(std::vector<double> & curr);
+      std::vector<double> crossProd(std::vector<double> c1, std::vector<double> c2);
+      double getDistance(std::vector<double> loc1, std::vector<double> loc2);
+      double getMagnitude(std::vector<double> loc);
+>>>>>>> e5a8d2f52138b749340e896d7543a5494f3b7c87
     private:
         
         std::vector<std::vector<int> > route_matrix;

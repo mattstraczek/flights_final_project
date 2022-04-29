@@ -23,6 +23,7 @@ double Routes::calculateDistance(Airport dep, Airport dest) {
     return getDistance(cart_coordinates(dep.getLatitude(), dep.getLongitude()), cart_coordinates(dest.getLatitude(), dest.getLongitude()));
 }
 
+
 std::vector<double> Routes::cart_coordinates(double lat1, double long1) {
     std::vector<double> coordinates;
     double pi = 2 * acos(0.0);
@@ -41,6 +42,7 @@ std::vector<double> Routes::cart_coordinates(double lat1, double long1) {
     
     return coordinates;
 }
+
 
 double Routes::getMagnitude(std::vector<double> loc) {
     double mag = sqrt(loc[0]*loc[0] + loc[1]*loc[1] + loc[2]*loc[2]);
