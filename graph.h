@@ -32,6 +32,13 @@ class Graph{
       void initgeoMap();
       void plotgeoMap();
       std::pair<int, int> plotOnMap(PNG * map, double lat_, double long_);
+      std::vector<std::pair<double, double>> drawLine(int n);
+      std::vector<double> cart_coordinates(double lat1, double long1);
+      std::pair<double, double> cart_to_lat_long(double x, double y, double z);
+      void normalize(std::vector<double> & curr);
+      std::vector<double> crossProd(std::vector<double> c1, std::vector<double> c2);
+      double getDistance(std::vector<double> loc1, std::vector<double> loc2);
+      double getMagnitude(std::vector<double> loc);
     private:
         std::vector<std::vector<int> > route_matrix;
         std::unordered_map<std::string, Airport> airport_map; //route_map key == departure string + destination string
