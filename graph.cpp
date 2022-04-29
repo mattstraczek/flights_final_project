@@ -151,9 +151,47 @@ std::vector<std::list<Graph::RouteEdge> >& Graph::getAdjList() {
     // priority queue
     // Go back to top of loop
     //
-
-
 //}
+/*
+std::vector<std::list<int> >& Graph::primsMST() {
+    //std::vector<std::list<RouteEdge> > adj_list_reduced;
+    int sizeOfGraph =  adj_list_reduced.size(); // number of vertices in the graph
+    RouteEdge previous[sizeOfGraph] // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
+    int key[sizeOfGraph]; // intialie an array that holds the key value for each vertex in the graph
+
+    for(int i = 0; i < sizeOfGraph; i++){
+        previous[i] = NULL;
+        key[i] = +inf;
+    }
+    //figure out start airport**********
+    key[start_index] = 0;
+    //inlcude an index, with each key value
+    // so know where to find it in the adjacency list
+    
+    priority_queue <int, vector<pair<int, int>>, greater<pair<int, int>>> min_heap;
+    //builds heap
+    for(int i = 0; i < sizeOfGraph; i++){
+        min_heap.push(std::make_pair(key[i],i));
+    }
+    //initialize return vector T
+
+    while(!min.heap.empty()){
+        std::pair<int, int> smallest_route = min_heap.top(); //remove vertix from the graph with the smallest distance between airports
+        min_heap.pop();
+        //add to return vector T
+        //find neighbors of currently removed vertex
+        //list of neighboring edges of smallest element
+        // adj_list_reduced[smallest_route.first];
+        std::list<RouteEdge>iterator it;
+        for(it = adj_list_reduced[smallest_route.first].begin(); it != adj_list_reduced[smallest_route.first].end(); it++){
+            if (cost(*it,adj_list_reduced[smallest_route.first]){
+                d[]
+            }
+        }
+        
+    }
+*/
+    }
 // cs225::PNG * Graph::printRoutes() {
 
 // }
@@ -315,6 +353,17 @@ void Graph::plotgeoMap() {
         
     }
 
+    //plot paths of routes
+    std::vector<std::pair<double, double>> path = drawLine(10);
+    for(size_t i = 0; i < path.size(); i++) {
+        std::pair<int, int> path_coordinate = plotOnMap(geoMap, path[i].first, path[i].second);
+        HSLAPixel& curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second);
+        curr.h = 120;
+        curr.s = 1;
+        curr.l = 0.5;
+    }
+
+
     //output the image to the final file
     geoMap->writeToFile("geographic_map.png");
     delete geoMap;   
@@ -344,7 +393,187 @@ std::pair<int, int> Graph::plotOnMap(PNG * map, double lat_, double long_) {
     return coord;
 }
 
-// //draw line between two points on a 2D cartesian coordinate map
-// void drawLine(int x1, int y1, int x2, int y2) {
+//draw line between two points on a 2D cartesian coordinate map
+//steps n is by default 10
+std::vector<std::pair<double, double>> Graph::drawLine(int n) {
+    Airport a1;
+    Airport a2;
 
+    // if(airport_map_reduced.find(route.getDeparture()) != airport_map_reduced.end()) {
+    //     a1 = airport_map_reduced.find(route.getDeparture())->second;
+    // }
+    // if(airport_map_reduced.find(route.getDestination()) != airport_map_reduced.end()) {
+    //     a2 = airport_map_reduced.find(route.getDestination())->second;
+    // }
+
+
+    //========EXAMPLE==========
+    a1.setLatitude(41.8781);
+    a1.setLongitude(-87.6298);
+
+    a2.setLatitude(34.0522);
+    a2.setLongitude(-118.2437);
+    //*************************
+    std::vector<double> threeDCoord1 = cart_coordinates(a1.getLatitude(), a1.getLongitude());
+    std::vector<double> threeDCoord2 = cart_coordinates(a2.getLatitude(), a2.getLongitude());
+
+    std::vector<double> unit_product = crossProd(threeDCoord1, threeDCoord2);
+
+    std::vector<std::pair<double, double>> recorded_path;
+    std::vector<double> current = threeDCoord1;
+    bool not_arrived = true;
+    for (int i = 0; i < 200; i++) {
+        current[0] += unit_product[0] * n;
+        current[1] += unit_product[1] * n;
+        current[2] += unit_product[2] * n;
+        normalize(current);
+        if(getDistance(current, threeDCoord2) < 1000) {
+            break;
+        }
+
+        std::cout << "the path lat long are " << cart_to_lat_long(current[0], current[1], current[2]).first<< ", " << cart_to_lat_long(current[0], current[1], current[2]).second<< std::endl;
+        recorded_path.push_back(cart_to_lat_long(current[0], current[1], current[2]));
+    }
+    return recorded_path;
+}
+
+double Graph::getMagnitude(std::vector<double> loc) {
+    double mag = sqrt(loc[0]*loc[0] + loc[1]*loc[1] + loc[2]*loc[2]);
+    return mag;
+}
+
+double Graph::getDistance(std::vector<double> loc1, std::vector<double> loc2) {
+    //get dot product first
+    const double pi = 2 * acos(0.0);
+    
+    const double re = 6378.1; //in kilo-meters
+    double dotProduct = loc1[0]*loc2[0] + loc1[1]*loc2[1] + loc1[2]*loc2[2];
+    double magProduct = getMagnitude(loc1) * getMagnitude(loc2);
+    
+    //acos() here returns the radian. The radian between two cities 
+    //and radius of the earth gives curve length assuming earth is a uniform sphere
+    return (acos(dotProduct/magProduct))*re;
+}
+
+std::vector<double> Graph::cart_coordinates(double lat1, double long1) {
+    std::vector<double> coordinates;
+    double pi = 2 * acos(0.0);
+    //calculates the 3D cartesian coordinates of the lat long
+    // const double re = 6378.1; //in kilo-meters
+    const double re = 6378.1;
+    double phi = lat1*pi/180;
+    double lda = long1*pi/180;
+    double x = re * cos(phi) * cos(lda);
+    double y = re * cos(phi) * sin(lda);
+    double z = re * sin(phi);
+    
+    coordinates.push_back(x);
+    coordinates.push_back(y);
+    coordinates.push_back(z);
+    
+    return coordinates;
+}
+
+std::pair<double, double> Graph::cart_to_lat_long(double x, double y, double z) {
+    std::pair<double, double> lat_long;
+    const double re = 6378.1;
+    double pi = 2 * acos(0.0);
+
+    double phi = asin(z / re);
+
+    std::cout << "testing number ========> " << y - re * cos(phi) << std::endl;
+    double lda = asin((y/(re * cos(phi))));
+    double lat_ = phi * 180 / pi;
+    double long_ = lda * 180 / pi;
+
+    std::cout << std::endl;
+    std::cout << "printing lat_ " << lat_ <<std::endl;
+    std::cout << "printing long_ " << long_ <<std::endl;
+    lat_long.first = lat_;
+    lat_long.second = long_;
+    std::cout << "inside cart_to_lat_long" << std::endl;
+    std::cout << lat_ << ", " << long_ << std::endl;
+
+    return lat_long;
+}
+
+
+void Graph::normalize(std::vector<double> & curr) {
+    double mag = sqrt(curr[0]*curr[0] + curr[1]*curr[1] + curr[2]*curr[2]);
+    curr[0] /= mag;
+    curr[1] /= mag;
+    curr[2] /= mag;
+    double n = 6378.1 / sqrt(curr[0]*curr[0] + curr[1]*curr[1] + curr[2]*curr[2]);
+
+    curr[0] *= n;
+    curr[1] *= n;
+    curr[2] *= n;
+
+    return;
+}
+
+std::vector<double> Graph::crossProd(std::vector<double> c1, std::vector<double> c2) {
+    std::vector<double> product;
+    double ax = c1[0]/6378.1;
+    double bx = c2[0]/6378.1;
+    double ay = c1[1]/6378.1;
+    double by = c2[1]/6378.1;
+    double az = c1[2]/6378.1;
+    double bz = c2[2]/6378.1;
+    //for i componenet
+    product.push_back(ay*bz - az*by);
+    product.push_back(-(ax*bz - az*bx));
+    product.push_back(ax*by - ay*bx);
+    
+    return product;
+}
+
+<<<<<<< HEAD
 // }
+
+std::vector<std::string> Graph::BFS(Airport start, Airport end) {
+  std::vector<std::string> path;
+  std::unordered_map<std::string, std::string> pathMap;
+  std::vector<bool> visited;
+  visited.resize(airport_map_reduced.size(), false);
+  std::queue<std::list<RouteEdge>::iterator> queue;
+  int startIndex = start.getIndex();
+  std::list<RouteEdge>::iterator it = adj_list_reduced[startIndex].begin();
+  queue.push(it);
+  visited[startIndex] = true;
+  while (!queue.empty()) {
+    std::list<RouteEdge>::iterator current = queue.front();
+    std::list<RouteEdge>::iterator it = current;
+    queue.pop();
+    if (it->airport_dest == end.getID()) {
+      pathMap[it->airport_dest] = current->airport_dest;
+      std::string currentAirport = pathMap[start.getID()];
+      while (currentAirport != end.getID()) {
+        path.push_back(currentAirport);
+        currentAirport = pathMap[currentAirport];
+      }
+      path.push_back(start.getID());
+      reverse(path.begin(), path.end());
+      for (unsigned i = 0; i < path.size(); i++) {
+        std::cout << path[i] << std::endl;
+      }
+      return path;
+    }
+    while (it != adj_list_reduced[startIndex].end()) {
+      int index = airport_map[it->airport_dest].getIndex();
+      if (!visited[index]) {
+        pathMap[it->airport_dest] = current->airport_dest;
+        visited[index] = true;
+        queue.push(it);
+      }
+      it++;
+    }
+  }
+  return std::vector<std::string>();
+}
+
+std::unordered_map<std::string, Airport> Graph::getReducedMap() {
+ return airport_map_reduced;
+}
+=======
+>>>>>>> e5a8d2f52138b749340e896d7543a5494f3b7c87
