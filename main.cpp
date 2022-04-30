@@ -32,5 +32,13 @@ int main() {
     //graph.plotgeoMap();
     std::vector<std::string> vec;
     vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYC"]);
+    // for (auto airport : vec) {
+    //     std::cout << airport << std::endl;
+    // }
+    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["ORD"]);
+    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YXJ"]);
+    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYE"]);
+    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YDQ"]);
+    vec = graph.BFS(graph.getReducedMap()["ZVK"], graph.getReducedMap()["CEB"]);
 }
 
