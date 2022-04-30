@@ -388,3 +388,26 @@ TEST_CASE("Data formatting: Deficient data entries (routes.txt)", "[weight=10][p
   }
 	
 }
+
+
+TEST_CASE("testGeoMapSmall", "[weight=10][part13]") {
+  //small route (domestic)
+
+}
+
+
+TEST_CASE("testGeoMapMedium", "[weight=10][part14]") {
+  //midrange route (international)
+  
+}
+
+
+TEST_CASE("testGeoMapLarge", "[weight=10][part15]") {
+  //long range route (international)
+  
+}
+
+TEST_CASE("testGeoMapLarge", "[weight=10][part16]") {
+  //wrap long range route (international)
+  
+}
