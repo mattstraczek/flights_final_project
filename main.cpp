@@ -20,7 +20,8 @@ int main() {
     
     Graph graph(airport_map, list);
     std::cout << "Size of Routes: " << list.size() << std::endl;
-    graph.writeAdjListToFile();
+    std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
+    //graph.writeAdjListToFile();
 	// graph.printRouteMatrixLimited(10);
     // graph.writeRouteMatrixToFile();
 
@@ -31,14 +32,21 @@ int main() {
     //graph.initgeoMap();
     //graph.plotgeoMap();
     std::vector<std::string> vec;
-    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYC"]);
-    // for (auto airport : vec) {
-    //     std::cout << airport << std::endl;
-    // }
-    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["ORD"]);
-    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YXJ"]);
-    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYE"]);
-    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YDQ"]);
-    vec = graph.BFS(graph.getReducedMap()["ZVK"], graph.getReducedMap()["CEB"]);
+    // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYC"]);
+    // // for (auto airport : vec) {
+    // //     std::cout << airport << std::endl;
+    // // }
+    // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["ORD"]);
+    // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YXJ"]);
+    // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYE"]);
+    // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YDQ"]);
+    // vec = graph.BFS(graph.getReducedMap()["ZVK"], graph.getReducedMap()["CEB"]);
+    std::vector<bool> T;
+    T = graph.primsMST("ORD");
+    int count = 0;
+    for (auto t : T) {
+        if (t) count++;
+    }
+    std::cout << "Number of vertices in MST: " << count;
 }
 

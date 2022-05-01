@@ -25,30 +25,33 @@ class Graph{
           int distance_km;
           std::string airport_dep;
         };
+      struct compareInt {
+        bool operator() (const std::pair<int, std::string> left, const std::pair<int, std::string> right) const {
+          return left.first < right.first;
+        }
+      };
 
     public:
       Graph();
       Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<Routes> route_list);
+
       //Helper functions
-      //void printRouteMatrix();
-      //void printRouteMatrixLimited(int limit);
       void writeAdjListToFile();
       std::vector<std::list<RouteEdge> >& getAdjList();
-      //Algorithms
-      //std::vector<std::list<int> >& primsMST();
-      //cs225::PNG * printRoutes();
-      //std::vector<std::list<int> >& bfs_traversal(string start_airport, string end_airport);
-      //testing reduced matrix
       void reduceAirportMap(std::vector<Routes> &route_list);
       void reduceRouteList(std::vector<Routes> route_list);
-      void reduceAirportMatrix(std::vector<Routes> &route_list);
       std::unordered_map<std::string, Airport> getReducedMap();
       std::vector<Routes> getReducedRouteList();
-      void writeReducedMatrixToFile();
+
+      //Algorithms
+      std::vector<bool> primsMST(std::string start_id);
+      std::vector<std::string> BFS(Airport start, Airport end);
+
+
+      //Helpers for geo-plotting algorithm
       void initgeoMap();
       void plotgeoMap(std::vector<Routes> routes);
       std::pair<int, int> plotOnMap(PNG * map, double lat_, double long_);
-      std::vector<std::string> BFS(Airport start, Airport end);
       std::vector<std::pair<double, double>> drawLine(Airport a1, Airport a2, int n);
       std::vector<double> cart_coordinates(double lat1, double long1);
       std::pair<double, double> cart_to_lat_long(double x, double y, double z);
@@ -60,21 +63,16 @@ class Graph{
       std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
 
     private:
-        std::vector<std::vector<int> > route_matrix;
-        std::unordered_map<std::string, Airport> airport_map; //route_map key == departure string + destination string
-                                                              //eg. "ORDLAX"
-        // std::vector<std::list<int> > route_mst;
-        // std::vector<std::list<int> > route_bfs;
-        cs225::PNG route_img;
-
-        //testing reduced matrix
-        std::vector<std::vector<int> > route_matrix_reduced;
+        //helper data structures
+        std::unordered_map<std::string, Airport> airport_map;
         std::unordered_map<std::string, Airport> airport_map_reduced;
         std::vector<Routes> route_list_reduced;
-        //testing reduced matrix
-
         //adjacency list
         std::vector<std::list<RouteEdge> > adj_list_reduced;
+
+        //prims
+        std::vector<std::string> previous; // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
+        std::vector<int> distance;
 
         PNG * geoMap;
 };
