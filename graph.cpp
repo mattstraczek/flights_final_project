@@ -24,6 +24,8 @@ Graph::Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<R
     // }
     this->airport_map = airport_map;
     reduceAirportMap(route_list);
+    reduceRouteList(route_list);
+    route_list = route_list_reduced;
     size_t airPortSize = airport_map_reduced.size();
     for (size_t i = 0; i < airPortSize; i++) {
         adj_list_reduced.push_back(std::list<RouteEdge>());
@@ -36,8 +38,20 @@ Graph::Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<R
         int start_idx = airport_map_reduced[start].getIndex();
         //int dest_idx = airport_map[dest].getIndex();
         double distance = route_list[i].calculateDistance(airport_map_reduced[start], airport_map_reduced[dest]);
-        RouteEdge temp_route_node(dest, distance);
+        RouteEdge temp_route_node(dest, distance, start);
         adj_list_reduced[start_idx].insert(adj_list_reduced[start_idx].begin(), temp_route_node); 
+    }
+    // for (const auto it : airport_map_reduced) {
+    //     int index = it.second.getIndex();
+    //     airport_ids[index] = it.first;
+    // }
+    for (const auto it : airport_map_reduced) {
+        double distance = 0;
+        int index = it.second.getIndex();
+        //airport_ids[index] = it.first;
+        std::string start = it.first;
+        RouteEdge temp_route_node(start, distance, start);
+        adj_list_reduced[index].insert(adj_list_reduced[index].begin(), temp_route_node); 
     }
 }
 // void Graph::printRouteMatrix() {
@@ -82,7 +96,7 @@ void Graph::writeAdjListToFile() {
     for (unsigned long i = 0; i < adj_list_reduced.size(); i++) {
         route_matrix_stream << std::setw(7) << std::left << airport_ids[i];
         for (auto route : adj_list_reduced[i]) {
-            route_matrix_stream << std::setw(7) << std::left << "-->" << "[" << route.airport_dest << ", " << route.distance_km << "]";
+            route_matrix_stream << std::setw(7) << std::left << "-->" << "[" << route.airport_dest << ", " << route.distance_km << ", " << route.airport_dep << "]";
         }
         route_matrix_stream << std::endl;
     }
@@ -219,6 +233,18 @@ void Graph::reduceAirportMap(std::vector<Routes>& route_list) {
         }
     }
     std::cout << "Reduced airport_map size: " << airport_map_reduced.size() << std::endl;
+}
+void Graph::reduceRouteList(std::vector<Routes> route_list) {
+    std::vector<Routes> new_route_list;
+    for (auto route : route_list) {
+        if (airport_map_reduced.find(route.getDeparture()) != airport_map_reduced.end() && airport_map_reduced.find(route.getDestination()) != airport_map_reduced.end()) {
+            new_route_list.push_back(route);
+        }
+    }
+    route_list_reduced = new_route_list;
+}
+std::vector<Routes> Graph::getReducedRouteList() {
+    return route_list_reduced;
 }
 // void Graph::reduceAirportMatrix(std::vector<Routes>& route_list) {
 //     int airPortSize = airport_map_reduced.size();
@@ -365,25 +391,7 @@ void Graph::plotgeoMap() {
         a2 = airport_map_reduced.find("NRT")->second;
     }
 
-    if(airport_map_reduced.find("ORD") != airport_map_reduced.end()) {
-        a3 = airport_map_reduced.find("ORD")->second;
-    }
-    Routes r1(a1, a2);
-    routes.push_back(r1);
-    Routes r2(a3, a2);
-    Routes r3(airport_map_reduced.find("YYZ")->second, a2);
-    Routes r4(airport_map_reduced.find("SFO")->second, a2);
-    Routes r5(airport_map_reduced.find("LHR")->second, a2);
-    Routes r6(airport_map_reduced.find("RTM")->second, a2);
-    routes.push_back(r2);
-    routes.push_back(r3);
-    routes.push_back(r4);
-    routes.push_back(r5);
-    routes.push_back(r6);
-
-
-
-    for(size_t i = 0; i < routes.size(); i++) {
+    for(int i = 0; i < (int)routes.size(); i++) {
         if(airport_map_reduced.find(routes[i].getDeparture()) != airport_map_reduced.end()) {
             a1 = airport_map_reduced.find(routes[i].getDeparture())->second;
         }
@@ -660,7 +668,7 @@ std::vector<double> Graph::findVec(std::vector<double> c1, std::vector<double> c
 
 // }
 
-std::vector<std::string> Graph::BFS(Airport start, Airport end) {
+std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
   std::vector<std::string> path;
   std::unordered_map<std::string, std::string> pathMap;
   std::vector<bool> visited;
@@ -670,26 +678,51 @@ std::vector<std::string> Graph::BFS(Airport start, Airport end) {
   std::list<RouteEdge>::iterator it = adj_list_reduced[startIndex].begin();
   queue.push(it);
   visited[startIndex] = true;
+//  int z = 0;
   while (!queue.empty()) {
+//      std::cout << "While: " << z << std::endl;
     std::list<RouteEdge>::iterator current = queue.front();
     std::list<RouteEdge>::iterator it = current;
+//    std::cout << "Before seg?" << std::endl;
+//    std::cout << "Current airport iterators: " << it->airport_dest << std::endl;
+//    std::cout << "After seg?" << std::endl;
     queue.pop();
+    if (it->distance_km > 0) {
+//        std::cout << "Non-head current iterator: " << it->airport_dest << std::endl;
+        Airport temp_airport = airport_map_reduced[it->airport_dest];
+        it = adj_list_reduced[temp_airport.getIndex()].begin();
+//        std::cout << "Non-head current iterator's starting airport: " << current->airport_dep << std::endl;
+//        std::cout << "New iterator's airport: " << it->airport_dest << ", " << it->distance_km << ", " << it->airport_dep << std::endl;
+        pathMap[it->airport_dest] = current->airport_dep;
+    }
+//    std::cout << "Before if" << std::endl;
     if (it->airport_dest == end.getID()) {
-      pathMap[it->airport_dest] = current->airport_dest;
-      std::string currentAirport = pathMap[start.getID()];
-      while (currentAirport != end.getID()) {
+//        std::cout << "After if" << std::endl;
+      //pathMap[it->airport_dest] = current->airport_dest;
+      std::string currentAirport = pathMap[end.getID()]; //YYC
+//      int k = 10;
+      path.push_back(end.getID());
+      while (currentAirport != start.getID()) {
+          //std::cout <<  currentAirport << std::endl;
         path.push_back(currentAirport);
         currentAirport = pathMap[currentAirport];
+//        k--;
       }
+
       path.push_back(start.getID());
       reverse(path.begin(), path.end());
       for (unsigned i = 0; i < path.size(); i++) {
-        std::cout << path[i] << std::endl;
+//        std::cout << path[i] << std::endl;
       }
       return path;
     }
-    while (it != adj_list_reduced[startIndex].end()) {
-      int index = airport_map[it->airport_dest].getIndex();
+    
+//    std::cout << "Before adding neighbors" << std::endl;
+    int new_index = airport_map_reduced[it->airport_dep].getIndex();
+    it++;
+    while (it != adj_list_reduced[new_index].end()) {
+      //std::cout << it->airport_dest << std::endl;
+      int index = airport_map_reduced[it->airport_dest].getIndex();
       if (!visited[index]) {
         pathMap[it->airport_dest] = current->airport_dest;
         visited[index] = true;
@@ -697,6 +730,7 @@ std::vector<std::string> Graph::BFS(Airport start, Airport end) {
       }
       it++;
     }
+//    z++;
   }
   return std::vector<std::string>();
 }
@@ -705,4 +739,15 @@ std::unordered_map<std::string, Airport> Graph::getReducedMap() {
  return airport_map_reduced;
 }
 
+
+std::vector<Routes> Graph::BFSRouteConvert(std::vector<std::string> airports) {
+  std::vector<Routes> output;
+  for (unsigned i = 0; i < airports.size() - 1; i++) {
+    Airport dep = airport_map_reduced[airports[i]];
+    Airport dest = airport_map_reduced[airports[i + 1]];
+    Routes converted = Routes(dep, dest);
+    output.push_back(converted);
+  }
+  return output;
+}
 

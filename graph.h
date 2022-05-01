@@ -16,14 +16,16 @@ using namespace cs225;
 class Graph{
     private:
       struct RouteEdge {
-          RouteEdge(std::string airport_dest_, int distance_km_) {
+          RouteEdge(std::string airport_dest_, int distance_km_, std::string airport_dep_) {
             airport_dest = airport_dest_;
             distance_km = distance_km_;
+            airport_dep = airport_dep_;
           }
           std::string airport_dest;
           int distance_km;
+          std::string airport_dep;
         };
-        
+
     public:
       Graph();
       Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<Routes> route_list);
@@ -38,8 +40,10 @@ class Graph{
       //std::vector<std::list<int> >& bfs_traversal(string start_airport, string end_airport);
       //testing reduced matrix
       void reduceAirportMap(std::vector<Routes> &route_list);
+      void reduceRouteList(std::vector<Routes> route_list);
       void reduceAirportMatrix(std::vector<Routes> &route_list);
       std::unordered_map<std::string, Airport> getReducedMap();
+      std::vector<Routes> getReducedRouteList();
       void writeReducedMatrixToFile();
       void initgeoMap();
       void plotgeoMap();
@@ -54,19 +58,20 @@ class Graph{
       double getMagnitude(std::vector<double> loc);
       void thickenDot(int x, int y);
       std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
+      std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
 
     private:
         std::vector<std::vector<int> > route_matrix;
         std::unordered_map<std::string, Airport> airport_map; //route_map key == departure string + destination string
                                                               //eg. "ORDLAX"
-        //vector of routes
-        std::vector<std::list<int> > route_mst;
-        std::vector<std::list<int> > route_bfs;
+        // std::vector<std::list<int> > route_mst;
+        // std::vector<std::list<int> > route_bfs;
         cs225::PNG route_img;
 
         //testing reduced matrix
         std::vector<std::vector<int> > route_matrix_reduced;
         std::unordered_map<std::string, Airport> airport_map_reduced;
+        std::vector<Routes> route_list_reduced;
         //testing reduced matrix
 
         //adjacency list
