@@ -294,49 +294,20 @@ void Graph::initgeoMap() {
     geoMap->readFromFile("mercator_map.png");
     geoMap->scale(3);
 }
-//creates a geoMap based on the minimum spanning tree of the world
 void Graph::plotgeoMap(std::vector<Routes> routes) {
-    // //create a new canvas by reading from existing map base
-    // std::cout << "the size of the map is in order of width height, " << geoMap->width() << ", " << geoMap->height() << std::endl;
-    // //plot on Map CHICAGO
-    // // std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, 41.8781,-87.6298);
-
-    // //plot on Map YOKOHAMA
-    // std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, -33.8688, 151.2093);
-
     std::unordered_map<std::string, Airport>::iterator it;
 
     for(it = airport_map.begin(); it != airport_map.end(); it++) {
         Airport current = it->second;
-        if((it->first) == "ORD") {
-            std::pair<int, int> map_coordinate = plotOnMap(geoMap, current.getLatitude(), current.getLongitude());
-            HSLAPixel& curr = geoMap->getPixel(map_coordinate.first, map_coordinate.second);
-            curr.h = 120;
-            curr.s = 1;
-            curr.l = 0.5;
-        } else {
-            std::pair<int, int> map_coordinate = plotOnMap(geoMap, current.getLatitude(), current.getLongitude());
-            HSLAPixel& curr = geoMap->getPixel(map_coordinate.first, map_coordinate.second);
-            curr.h = 0;
-            curr.s = 1;
-            curr.l = 0.5;
-        }
-        
-        
+        std::pair<int, int> map_coordinate = plotOnMap(geoMap, current.getLatitude(), current.getLongitude());
+
+        thickenDot(map_coordinate.first, map_coordinate.second, 0);
     }
 
     //plot paths of routes
     //HARD CODE AIRPORTS AND ROUTES HERE
     Airport a1;
     Airport a2;
-    // Airport a3;
-    // std::vector<Routes> routes;
-    // if(airport_map_reduced.find("YVR") != airport_map_reduced.end()) {
-    //     a1 = airport_map_reduced.find("YVR")->second;
-    // }
-    // if(airport_map_reduced.find("NRT") != airport_map_reduced.end()) {
-    //     a2 = airport_map_reduced.find("NRT")->second;
-    // }
 
     for(int i = 0; i < (int)routes.size(); i++) {
         if(airport_map_reduced.find(routes[i].getDeparture()) != airport_map_reduced.end()) {
@@ -351,14 +322,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
         for(size_t i = 0; i < path.size(); i++) {
             std::pair<int, int> path_coordinate = plotOnMap(geoMap, path[i].first, path[i].second);
             // std::cout << path_coordinate.first << ", " << path_coordinate.second << std::endl;
-            for (int i = path_coordinate.first-1; i < path_coordinate.first + 2; i++) {
-                for (int j = path_coordinate.second-1; j < path_coordinate.second + 2; j++) {
-                    HSLAPixel& curr = geoMap->getPixel(i,j);
-                    curr.h = 120;
-                    curr.s = 1;
-                    curr.l = 0.5;
-                }
-            }
+            thickenDot(path_coordinate.first, path_coordinate.second, 120);
         }
     }
     //output the image to the final file
@@ -366,11 +330,11 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
     delete geoMap;   
 }
 
-void Graph::thickenDot(int x, int y) {
-    for (int i = x-1; i < 2; i++) {
-        for (int  j = y-1; j < 2; j++) {
+void Graph::thickenDot(int x, int y, int hue) {
+    for (int i = x-1; i < x + 2; i++) {
+        for (int  j = y-1; j < y + 2; j++) {
             HSLAPixel& curr = geoMap->getPixel(i,j);
-            curr.h = 120;
+            curr.h = hue;
             curr.s = 1;
             curr.l = 0.5;
         }
@@ -400,8 +364,6 @@ std::pair<int, int> Graph::plotOnMap(PNG * map, double lat_, double long_) {
     return coord;
 }
 
-//draw line between two points on a 2D cartesian coordinate map
-//steps n is by default 10
 std::vector<std::pair<double, double>> Graph::drawLine(Routes route, int n) {
     Airport a1;
     Airport a2;
@@ -466,14 +428,14 @@ double Graph::getDistance(std::vector<double> loc1, std::vector<double> loc2) {
     return (acos(dotProduct/magProduct))*re;
 }
 
-std::vector<double> Graph::cart_coordinates(double lat1, double long1) {
+std::vector<double> Graph::cart_coordinates(double lat_, double long_) {
     std::vector<double> coordinates;
     double pi = 2 * acos(0.0);
     //calculates the 3D cartesian coordinates of the lat long
     // const double re = 6378.1; //in kilo-meters
     const double re = 6378.1;
-    double phi = lat1*pi/180;
-    double lda = long1*pi/180;
+    double phi = lat_*pi/180;
+    double lda = long_*pi/180;
     double x = re * cos(phi) * cos(lda);
     double y = re * cos(phi) * sin(lda);
     double z = re * sin(phi);
