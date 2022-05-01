@@ -383,7 +383,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
     Airport a1;
     Airport a2;
 
-    for(int i = 0; i < 4000; i++) {
+    for(int i = 0; i < (int)routes.size(); i++) {
         if(airport_map_reduced.find(routes[i].getDeparture()) != airport_map_reduced.end()) {
             a1 = airport_map_reduced.find(routes[i].getDeparture())->second;
         }
@@ -631,46 +631,46 @@ std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
   std::list<RouteEdge>::iterator it = adj_list_reduced[startIndex].begin();
   queue.push(it);
   visited[startIndex] = true;
-  int z = 0;
+//  int z = 0;
   while (!queue.empty()) {
-      std::cout << "While: " << z << std::endl;
+//      std::cout << "While: " << z << std::endl;
     std::list<RouteEdge>::iterator current = queue.front();
     std::list<RouteEdge>::iterator it = current;
-    std::cout << "Before seg?" << std::endl;
-    std::cout << "Current airport iterators: " << it->airport_dest << std::endl;
-    std::cout << "After seg?" << std::endl;
+//    std::cout << "Before seg?" << std::endl;
+//    std::cout << "Current airport iterators: " << it->airport_dest << std::endl;
+//    std::cout << "After seg?" << std::endl;
     queue.pop();
     if (it->distance_km > 0) {
-        std::cout << "Non-head current iterator: " << it->airport_dest << std::endl;
+//        std::cout << "Non-head current iterator: " << it->airport_dest << std::endl;
         Airport temp_airport = airport_map_reduced[it->airport_dest];
         it = adj_list_reduced[temp_airport.getIndex()].begin();
-        std::cout << "Non-head current iterator's starting airport: " << current->airport_dep << std::endl;
-        std::cout << "New iterator's airport: " << it->airport_dest << ", " << it->distance_km << ", " << it->airport_dep << std::endl;
+//        std::cout << "Non-head current iterator's starting airport: " << current->airport_dep << std::endl;
+//        std::cout << "New iterator's airport: " << it->airport_dest << ", " << it->distance_km << ", " << it->airport_dep << std::endl;
         pathMap[it->airport_dest] = current->airport_dep;
     }
-    std::cout << "Before if" << std::endl;
+//    std::cout << "Before if" << std::endl;
     if (it->airport_dest == end.getID()) {
-        std::cout << "After if" << std::endl;
+//        std::cout << "After if" << std::endl;
       //pathMap[it->airport_dest] = current->airport_dest;
       std::string currentAirport = pathMap[end.getID()]; //YYC
-      int k = 10;
+//      int k = 10;
       path.push_back(end.getID());
       while (currentAirport != start.getID()) {
           //std::cout <<  currentAirport << std::endl;
         path.push_back(currentAirport);
         currentAirport = pathMap[currentAirport];
-        k--;
+//        k--;
       }
 
       path.push_back(start.getID());
       reverse(path.begin(), path.end());
       for (unsigned i = 0; i < path.size(); i++) {
-        std::cout << path[i] << std::endl;
+//        std::cout << path[i] << std::endl;
       }
       return path;
     }
     
-    std::cout << "Before adding neighbors" << std::endl;
+//    std::cout << "Before adding neighbors" << std::endl;
     int new_index = airport_map_reduced[it->airport_dep].getIndex();
     it++;
     while (it != adj_list_reduced[new_index].end()) {
@@ -683,7 +683,7 @@ std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
       }
       it++;
     }
-    z++;
+//    z++;
   }
   return std::vector<std::string>();
 }
@@ -692,4 +692,15 @@ std::unordered_map<std::string, Airport> Graph::getReducedMap() {
  return airport_map_reduced;
 }
 
+
+std::vector<Routes> Graph::BFSRouteConvert(std::vector<std::string> airports) {
+  std::vector<Routes> output;
+  for (unsigned i = 0; i < airports.size() - 1; i++) {
+    Airport dep = airport_map_reduced[airports[i]];
+    Airport dest = airport_map_reduced[airports[i + 1]];
+    Routes converted = Routes(dep, dest);
+    output.push_back(converted);
+  }
+  return output;
+}
 

@@ -58,6 +58,7 @@ class Graph{
       double getMagnitude(std::vector<double> loc);
       void thickenDot(int x, int y);
       std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
+      std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
 
     private:
         std::vector<std::vector<int> > route_matrix;

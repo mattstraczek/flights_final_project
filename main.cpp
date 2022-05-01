@@ -36,11 +36,17 @@ int main() {
     //     std::cout << airport << std::endl;
     // }
     vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["ORD"]);
-    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YXJ"]);
-    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYE"]);
-    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YDQ"]);
-    vec = graph.BFS(graph.getReducedMap()["ZVK"], graph.getReducedMap()["CEB"]);
+//    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YXJ"]);
+//    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYE"]);
+//    vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YDQ"]);
+//    vec = graph.BFS(graph.getReducedMap()["ZVK"], graph.getReducedMap()["CEB"]);
     graph.initgeoMap();
-    graph.plotgeoMap(graph.getReducedRouteList());
+    std::vector<Routes> routes = graph.BFSRouteConvert(vec);
+    for (unsigned i = 0; i < routes.size(); i++) {
+      std::cout << routes[i].getDeparture() << std::endl;
+    }
+    graph.plotgeoMap(routes);
+//    graph.initgeoMap();
+//    graph.plotgeoMap(graph.getReducedRouteList());
 }
 
