@@ -392,7 +392,7 @@ TEST_CASE("Data formatting: Deficient data entries (routes.txt)", "[weight=10][p
 
 TEST_CASE("testGeoMapSmall", "[weight=10][part13]") {
   //small route (domestic)
-
+  
 }
 
 

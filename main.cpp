@@ -48,5 +48,30 @@ int main() {
         if (t) count++;
     }
     std::cout << "Number of vertices in MST: " << count;
+
+    ///Geo things
+//     vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYC"]);
+//     // for (auto airport : vec) {
+//     //     std::cout << airport << std::endl;
+//     // }
+//     // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["ORD"]);
+//     //vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YXJ"]);
+//     //vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYE"]);
+//     //vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YDQ"]);
+//     vec = graph.BFS(graph.getReducedMap()["ZVK"], graph.getReducedMap()["CEB"]);
+//     graph.initgeoMap();
+// // <<<<<<< HEAD
+// //     graph.plotgeoMap();
+// //     // std::vector<std::string> vec;
+// //     // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYC"]);
+// // =======
+//     std::vector<Routes> routes = graph.BFSRouteConvert(vec);
+//     for (unsigned i = 0; i < routes.size(); i++) {
+//       std::cout << routes[i].getDeparture() << std::endl;
+//     }
+//     graph.plotgeoMap(routes);
+// //    graph.initgeoMap();
+// //    graph.plotgeoMap(graph.getReducedRouteList());
+// // >>>>>>> 5f96e5f32efebecb70bc1e948e8da9651e89f29b
 }
 
