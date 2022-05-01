@@ -383,7 +383,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
     Airport a1;
     Airport a2;
 
-    for(int i = 0; i < 100; i++) {
+    for(int i = 0; i < (int)routes.size(); i++) {
         if(airport_map_reduced.find(routes[i].getDeparture()) != airport_map_reduced.end()) {
             a1 = airport_map_reduced.find(routes[i].getDeparture())->second;
         }
