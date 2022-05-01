@@ -46,7 +46,7 @@ class Graph{
       std::vector<Routes> getReducedRouteList();
       void writeReducedMatrixToFile();
       void initgeoMap();
-      void plotgeoMap();
+      void plotgeoMap(std::vector<Routes> routes);
       std::pair<int, int> plotOnMap(PNG * map, double lat_, double long_);
       std::vector<std::string> BFS(Airport start, Airport end);
       std::vector<std::pair<double, double>> drawLine(Routes route, int n);

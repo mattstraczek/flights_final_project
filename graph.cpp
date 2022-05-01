@@ -295,68 +295,14 @@ void Graph::initgeoMap() {
     geoMap->scale(3);
 }
 //creates a geoMap based on the minimum spanning tree of the world
-void Graph::plotgeoMap() {
-    //create a new canvas by reading from existing map base
-    std::cout << "the size of the map is in order of width height, " << geoMap->width() << ", " << geoMap->height() << std::endl;
-    //plot on Map CHICAGO
-    // std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, 41.8781,-87.6298);
+void Graph::plotgeoMap(std::vector<Routes> routes) {
+    // //create a new canvas by reading from existing map base
+    // std::cout << "the size of the map is in order of width height, " << geoMap->width() << ", " << geoMap->height() << std::endl;
+    // //plot on Map CHICAGO
+    // // std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, 41.8781,-87.6298);
 
-    //plot on Map YOKOHAMA
-    std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, -33.8688, 151.2093);
-    // std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, 0, -15);
-    // std::pair<int, int> map_coordinates2 = plotOnMap(geoMap, 15, 0);
-    // std::pair<int, int> map_coordinates3 = plotOnMap(geoMap, 30, 0);
-    // std::pair<int, int> map_coordinates4 = plotOnMap(geoMap, 45, 0);
-    // std::pair<int, int> map_coordinates5 = plotOnMap(geoMap, 75, 0);
-
-    // std::cout << map_coordinates1.first << ", " << map_coordinates1.second << std::endl;
-    // HSLAPixel& curr = geoMap->getPixel(map_coordinates1.first, map_coordinates1.second);
-    // int temp_x = map_coordinates1.first;
-    // int temp_y = map_coordinates1.second;
-    // for(size_t i = temp_y; i < geoMap->height(); i++) {
-    //     HSLAPixel& curr = geoMap->getPixel(temp_x, i);
-    //     curr.h = 0;
-    //     curr.s = 1;
-    //     curr.l = 0.5;
-    // }
-    // std::cout << map_coordinates2.first << ", " << map_coordinates2.second << std::endl;
-
-    // temp_x = map_coordinates2.first;
-    // temp_y = map_coordinates2.second;
-    // for(size_t i = temp_x; i < geoMap->width(); i++) {
-    //     HSLAPixel& curr = geoMap->getPixel(i, temp_y);
-    //     curr.h = 0;
-    //     curr.s = 1;
-    //     curr.l = 0.5;
-    // }
-    // std::cout << map_coordinates3.first << ", " << map_coordinates3.second << std::endl;
-
-    // temp_x = map_coordinates3.first;
-    // temp_y = map_coordinates3.second;
-    // for(size_t i = temp_x; i < geoMap->width(); i++) {
-    //     HSLAPixel& curr = geoMap->getPixel(i, temp_y);
-    //     curr.h = 0;
-    //     curr.s = 1;
-    //     curr.l = 0.5;
-    // }
-
-    // temp_x = map_coordinates4.first;
-    // temp_y = map_coordinates4.second;
-    // for(size_t i = temp_x; i < geoMap->width(); i++) {
-    //     HSLAPixel& curr = geoMap->getPixel(i, temp_y);
-    //     curr.h = 0;
-    //     curr.s = 1;
-    //     curr.l = 0.5;
-    // }
-
-    // temp_x = map_coordinates5.first;
-    // temp_y = map_coordinates5.second;
-    // for(size_t i = temp_x; i < geoMap->width(); i++) {
-    //     HSLAPixel& curr = geoMap->getPixel(i, temp_y);
-    //     curr.h = 0;
-    //     curr.s = 1;
-    //     curr.l = 0.5;
-    // }
+    // //plot on Map YOKOHAMA
+    // std::pair<int, int> map_coordinates1 = plotOnMap(geoMap, -33.8688, 151.2093);
 
     std::unordered_map<std::string, Airport>::iterator it;
 
@@ -380,16 +326,17 @@ void Graph::plotgeoMap() {
     }
 
     //plot paths of routes
+    //HARD CODE AIRPORTS AND ROUTES HERE
     Airport a1;
     Airport a2;
-    Airport a3;
-    std::vector<Routes> routes;
-    if(airport_map_reduced.find("YVR") != airport_map_reduced.end()) {
-        a1 = airport_map_reduced.find("YVR")->second;
-    }
-    if(airport_map_reduced.find("NRT") != airport_map_reduced.end()) {
-        a2 = airport_map_reduced.find("NRT")->second;
-    }
+    // Airport a3;
+    // std::vector<Routes> routes;
+    // if(airport_map_reduced.find("YVR") != airport_map_reduced.end()) {
+    //     a1 = airport_map_reduced.find("YVR")->second;
+    // }
+    // if(airport_map_reduced.find("NRT") != airport_map_reduced.end()) {
+    //     a2 = airport_map_reduced.find("NRT")->second;
+    // }
 
     for(int i = 0; i < (int)routes.size(); i++) {
         if(airport_map_reduced.find(routes[i].getDeparture()) != airport_map_reduced.end()) {
@@ -404,52 +351,16 @@ void Graph::plotgeoMap() {
         for(size_t i = 0; i < path.size(); i++) {
             std::pair<int, int> path_coordinate = plotOnMap(geoMap, path[i].first, path[i].second);
             // std::cout << path_coordinate.first << ", " << path_coordinate.second << std::endl;
-            // for (int i = path_coordinate.first-1; i < 2; i++) {
-            //     for (int j = path_coordinate.second-1; j < 2; j++) {
-            //         HSLAPixel& curr = geoMap->getPixel(i,j);
-            //         curr.h = 120;
-            //         curr.s = 1;
-            //         curr.l = 0.5;
-            //     }
-            // }
-            HSLAPixel& curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second);
-            curr.h = 120;
-            curr.s = 1;
-            curr.l = 0.5;
-            
-            curr = geoMap->getPixel(path_coordinate.first - 1, path_coordinate.second -1);
-            curr.h = 120;
-            curr.s = 1;
-            curr.l = 0.5;
-            
-            curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second -1);
-            curr.h = 120;
-            curr.s = 1;
-            curr.l = 0.5;
-            
-            curr = geoMap->getPixel(path_coordinate.first - 1, path_coordinate.second);
-            curr.h = 120;
-            curr.s = 1;
-            curr.l = 0.5;
-            
-            curr = geoMap->getPixel(path_coordinate.first +1, path_coordinate.second +1);
-            curr.h = 120;
-            curr.s = 1;
-            curr.l = 0.5;
-            
-            curr = geoMap->getPixel(path_coordinate.first +1, path_coordinate.second);
-            curr.h = 120;
-            curr.s = 1;
-            curr.l = 0.5;
-            
-            curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second +1);
-            curr.h = 120;
-            curr.s = 1;
-            curr.l = 0.5;
+            for (int i = path_coordinate.first-1; i < path_coordinate.first + 2; i++) {
+                for (int j = path_coordinate.second-1; j < path_coordinate.second + 2; j++) {
+                    HSLAPixel& curr = geoMap->getPixel(i,j);
+                    curr.h = 120;
+                    curr.s = 1;
+                    curr.l = 0.5;
+                }
+            }
         }
     }
-
-
     //output the image to the final file
     geoMap->writeToFile("geographic_map.png");
     delete geoMap;   
@@ -500,24 +411,6 @@ std::vector<std::pair<double, double>> Graph::drawLine(Routes route, int n) {
     if(airport_map_reduced.find(route.getDestination()) != airport_map_reduced.end()) {
         a2 = airport_map_reduced.find(route.getDestination())->second;
     }
-
-
-    // //========EXAMPLE 1==========
-    // a1.setLatitude(41.8781);
-    // a1.setLongitude(-87.6298);
-
-    // a2.setLatitude(35.6762);
-    // a2.setLongitude(139.6503);
-    // //*************************
-
-    // //========EXAMPLE 2==========
-    // if(airport_map_reduced.find("YVR") != airport_map_reduced.end()) {
-    //     a1 = airport_map_reduced.find("YVR")->second;
-    // }
-    // if(airport_map_reduced.find("NRT") != airport_map_reduced.end()) {
-    //     a2 = airport_map_reduced.find("NRT")->second;
-    // }
-    // //*************************
     
     std::vector<double> threeDCoord1 = cart_coordinates(a1.getLatitude(), a1.getLongitude());
     std::vector<double> threeDCoord2 = cart_coordinates(a2.getLatitude(), a2.getLongitude());
@@ -527,7 +420,7 @@ std::vector<std::pair<double, double>> Graph::drawLine(Routes route, int n) {
     std::vector<std::pair<double, double>> recorded_path;
     std::vector<double> current = threeDCoord1;
 
-    std::cout << "========================line427========================" << std::endl;
+    std::cout << "========================Creating Flight Path========================" << std::endl;
     bool not_arrived = true;
     //set i boundary by calculating the distance between to come up with optimal sample size
     
@@ -538,12 +431,18 @@ std::vector<std::pair<double, double>> Graph::drawLine(Routes route, int n) {
         current[2] += unit_product[2] * n;
         normalize(current);
         if(getDistance(current, threeDCoord2) < 10) {
-            std::cout << "<--l---arrived!----------P" << std::endl;
+            std::cout << 
+            "                           ______ " << "\n" <<
+            "        _| _~-|___                "<< "\n" <<
+            "=  = ==(___CS225__D               "<< "\n" <<
+            "            |__|___________________,-~~~~~~~`-.._" << "\n" <<
+            "            /     o O o o o o O O o o o o o o O o  |l_ " << "\n" <<
+            "            `~-.__        ___..----..                  ) " << "\n" <<
+            "                `---~~|___________/------------````` " << "\n" <<
+            "                =  ===(_________D " << "\n \n" << "=========================ARRIVAL==========================" << std::endl;
+
             break;
         }
-        std::cout << "========================437========================" << std::endl;
-
-        std::cout << "the path lat long are " << cart_to_lat_long(current[0], current[1], current[2]).first<< ", " << cart_to_lat_long(current[0], current[1], current[2]).second<< std::endl;
         recorded_path.push_back(cart_to_lat_long(current[0], current[1], current[2]));
     }
     return recorded_path;
@@ -601,12 +500,14 @@ std::pair<double, double> Graph::cart_to_lat_long(double x, double y, double z) 
     double lda = neg*acos((x/(re * cos(phi))));
     double lat_ = phi * 180 / pi;
     double long_ = lda * 180 / pi;
-    std::cout << std::endl;
-    std::cout << "===================================================" << std::endl;
-    std::cout << "phi = " << phi << std::endl;
-    std::cout << "lda = " << lda << std::endl;
-    std::cout << "x,y,z" << x << ", " << y << ", " << z << std::endl;
-    std::cout << "===================================================" << std::endl;
+
+    //=====================FOR BUG FIXES====================//
+    // std::cout << std::endl;
+    // std::cout << "===================================================" << std::endl;
+    // std::cout << "phi = " << phi << std::endl;
+    // std::cout << "lda = " << lda << std::endl;
+    // std::cout << "x,y,z" << x << ", " << y << ", " << z << std::endl;
+    // std::cout << "===================================================" << std::endl;
     // std::cout << std::endl;
     // std::cout << "printing lat_ " << lat_ <<std::endl;
     // std::cout << "printing long_ " << long_ <<std::endl;
