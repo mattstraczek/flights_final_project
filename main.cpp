@@ -29,7 +29,7 @@ int main() {
     // graph.reduceAirportMatrix(list);
     // graph.writeReducedMatrixToFile();
     graph.initgeoMap();
-    graph.plotgeoMap(list);
+    graph.plotgeoMap();
     // std::vector<std::string> vec;
     // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYC"]);
 }

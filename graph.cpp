@@ -269,7 +269,7 @@ void Graph::initgeoMap() {
     geoMap->scale(3);
 }
 //creates a geoMap based on the minimum spanning tree of the world
-void Graph::plotgeoMap(std::vector<Routes> routes) {
+void Graph::plotgeoMap() {
     //create a new canvas by reading from existing map base
     std::cout << "the size of the map is in order of width height, " << geoMap->width() << ", " << geoMap->height() << std::endl;
     //plot on Map CHICAGO
@@ -356,8 +356,34 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
     //plot paths of routes
     Airport a1;
     Airport a2;
+    Airport a3;
+    std::vector<Routes> routes;
+    if(airport_map_reduced.find("YVR") != airport_map_reduced.end()) {
+        a1 = airport_map_reduced.find("YVR")->second;
+    }
+    if(airport_map_reduced.find("NRT") != airport_map_reduced.end()) {
+        a2 = airport_map_reduced.find("NRT")->second;
+    }
 
-    for(int i = 0; i < 100; i++) {
+    if(airport_map_reduced.find("ORD") != airport_map_reduced.end()) {
+        a3 = airport_map_reduced.find("ORD")->second;
+    }
+    Routes r1(a1, a2);
+    routes.push_back(r1);
+    Routes r2(a3, a2);
+    Routes r3(airport_map_reduced.find("YYZ")->second, a2);
+    Routes r4(airport_map_reduced.find("SFO")->second, a2);
+    Routes r5(airport_map_reduced.find("LHR")->second, a2);
+    Routes r6(airport_map_reduced.find("RTM")->second, a2);
+    routes.push_back(r2);
+    routes.push_back(r3);
+    routes.push_back(r4);
+    routes.push_back(r5);
+    routes.push_back(r6);
+
+
+
+    for(size_t i = 0; i < routes.size(); i++) {
         if(airport_map_reduced.find(routes[i].getDeparture()) != airport_map_reduced.end()) {
             a1 = airport_map_reduced.find(routes[i].getDeparture())->second;
         }
@@ -366,7 +392,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
         }
 
         
-        std::vector<std::pair<double, double>> path = drawLine(a1, a2, 10);
+        std::vector<std::pair<double, double>> path = drawLine(routes[i], 10);
         for(size_t i = 0; i < path.size(); i++) {
             std::pair<int, int> path_coordinate = plotOnMap(geoMap, path[i].first, path[i].second);
             // std::cout << path_coordinate.first << ", " << path_coordinate.second << std::endl;
@@ -379,6 +405,36 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
             //     }
             // }
             HSLAPixel& curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
+            
+            curr = geoMap->getPixel(path_coordinate.first - 1, path_coordinate.second -1);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
+            
+            curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second -1);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
+            
+            curr = geoMap->getPixel(path_coordinate.first - 1, path_coordinate.second);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
+            
+            curr = geoMap->getPixel(path_coordinate.first +1, path_coordinate.second +1);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
+            
+            curr = geoMap->getPixel(path_coordinate.first +1, path_coordinate.second);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
+            
+            curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second +1);
             curr.h = 120;
             curr.s = 1;
             curr.l = 0.5;
@@ -427,25 +483,34 @@ std::pair<int, int> Graph::plotOnMap(PNG * map, double lat_, double long_) {
 
 //draw line between two points on a 2D cartesian coordinate map
 //steps n is by default 10
-std::vector<std::pair<double, double>> Graph::drawLine(Airport a1, Airport a2, int n) {
-    // Airport a1;
-    // Airport a2;
+std::vector<std::pair<double, double>> Graph::drawLine(Routes route, int n) {
+    Airport a1;
+    Airport a2;
+    if(airport_map_reduced.find(route.getDeparture()) != airport_map_reduced.end()) {
+        a1 = airport_map_reduced.find(route.getDeparture())->second;
+    }
+    if(airport_map_reduced.find(route.getDestination()) != airport_map_reduced.end()) {
+        a2 = airport_map_reduced.find(route.getDestination())->second;
+    }
 
-    // if(airport_map_reduced.find(route.getDeparture()) != airport_map_reduced.end()) {
-    //     a1 = airport_map_reduced.find(route.getDeparture())->second;
-    // }
-    // if(airport_map_reduced.find(route.getDestination()) != airport_map_reduced.end()) {
-    //     a2 = airport_map_reduced.find(route.getDestination())->second;
-    // }
 
-
-    // //========EXAMPLE==========
+    // //========EXAMPLE 1==========
     // a1.setLatitude(41.8781);
     // a1.setLongitude(-87.6298);
 
-    // a2.setLatitude(29.7604);
-    // a2.setLongitude(-95.3698);
+    // a2.setLatitude(35.6762);
+    // a2.setLongitude(139.6503);
     // //*************************
+
+    // //========EXAMPLE 2==========
+    // if(airport_map_reduced.find("YVR") != airport_map_reduced.end()) {
+    //     a1 = airport_map_reduced.find("YVR")->second;
+    // }
+    // if(airport_map_reduced.find("NRT") != airport_map_reduced.end()) {
+    //     a2 = airport_map_reduced.find("NRT")->second;
+    // }
+    // //*************************
+    
     std::vector<double> threeDCoord1 = cart_coordinates(a1.getLatitude(), a1.getLongitude());
     std::vector<double> threeDCoord2 = cart_coordinates(a2.getLatitude(), a2.getLongitude());
 

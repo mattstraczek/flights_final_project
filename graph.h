@@ -42,10 +42,10 @@ class Graph{
       std::unordered_map<std::string, Airport> getReducedMap();
       void writeReducedMatrixToFile();
       void initgeoMap();
-      void plotgeoMap(std::vector<Routes> routes);
+      void plotgeoMap();
       std::pair<int, int> plotOnMap(PNG * map, double lat_, double long_);
       std::vector<std::string> BFS(Airport start, Airport end);
-      std::vector<std::pair<double, double>> drawLine(Airport a1, Airport a2, int n);
+      std::vector<std::pair<double, double>> drawLine(Routes route, int n);
       std::vector<double> cart_coordinates(double lat1, double long1);
       std::pair<double, double> cart_to_lat_long(double x, double y, double z);
       void normalize(std::vector<double> & curr);
