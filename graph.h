@@ -105,7 +105,6 @@ class Graph{
       std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
 
 
-      std::vector<std::string> BFS(Airport start, Airport end);
       std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
 
     private:
