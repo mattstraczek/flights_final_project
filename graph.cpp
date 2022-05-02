@@ -201,7 +201,7 @@ void Graph::initgeoMap() {
 void Graph::plotgeoMap(std::vector<Routes> routes) {
     std::unordered_map<std::string, Airport>::iterator it;
 
-    for(it = airport_map.begin(); it != airport_map.end(); it++) {
+    for(it = airport_map_reduced.begin(); it != airport_map_reduced.end(); it++) {
         Airport current = it->second;
         std::pair<int, int> map_coordinate = plotOnMap(geoMap, current.getLatitude(), current.getLongitude());
 
@@ -226,12 +226,17 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
         for(size_t i = 0; i < path.size(); i++) {
             std::pair<int, int> path_coordinate = plotOnMap(geoMap, path[i].first, path[i].second);
             // std::cout << path_coordinate.first << ", " << path_coordinate.second << std::endl;
-            thickenDot(path_coordinate.first, path_coordinate.second, 120);
+            HSLAPixel& curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second);
+            curr.h = 120;
+            curr.s = 1;
+            curr.l = 0.5;
         }
     }
     //output the image to the final file
     geoMap->writeToFile("geographic_map.png");
-    delete geoMap;   
+    std::cout << airport_map_reduced.size() << std::endl;
+    std::cout << routes.size() << std::endl;
+    delete geoMap;
 }
 
 void Graph::thickenDot(int x, int y, int hue) {

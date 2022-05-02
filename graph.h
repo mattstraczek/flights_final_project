@@ -96,14 +96,50 @@ class Graph{
        **/
       std::pair<double, double> cart_to_lat_long(double x, double y, double z);
 
-      
+      /**
+       * This is a function that projects the unit vector path towards the destination on to the surface of the Earth
+       * @param curr is a reference to a vector of double where it takes in x,y,z cartesian coordinate of the current position
+       **/
       void normalize(std::vector<double> & curr);
-      std::vector<double> crossProd(std::vector<double> c1, std::vector<double> c2);
-      double getDistance(std::vector<double> loc1, std::vector<double> loc2);
-      double getMagnitude(std::vector<double> loc);
-      void thickenDot(int x, int y, int hue);
-      std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
 
+      /**
+       * This is a function that returns the cross product between two 3 dimensional vectors
+       * @param c1 first 3d vector
+       * @param c2 second 3d vector
+       * @return the 3d vector of the cross product
+       **/
+      std::vector<double> crossProd(std::vector<double> c1, std::vector<double> c2);
+
+      /**
+       * Calculates the distance between the two points on a cartesian coordinate along the curvature of the Earth
+       * @param loc1
+       * @param loc2 
+       * @return returns the shortest direct distance along the Earth
+       **/
+      double getDistance(std::vector<double> loc1, std::vector<double> loc2);
+
+      /**
+       * Returns the magnitude of the 3 dimensional vector
+       * @param loca a vector of the current location
+       * @return the magnitude of the inputted vector
+       **/
+      double getMagnitude(std::vector<double> loc);
+
+      /**
+       * Rehighlights surrounding dot to create thicker lines or thicker dot
+       * @param x coordinate on the 2d map plane
+       * @param y corrdinate of the 2d map plane
+       * @param hue of the color
+       **/
+      void thickenDot(int x, int y, int hue);
+
+      /**
+       * calculates the vector difference between point A and B
+       * @param c1 is the vector of the first location
+       * @param c2 is the vector of the second location
+       * @return the vector of the difference between c1 and c2
+       **/
+      std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
 
       std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
 
