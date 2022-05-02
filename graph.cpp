@@ -196,7 +196,7 @@ std::vector<Routes> Graph::getReducedRouteList() {
 std::vector<std::string> Graph::getPreviousVec() {
     return previous;
 }
-// void Graph::printPrimsMST(std::string start_id) {
+// void Graph::printPrimsMST(std::string start_id, std::string save_to) {
 //     std::vector<Routes> routes;
     
 //     if(airport_map_reduced.find(start_id) != airport_map_reduced.end()) {
@@ -227,15 +227,16 @@ std::vector<std::string> Graph::getPreviousVec() {
 //         std::cout << "The id (" << start_id << ") is not a valid start_id or not included in MST" << std::endl;
 //     }
 
-//     plotgeoMap(routes);
+//     plotgeoMap(routes, save_to);
 
 // }
+
 void Graph::initgeoMap() {
     geoMap = new PNG();
     geoMap->readFromFile("mercator_map.png");
     geoMap->scale(3);
 }
-void Graph::plotgeoMap(std::vector<Routes> routes) {
+void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to) {
     std::unordered_map<std::string, Airport>::iterator it;
 
     for(it = airport_map_reduced.begin(); it != airport_map_reduced.end(); it++) {
@@ -270,7 +271,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
         }
     }
     //output the image to the final file
-    geoMap->writeToFile("geographic_map.png");
+    geoMap->writeToFile(save_to);
     std::cout << "The number of airports on this map is: " << airport_map_reduced.size() << std::endl;
     std::cout << "The number of routes created on this map is: " << routes.size() << std::endl;
     delete geoMap;
