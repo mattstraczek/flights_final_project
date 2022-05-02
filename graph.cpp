@@ -2,10 +2,11 @@
 
 using namespace cs225;
 
-
 Graph::Graph() {
     
 }
+
+
 Graph::Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<Routes> route_list) {
     this->airport_map = airport_map;
     reduceAirportMap(route_list);
@@ -124,7 +125,6 @@ std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) 
     //initialize return vector T
     std::vector<std::pair<bool, std::string>> T(sizeOfGraph, std::pair<bool, std::string>(false, ""));
 
-    //int z = 0;
     while (!min_heap.empty()) {
         std::pair<int, std::string> smallest_route = min_heap.top(); //remove vertix from the graph with the smallest distance between airports
         min_heap.pop();
@@ -154,8 +154,15 @@ std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) 
                 previous[dest_index] = dep_id;
             }
         }
-        //z++;
     }
+    std::ofstream mstRoutes;
+    mstRoutes.open("MSToutput.txt");
+    for (size_t i = 0; i < T.size(); i++) {
+      if (T[i].first) {
+        mstRoutes << "Route #" << i << ": " << "[" << previous[i] << ", " << T[i].second << "]\n";
+      }
+    }
+    mstRoutes.close();
     return T;
 }
 
@@ -482,7 +489,6 @@ std::vector<double> Graph::findVec(std::vector<double> c1, std::vector<double> c
     return direction;
 }
 
-// }
 
 std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
   std::vector<std::string> path;
@@ -494,50 +500,34 @@ std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
   std::list<RouteEdge>::iterator it = adj_list_reduced[startIndex].begin();
   queue.push(it);
   visited[startIndex] = true;
-//  int z = 0;
   while (!queue.empty()) {
-    // std::cout << "While: " << z << std::endl;
     std::list<RouteEdge>::iterator current = queue.front();
     std::list<RouteEdge>::iterator it = current;
-    // std::cout << "Before seg?" << std::endl;
-    // std::cout << "Current airport iterators: " << it->airport_dest << std::endl;
-    // std::cout << "After seg?" << std::endl;
     queue.pop();
     if (it->distance_km > 0) {
-        // std::cout << "Non-head current iterator: " << it->airport_dest << std::endl;
         Airport temp_airport = airport_map_reduced[it->airport_dest];
         it = adj_list_reduced[temp_airport.getIndex()].begin();
-        // std::cout << "Non-head current iterator's starting airport: " << current->airport_dep << std::endl;
-        // std::cout << "New iterator's airport: " << it->airport_dest << ", " << it->distance_km << ", " << it->airport_dep << std::endl;
         pathMap[it->airport_dest] = current->airport_dep;
     }
-    // std::cout << "Before if" << std::endl;
     if (it->airport_dest == end.getID()) {
-        // std::cout << "After if" << std::endl;
-      //pathMap[it->airport_dest] = current->airport_dest;
       std::string currentAirport = pathMap[end.getID()]; //YYC
-//      int k = 10;
       path.push_back(end.getID());
       while (currentAirport != start.getID()) {
-          //std::cout <<  currentAirport << std::endl;
         path.push_back(currentAirport);
         currentAirport = pathMap[currentAirport];
-//        k--;
       }
 
       path.push_back(start.getID());
       reverse(path.begin(), path.end());
-      for (unsigned i = 0; i < path.size(); i++) {
-//        std::cout << path[i] << std::endl;
-      }
+      /*for (unsigned i = 0; i < path.size(); i++) {
+        std::cout << path[i] << std::endl;
+      }*/
       return path;
     }
     
-//    std::cout << "Before adding neighbors" << std::endl;
     int new_index = airport_map_reduced[it->airport_dep].getIndex();
     it++;
     while (it != adj_list_reduced[new_index].end()) {
-      //std::cout << it->airport_dest << std::endl;
       int index = airport_map_reduced[it->airport_dest].getIndex();
       if (!visited[index]) {
         pathMap[it->airport_dest] = current->airport_dest;
@@ -546,7 +536,6 @@ std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
       }
       it++;
     }
-//    z++;
   }
   return std::vector<std::string>();
 }
