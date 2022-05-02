@@ -70,8 +70,14 @@ int main() {
     // ///***************Constructing routes from Prims*******************
 
     // graph.plotgeoMap(primRoute);
-    // graph.plotgeoMap(primRoute, "geographic_map.png");
-    graph.printPrimsMST("ORD", "geographic_map.png");
+    // std::vector<Routes> routes;
+    // Airport a1 = graph.getReducedMap().find("KNQ")->second;
+    // Airport a2 = graph.getReducedMap().find("GEA")->second;
+
+    // Routes route(a1, a2);
+    // routes.push_back(route);
+    // graph.plotgeoMap(routes, "geographic_map.png");
+    graph.printPrimsMST("GEA", "geographic_map.png");
     // std::cout << "Number of vertices in MST: " << count << std::endl;
     // std::cout << "Verify routes in primRoute: " << primRoute.size() << std::endl;
 
