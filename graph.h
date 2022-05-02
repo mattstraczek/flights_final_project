@@ -47,7 +47,7 @@ class Graph{
       std::vector<bool> primsMST(std::string start_id);
       std::vector<std::string> BFS(Airport start, Airport end);
 
-      void printPrimsMST(std::string start_id);
+      void printPrimsMST(std::string start_id, std::string save_to);
       //Helpers for geo-plotting algorithm
       void writeReducedMatrixToFile();
 
@@ -60,7 +60,7 @@ class Graph{
        * Creates a geoMap based on the minimum spanning tree of the world, MUST initialize initgeoMap() first
        * @param routes a vector of routes where the plot function will draw route path directly on to the map
        * */
-      void plotgeoMap(std::vector<Routes> routes);
+      void plotgeoMap(std::vector<Routes> routes, std::string save_to);
 
       /**
        * A function that transforms latitude and longitude GIS information to the 2D canvas created

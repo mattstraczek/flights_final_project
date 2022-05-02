@@ -56,64 +56,64 @@ bool testFiles(string f1, string f2) {
 // 	REQUIRE(testFiles("/workspaces/CS 225/junryuf2/lboelke2-aosepek2-junryuf2-mstrac4/tests/test_airport_soln.txt", "workspaces/CS 225/junryuf2/lboelke2-aosepek2-junryuf2-mstrac4/tests/test_airport_returning.txt"));
 // }
 
-TEST_CASE("Adjacency matrix construction", "[weight=10][part2]") {
-	std::unordered_map<std::string, Airport> airport_map;
-	std::vector<Routes> route_list;
+// TEST_CASE("Adjacency matrix construction", "[weight=10][part2]") {
+// 	std::unordered_map<std::string, Airport> airport_map;
+// 	std::vector<Routes> route_list;
 
-	//Creating airport map
-	Airport ORD("ORD", 41.9786, -87.9048, 0);
-	Airport MIA("MIA", 25.7931, -80.2906, 1);
-	Airport SEA("SEA", 47.449001, -122.308998, 2);
+// 	//Creating airport map
+// 	Airport ORD("ORD", 41.9786, -87.9048, 0);
+// 	Airport MIA("MIA", 25.7931, -80.2906, 1);
+// 	Airport SEA("SEA", 47.449001, -122.308998, 2);
 
-	airport_map[ORD.getID()] = ORD;
-	airport_map[MIA.getID()] = MIA;
-	airport_map[SEA.getID()] = SEA;
+// 	airport_map[ORD.getID()] = ORD;
+// 	airport_map[MIA.getID()] = MIA;
+// 	airport_map[SEA.getID()] = SEA;
 
-	//Creating route list
-	Routes ORDMIA(ORD, MIA);
-	Routes MIASEA(MIA, SEA);
-	Routes SEAORD(SEA, ORD);
+// 	//Creating route list
+// 	Routes ORDMIA(ORD, MIA);
+// 	Routes MIASEA(MIA, SEA);
+// 	Routes SEAORD(SEA, ORD);
 
-	route_list.push_back(ORDMIA);
-	route_list.push_back(MIASEA);
-	route_list.push_back(SEAORD);
+// 	route_list.push_back(ORDMIA);
+// 	route_list.push_back(MIASEA);
+// 	route_list.push_back(SEAORD);
 
-	//Creating graph
-	Graph graph(airport_map, route_list);
-	graph.printRouteMatrix();
+// 	//Creating graph
+// 	Graph graph(airport_map, route_list);
+// 	graph.printRouteMatrix();
 
-	//Solution (Expected) Matrix
-	//            ORD      MIA       SEA       
-	// ORD       -1        1932      -1        
-	// MIA       -1        -1        4384      
-	// SEA       2764      -1        -1       
+// 	//Solution (Expected) Matrix
+// 	//            ORD      MIA       SEA       
+// 	// ORD       -1        1932      -1        
+// 	// MIA       -1        -1        4384      
+// 	// SEA       2764      -1        -1       
 
-	//Creating solution graph
-	std::vector<std::vector<int> >& route_matrix = graph.getRouteMatrix();
-	std::vector<std::vector<int> > solution;
+// 	//Creating solution graph
+// 	std::vector<std::vector<int> >& route_matrix = graph.getRouteMatrix();
+// 	std::vector<std::vector<int> > solution;
 
-	std::vector<int> SEA_;
-	SEA_.push_back(-1);
-	SEA_.push_back(1932);
-	SEA_.push_back(-1);
+// 	std::vector<int> SEA_;
+// 	SEA_.push_back(-1);
+// 	SEA_.push_back(1932);
+// 	SEA_.push_back(-1);
 
-	std::vector<int> ORD_;
-	ORD_.push_back(-1);
-	ORD_.push_back(-1);
-	ORD_.push_back(4384);
+// 	std::vector<int> ORD_;
+// 	ORD_.push_back(-1);
+// 	ORD_.push_back(-1);
+// 	ORD_.push_back(4384);
 
-	std::vector<int> MIA_;
-	MIA_.push_back(2764);
-	MIA_.push_back(-1);
-	MIA_.push_back(-1);
+// 	std::vector<int> MIA_;
+// 	MIA_.push_back(2764);
+// 	MIA_.push_back(-1);
+// 	MIA_.push_back(-1);
 
-	solution.push_back(SEA_);
-	solution.push_back(ORD_);
-	solution.push_back(MIA_);
+// 	solution.push_back(SEA_);
+// 	solution.push_back(ORD_);
+// 	solution.push_back(MIA_);
 
-	//Test that resultant matrix matches solution
-	REQUIRE(solution == route_matrix);
-}
+// 	//Test that resultant matrix matches solution
+// 	REQUIRE(solution == route_matrix);
+// }
 
 TEST_CASE("Extract airport single line", "[weight=10][part3]") {
   Parsing output;
@@ -391,23 +391,162 @@ TEST_CASE("Data formatting: Deficient data entries (routes.txt)", "[weight=10][p
 
 
 TEST_CASE("testGeoMapSmall", "[weight=10][part13]") {
+  std::cout << "------------------------------------------------------------" << std::endl;
   //small route (domestic)
-  
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+
+  airport_map = graph.getReducedMap();
+  // std::cout << "Size of Routes: " << list.size() << std::endl;
+  // std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
+  std::cout << "Creating small routes from Chicago (ORD) --> Los Angeles (LAX)" << std::endl;
+
+  Airport a1 = airport_map.find("ORD")->second; 
+  Airport a2 = airport_map.find("LAX")->second;
+
+  Routes route(a1, a2);
+
+  std::vector<Routes> routes;
+  routes.push_back(route);
+
+  graph.initgeoMap();
+
+  graph.plotgeoMap(routes, "tests/geoMap_testSMALL.png");
+  std::cout << "Please refer to the solution. ONLY 1 route should be printed" << std::endl;
 }
 
 
 TEST_CASE("testGeoMapMedium", "[weight=10][part14]") {
+  std::cout << "------------------------------------------------------------" << std::endl;
   //midrange route (international)
-  
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+
+  airport_map = graph.getReducedMap();
+  // std::cout << "Size of Routes: " << list.size() << std::endl;
+  // std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
+  std::cout << "Creating small routes from USA Chicago (ORD) --> United Kingdom London Heathrow (LHR)" << std::endl;
+
+  Airport a1 = airport_map.find("ORD")->second; 
+  Airport a2 = airport_map.find("LHR")->second;
+
+  Routes route(a1, a2);
+
+  std::vector<Routes> routes;
+  routes.push_back(route);
+
+  graph.initgeoMap();
+
+  graph.plotgeoMap(routes, "tests/geoMap_testMEDIUM.png");
+  std::cout << "Please refer to the solution. ONLY 1 route should be printed" << std::endl;
 }
 
 
 TEST_CASE("testGeoMapLarge", "[weight=10][part15]") {
+  std::cout << "------------------------------------------------------------" << std::endl;
   //long range route (international)
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+
+  airport_map = graph.getReducedMap();
+  // std::cout << "Size of Routes: " << list.size() << std::endl;
+  // std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
+  std::cout << "Creating large routes from Spain Barcelona (BCN) --> Singapore Changi Airport (SIN)" << std::endl;
+
+  Airport a1 = airport_map.find("BCN")->second; 
+  Airport a2 = airport_map.find("SIN")->second;
+
+  Routes route(a1, a2);
+
+  std::vector<Routes> routes;
+  routes.push_back(route);
+
+  graph.initgeoMap();
+
+  graph.plotgeoMap(routes, "tests/geoMap_testLarge.png");
+  std::cout << "Please refer to the solution. ONLY 1 route should be printed" << std::endl;
   
 }
 
-TEST_CASE("testGeoMapLarge", "[weight=10][part16]") {
+TEST_CASE("testGeoMapLargeWrap", "[weight=10][part16]") {
+  std::cout << "------------------------------------------------------------" << std::endl;
   //wrap long range route (international)
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+
+  airport_map = graph.getReducedMap();
+  // std::cout << "Size of Routes: " << list.size() << std::endl;
+  // std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
+  std::cout << "Creating large wrap routes from USA Chicago (ORD) --> Japan Tokyo Narita Airport (NRT)" << std::endl;
+
+  Airport a1 = airport_map.find("ORD")->second; 
+  Airport a2 = airport_map.find("NRT")->second;
+
+  Routes route(a1, a2);
+
+  std::vector<Routes> routes;
+  routes.push_back(route);
+
+  graph.initgeoMap();
+
+  graph.plotgeoMap(routes, "tests/geoMap_testLARGE_WRAP.png");
+  std::cout << "Please refer to the solution. ONLY 1 route should be printed. This should wrap across the border on both ends. " << std::endl;
+}
+
+TEST_CASE("testMultipleRoutes", "[weight=10][part17]") {
+  std::cout << "------------------------------------------------------------" << std::endl;
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+
+  airport_map = graph.getReducedMap();
+  // std::cout << "Size of Routes: " << list.size() << std::endl;
+  // std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
+  std::cout << "Creating multiple routes" << std::endl;
+
+  Airport a1 = airport_map.find("ORD")->second; 
+  Airport a2 = airport_map.find("NRT")->second;
+  Airport a3 = airport_map.find("BCN")->second; 
+  Airport a4 = airport_map.find("SIN")->second;
+  Airport a5 = airport_map.find("LHR")->second;
+
+  Routes route1(a1, a2);
+  Routes route2(a2, a3);
+  Routes route3(a3, a4);
+  Routes route4(a4, a5);
+
+  std::vector<Routes> routes;
+  routes.push_back(route1);
+  routes.push_back(route2);
+  routes.push_back(route3);
+  routes.push_back(route4);
+
+  graph.initgeoMap();
+
+  graph.plotgeoMap(routes, "tests/geoMap_testCOMBINED.png");
+  std::cout << "Please refer to the solution. 4 routes should be printed" << std::endl;
+  
+}
+
+TEST_CASE("testHandleNULLAirport_1", "[weight=10][part18]") {
+  //case where the airport added is not appropriate 
+}
+
+TEST_CASE("testHandleNULLAirport_2", "[weight=10][part19]") {
+  //case where the route does not actually exist commercially
   
 }
