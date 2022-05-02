@@ -53,8 +53,24 @@ int main() {
     //     }
     // }
     graph.initgeoMap();
+
+    ///***************Constructing routes from Prims*******************
+    std::vector<std::pair<bool, std::string>> T;
+    T = graph.primsMST("ORD");
+
+    std::vector<std::string> prev = graph.getPreviousVec();
+
+    size_t starting_idx = graph.getReducedMap()["ORD"].getIndex();
+
+    for (size_t i = 0; i < T.size(); i++) {
+        if (T[i].first) {
+            std::cout << "Route #" << i << ": " << "[" << prev[i] << ", " << T[i].second << "]" << std::endl;
+        }
+    }
+    ///***************Constructing routes from Prims*******************
+
     // graph.plotgeoMap(primRoute);
-    graph.printPrimsMST("ORD");
+    //graph.printPrimsMST("ORD");
     // std::cout << "Number of vertices in MST: " << count << std::endl;
     // std::cout << "Verify routes in primRoute: " << primRoute.size() << std::endl;
 

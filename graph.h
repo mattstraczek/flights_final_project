@@ -42,12 +42,13 @@ class Graph{
       void reduceRouteList(std::vector<Routes> route_list);
       std::unordered_map<std::string, Airport> getReducedMap();
       std::vector<Routes> getReducedRouteList();
+      std::vector<std::string> getPreviousVec();
 
       //Algorithms
-      std::vector<bool> primsMST(std::string start_id);
+      std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
       std::vector<std::string> BFS(Airport start, Airport end);
 
-      void printPrimsMST(std::string start_id);
+      //void printPrimsMST(std::string start_id);
       //Helpers for geo-plotting algorithm
       void writeReducedMatrixToFile();
 

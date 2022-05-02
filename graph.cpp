@@ -96,7 +96,7 @@ std::vector<std::list<Graph::RouteEdge> >& Graph::getAdjList() {
     //
 //}
 
-std::vector<bool> Graph::primsMST(std::string start_id) {
+std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) {
     //std::vector<std::list<RouteEdge> > adj_list_reduced;
     size_t sizeOfGraph =  adj_list_reduced.size(); // number of vertices in the graph
     previous.resize(sizeOfGraph, ""); // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
@@ -122,7 +122,7 @@ std::vector<bool> Graph::primsMST(std::string start_id) {
     // }
     min_heap.push(std::make_pair(0, start_airport.getID()));
     //initialize return vector T
-    std::vector<bool> T(sizeOfGraph, false);
+    std::vector<std::pair<bool, std::string>> T(sizeOfGraph, std::pair<bool, std::string>(false, ""));
 
     //int z = 0;
     while (!min_heap.empty()) {
@@ -133,10 +133,10 @@ std::vector<bool> Graph::primsMST(std::string start_id) {
         int dep_index = airport_map_reduced[dep_id].getIndex();
         //std::cout << "Size of graph: " << sizeOfGraph << " Size of T: " << T.size();
         //std::cout << z << " ";
-        if (T[dep_index]) {
+        if (T[dep_index].first) {
             continue;
         }
-        T[dep_index] = true;
+        T[dep_index] = std::pair<bool, std::string>(true, dep_id);
         //find neighbors of currently removed vertex
         //list of neighboring edges of smallest element
         // adj_list_reduced[smallest_route.first];
@@ -148,10 +148,10 @@ std::vector<bool> Graph::primsMST(std::string start_id) {
             std::string dest_id = adj.airport_dest;
             int dest_index = airport_map_reduced[dest_id].getIndex();
             
-            if (!T[dest_index] && distance[dest_index] > adj.distance_km) {
+            if (!T[dest_index].first && distance[dest_index] > adj.distance_km) {
                 distance[dest_index] = adj.distance_km;
                 min_heap.push(std::make_pair(distance[dest_index], dest_id));
-                previous[dest_index] = dep_index;
+                previous[dest_index] = dep_id;
             }
         }
         //z++;
@@ -193,40 +193,43 @@ void Graph::reduceRouteList(std::vector<Routes> route_list) {
 std::vector<Routes> Graph::getReducedRouteList() {
     return route_list_reduced;
 }
-void Graph::printPrimsMST(std::string start_id) {
-    std::vector<Routes> routes;
-    
-    if(airport_map_reduced.find(start_id) != airport_map_reduced.end()) {
-        std::vector<bool> T;
-        //Only go inside this loop if airport exists and included in MST
-        std::cout << "Creating PRIM's MST from start point " << start_id << std::endl;
-        T = primsMST(start_id);
-
-        //the index of the center or start of MST
-        int start_index = airport_map_reduced.find(start_id)->second.getIndex();
-
-        for(int i = 0; i < (int)T.size()-1; i++) {
-            if(i != start_index) {
-                Airport current_dest;
-                Airport current_dep = airport_map_reduced.find(start_id)->second;
-                int current_dep_id = current_dep.getIndex();
-                std::cout << "about to enter the if statement with potential destination of : " << previous[i] << std::endl;
-                if(T[i] && (airport_map_reduced.find(previous[i]) != airport_map_reduced.end())) {
-                    std::cout << "helllooooo" << std::endl;
-                    Airport current_dest = airport_map_reduced.find(previous[i])->second;
-                    Routes current_route(current_dep, current_dest);
-                    routes.push_back(current_route);
-                }
-                current_dep = current_dest;
-            }
-        }
-    } else {
-        std::cout << "The id (" << start_id << ") is not a valid start_id or not included in MST" << std::endl;
-    }
-
-    plotgeoMap(routes);
-
+std::vector<std::string> Graph::getPreviousVec() {
+    return previous;
 }
+// void Graph::printPrimsMST(std::string start_id) {
+//     std::vector<Routes> routes;
+    
+//     if(airport_map_reduced.find(start_id) != airport_map_reduced.end()) {
+//         std::vector<bool> T;
+//         //Only go inside this loop if airport exists and included in MST
+//         std::cout << "Creating PRIM's MST from start point " << start_id << std::endl;
+//         T = primsMST(start_id);
+
+//         //the index of the center or start of MST
+//         int start_index = airport_map_reduced.find(start_id)->second.getIndex();
+
+//         for(int i = 0; i < (int)T.size(); i++) {
+//             if(i != start_index) {
+//                 Airport current_dest;
+//                 Airport current_dep = airport_map_reduced.find(start_id)->second;
+//                 int current_dep_id = current_dep.getIndex();
+//                 std::cout << "about to enter the if statement with potential destination of : " << previous[i] << std::endl;
+//                 if(T[i] && (airport_map_reduced.find(previous[i]) != airport_map_reduced.end())) {
+//                     std::cout << "helllooooo" << std::endl;
+//                     Airport current_dest = airport_map_reduced.find(previous[i])->second;
+//                     Routes current_route(current_dep, current_dest);
+//                     routes.push_back(current_route);
+//                 }
+//                 current_dep = current_dest;
+//             }
+//         }
+//     } else {
+//         std::cout << "The id (" << start_id << ") is not a valid start_id or not included in MST" << std::endl;
+//     }
+
+//     plotgeoMap(routes);
+
+// }
 void Graph::initgeoMap() {
     geoMap = new PNG();
     geoMap->readFromFile("mercator_map.png");
