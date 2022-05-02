@@ -259,7 +259,7 @@ void Parsing::extractAirports(string fileName) {
       while(getline(myAirports, line)) {
           vector<string> parsed = parseLine(line);
           Airport airport = createAirport(parsed);
-          if (airport.getID() != "") {//, data is invalid so skip this
+          if (airport.getID() != "") {// data is invalid so skip this
             if(airport_map.find(airport.getID()) == airport_map.end()) {
               airport_map[airport.getID()] = airport;
             }
