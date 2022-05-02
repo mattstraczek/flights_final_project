@@ -53,7 +53,7 @@ int main() {
     //     }
     // }
     graph.initgeoMap();
-
+    graph.plotgeoMap(graph.getReducedRouteList(), "geographic_map.png");
     // ///***************Constructing routes from Prims*******************
     // std::vector<std::pair<bool, std::string>> T;
     // T = graph.primsMST("ORD");
@@ -71,7 +71,7 @@ int main() {
 
     // graph.plotgeoMap(primRoute);
     // graph.plotgeoMap(primRoute, "geographic_map.png");
-    graph.printPrimsMST("ORD", "geographic_map.png");
+//****    graph.printPrimsMST("ORD", "geographic_map.png");
     // std::cout << "Number of vertices in MST: " << count << std::endl;
     // std::cout << "Verify routes in primRoute: " << primRoute.size() << std::endl;
 
