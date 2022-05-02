@@ -41,21 +41,22 @@ int main() {
     // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYE"]);
     // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YDQ"]);
     // vec = graph.BFS(graph.getReducedMap()["ZVK"], graph.getReducedMap()["CEB"]);
-    std::vector<bool> T;
-    T = graph.primsMST("ORD");
-    std::vector<Routes> primRoute;
-    int count = 0;
-    for (size_t i = 0; i < T.size(); i++) {
-        std::cout << T[i] << std::endl;
-        if (T[i]) {
-            count++;
-            primRoute.push_back(graph.getReducedRouteList()[i]);
-        }
-    }
+    // std::vector<bool> T;
+    // T = graph.primsMST("ORD");
+    // std::vector<Routes> primRoute;
+    // int count = 0;
+    // for (size_t i = 0; i < T.size(); i++) {
+    //     std::cout << T[i] << std::endl;
+    //     if (T[i]) {
+    //         count++;
+    //         primRoute.push_back(graph.getReducedRouteList()[i]);
+    //     }
+    // }
     graph.initgeoMap();
-    graph.plotgeoMap(primRoute);
-    std::cout << "Number of vertices in MST: " << count << std::endl;
-    std::cout << "Verify routes in primRoute: " << primRoute.size() << std::endl;
+    // graph.plotgeoMap(primRoute);
+    graph.printPrimsMST("ORD");
+    // std::cout << "Number of vertices in MST: " << count << std::endl;
+    // std::cout << "Verify routes in primRoute: " << primRoute.size() << std::endl;
 
 
 

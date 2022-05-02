@@ -47,7 +47,7 @@ class Graph{
       std::vector<bool> primsMST(std::string start_id);
       std::vector<std::string> BFS(Airport start, Airport end);
 
-
+      void printPrimsMST(std::string start_id);
       //Helpers for geo-plotting algorithm
       void writeReducedMatrixToFile();
 

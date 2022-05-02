@@ -1,4 +1,5 @@
 #include "graph.h"
+
 using namespace cs225;
 
 
@@ -192,7 +193,40 @@ void Graph::reduceRouteList(std::vector<Routes> route_list) {
 std::vector<Routes> Graph::getReducedRouteList() {
     return route_list_reduced;
 }
+void Graph::printPrimsMST(std::string start_id) {
+    std::vector<Routes> routes;
+    
+    if(airport_map_reduced.find(start_id) != airport_map_reduced.end()) {
+        std::vector<bool> T;
+        //Only go inside this loop if airport exists and included in MST
+        std::cout << "Creating PRIM's MST from start point " << start_id << std::endl;
+        T = primsMST(start_id);
 
+        //the index of the center or start of MST
+        int start_index = airport_map_reduced.find(start_id)->second.getIndex();
+
+        for(int i = 0; i < (int)T.size()-1; i++) {
+            if(i != start_index) {
+                Airport current_dest;
+                Airport current_dep = airport_map_reduced.find(start_id)->second;
+                int current_dep_id = current_dep.getIndex();
+                std::cout << "about to enter the if statement with potential destination of : " << previous[i] << std::endl;
+                if(T[i] && (airport_map_reduced.find(previous[i]) != airport_map_reduced.end())) {
+                    std::cout << "helllooooo" << std::endl;
+                    Airport current_dest = airport_map_reduced.find(previous[i])->second;
+                    Routes current_route(current_dep, current_dest);
+                    routes.push_back(current_route);
+                }
+                current_dep = current_dest;
+            }
+        }
+    } else {
+        std::cout << "The id (" << start_id << ") is not a valid start_id or not included in MST" << std::endl;
+    }
+
+    plotgeoMap(routes);
+
+}
 void Graph::initgeoMap() {
     geoMap = new PNG();
     geoMap->readFromFile("mercator_map.png");
@@ -234,8 +268,8 @@ void Graph::plotgeoMap(std::vector<Routes> routes) {
     }
     //output the image to the final file
     geoMap->writeToFile("geographic_map.png");
-    std::cout << airport_map_reduced.size() << std::endl;
-    std::cout << routes.size() << std::endl;
+    std::cout << "The number of airports on this map is: " << airport_map_reduced.size() << std::endl;
+    std::cout << "The number of routes created on this map is: " << routes.size() << std::endl;
     delete geoMap;
 }
 
