@@ -1,3 +1,4 @@
+
 #include <fstream>
 #include "parsing.h"
 #include <map>
@@ -32,7 +33,6 @@ Airport Parsing::createAirport(vector<string> line) {
   if (line.size() != 13){
     return Airport();// *******WE ONLY CARE ABOUT CRITICAL IDENTIFIERS AS PER PROPOSAL, BUT NECESSARY FOR FORMAT CHECK************
   }
-  //std::cout << " "<<airport_map.size() << endl;
   //Check that id is 3 chars
   //Check that id is string
   //Check that all chars are uppercase and letters
@@ -251,25 +251,15 @@ Airport Parsing::createAirport(vector<string> line) {
   return airport;
 }
 
-bool Parsing::isInUS(vector<string> line) {
-  string country = line[3].substr(1, line[3].size() - 2);
-  if (country == "United States") {
-    return true;
-  }
-  return false;
-}
 
 void Parsing::extractAirports(string fileName) {
-  /*FILE * data = fopen(fileName.c_str(), "r");*/
   string line = "";
   ifstream myAirports(fileName);
   if(myAirports.is_open()) {
       while(getline(myAirports, line)) {
-        // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
-          //if(isInUS(parsed)) { //***DELETE THIS***
           Airport airport = createAirport(parsed);
-          if (airport.getID() != "") {//, data is invalid so skip this ***ADD THIS***
+          if (airport.getID() != "") {// data is invalid so skip this
             if(airport_map.find(airport.getID()) == airport_map.end()) {
               airport_map[airport.getID()] = airport;
             }
@@ -280,7 +270,6 @@ void Parsing::extractAirports(string fileName) {
   std::unordered_map<std::string, Airport>::iterator it;
   for (it = airport_map.begin(); it != airport_map.end(); it++) {
     Airport current = (*it).second;
-//    std::cout << current.getID() << std::endl;
   }
 }
 
@@ -309,13 +298,12 @@ vector<Routes> Parsing::extractRoutes(string fileName) {
   ifstream myroutes(fileName);
   if(myroutes.is_open()) {
       while(getline(myroutes, line)) {
-        // std::cout << line << std::endl;
           vector<string> parsed = parseLine(line);
           //should sort or decide whether the airports both are in the US
           if((airport_map.find(parsed[2]) != airport_map.end()) && (airport_map.find(parsed[4]) != airport_map.end())) {
-              //that means the airport exists in the map, only then I can add 
+            //that means the airport exists in the map, only then I can add 
             Routes route = createRoutes(parsed);
-            if (route.getDeparture() != "") {//, data is invalid so skip ***ADD THIS***
+            if (route.getDeparture() != "") {//, data is invalid so skip
               string routeID = route.getDeparture() + route.getDestination();
               if(route_map.find(routeID) == route_map.end()) {
 
