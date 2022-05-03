@@ -9,12 +9,15 @@ Parsing::Parsing() {
 vector<string> Parsing::parseLine(string line) {
     vector<string> parsed;
     string curr;
-
+    
+    // iterate through the characters in the line
     for(char x : line) {
         if(x == ',') {
+            // add the current string to the vector once a comma is reached, and make current an empty string
             parsed.push_back(curr);
             curr = "";
         } else {
+            // add the character to the current string
             curr += x;
         }
     }
@@ -256,10 +259,13 @@ void Parsing::extractAirports(string fileName) {
   string line = "";
   ifstream myAirports(fileName);
   if(myAirports.is_open()) {
+      // iterate through the lines in the file
       while(getline(myAirports, line)) {
+          // parse the current line and create an airport for it
           vector<string> parsed = parseLine(line);
           Airport airport = createAirport(parsed);
-          if (airport.getID() != "") {//, data is invalid so skip this
+          if (airport.getID() != "") {// data is invalid so skip this
+            // if the airport is not a duplicate, add it to the map
             if(airport_map.find(airport.getID()) == airport_map.end()) {
               airport_map[airport.getID()] = airport;
             }
@@ -267,24 +273,21 @@ void Parsing::extractAirports(string fileName) {
       }
       myAirports.close();
   }
-  std::unordered_map<std::string, Airport>::iterator it;
-  for (it = airport_map.begin(); it != airport_map.end(); it++) {
-    Airport current = (*it).second;
-  }
 }
 
 
 void Parsing::writeAirports(string fileName) {
-  ofstream USAirports;
-  USAirports.open(fileName);
+  ofstream airports;
+  airports.open(fileName);
 
   unordered_map<string, Airport>::iterator it;
-
+  // iterate through the airports in the airport map
   for(it = airport_map.begin(); it != airport_map.end(); it++) {
     Airport current = (*it).second;
-    USAirports << current.getID() << "," << current.getLatitude() << "," << current.getLongitude() << "\n";
+    // write the current airport's information to a file
+    airports << current.getID() << "," << current.getLatitude() << "," << current.getLongitude() << "\n";
   }
-  USAirports.close();
+  airports.close();
 }
 /**
  * @brief all the United States routes are extracted

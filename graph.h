@@ -15,6 +15,7 @@ using namespace cs225;
 
 class Graph{
     private:
+      // struct for the adjacency list, stores the route destination, distance, and departure
       struct RouteEdge {
           RouteEdge(std::string airport_dest_, int distance_km_, std::string airport_dep_) {
             airport_dest = airport_dest_;
@@ -33,7 +34,7 @@ class Graph{
 
     public:
       /**
-       * default constructor of the Graph class, intitializes an empty Graph
+       * default constructor of the Graph class
        **/
       Graph();
 
@@ -86,7 +87,7 @@ class Graph{
 
       /**
        * returns the previous vector from Prim's algorithm so it can be accessed in main.cpp
-       * @return the preveious vector created during Prim's algorithm, which is a vector of strings
+       * @return the previous vector created during Prim's algorithm, which is a vector of strings
        **/
       std::vector<std::string> getPreviousVec();
 
@@ -109,9 +110,16 @@ class Graph{
        **/
       std::vector<std::string> BFS(Airport start, Airport end);
 
+      /**
+       * plots the MST output of Prim's algorithm onto a map of the world and saves it to a PNG file
+       * @param start_id is a string representing the ID of the starting airport for Prim's algorithm
+       * @param save_to is a string representing the name of the file to save the output to
+       **/
       void printPrimsMST(std::string start_id, std::string save_to);
+
       //Helpers for geo-plotting algorithm
-      void writeReducedMatrixToFile();
+
+//      void writeReducedMatrixToFile(); *****delete?
 
       /**
        * Sets the canvas for the geographic map output from Mercator Projection
@@ -203,20 +211,26 @@ class Graph{
        **/
       std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
 
+      /**
+       * converts a vector of string airport IDs to a vector of routes in the same order as the airports, allowing us to
+       *   plot the output of BFS to a PNG
+       * @param airports is a vector of strings representing airport IDs in the order they are visited in BFS
+       * @return a vector of Routes created using the airport IDs from airports, keeping the BFS order
+       **/
       std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
 
     private:
         //helper data structures
-        std::unordered_map<std::string, Airport> airport_map;
-        std::unordered_map<std::string, Airport> airport_map_reduced;
-        std::vector<Routes> route_list_reduced;
+        std::unordered_map<std::string, Airport> airport_map; // maps string IDs to corresponding Airports
+        std::unordered_map<std::string, Airport> airport_map_reduced; // airport map after all Airports with no routes have been removed
+        std::vector<Routes> route_list_reduced; // vector of Routes after ones with Airports not in airport map have been removed
         //adjacency list
-        std::vector<std::list<RouteEdge> > adj_list_reduced;
+        std::vector<std::list<RouteEdge> > adj_list_reduced; // adjacency list, with the vector indexed by the unique airport indices, and the destinations as elements of the linked list
 
         //prims
         std::vector<std::string> previous; // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
-        std::vector<int> distance;
+        std::vector<int> distance; // vector storing the distances for each vertex during Prim's
 
-        PNG * geoMap;
+        PNG * geoMap; // PNG of a map for the Airports/Routes to be added to
 };
 
