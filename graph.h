@@ -228,6 +228,8 @@ class Graph{
        * @return a vector of Routes created using the airport IDs from airports, keeping the BFS order
        **/
       std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
+      
+      std::vector<Airport> getDestinations(int index); // ******add comments******
 
     private:
         //helper data structures

@@ -576,3 +576,13 @@ std::vector<Routes> Graph::BFSRouteConvert(std::vector<std::string> airports) {
   return output;
 }
 
+std::vector<Airport> Graph::getDestinations(int index) { // *****add comments*****
+  std::vector<Airport> destinations;
+  std::list<RouteEdge>::iterator it;
+  for (it = adj_list_reduced[index].begin(); it != adj_list_reduced[index].end(); it++) {
+    Airport current = airport_map_reduced[it->airport_dest];
+    destinations.push_back(current);
+  }
+  return destinations;
+}
+

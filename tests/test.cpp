@@ -656,9 +656,11 @@ TEST_CASE("testBFS3", "[weight=10][part21]") {
   
   //compare alternative route distance with shortest path determined through BFS
   REQUIRE(shortest_route.size() <= routes.size());
-  std::list<Graph::RouteEdge>::iterator it;
-  for (it = (graph.getAdjList())[ord.getIndex()].begin(); it != (graph.getAdjList())[ord.getIndex()].end(); it++) {
-    REQUIRE("NOU" != (*it).airport_dest);
+  
+  int index = ord.getIndex();
+  std::vector<Airport> airports = graph.getDestinations(index);
+  for (unsigned i = 0; i < airports.size(); i++) {
+    REQUIRE("NOU" != airports[i].getID());
   }
 }
 
