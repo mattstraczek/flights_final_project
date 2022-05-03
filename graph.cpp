@@ -494,24 +494,29 @@ std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
   std::vector<std::string> path;
   std::unordered_map<std::string, std::string> pathMap;
   std::vector<bool> visited;
+  // initialize a vector of booleans to keep track of which airports have been visited
   visited.resize(airport_map_reduced.size(), false);
   std::queue<std::list<RouteEdge>::iterator> queue;
   int startIndex = start.getIndex();
   std::list<RouteEdge>::iterator it = adj_list_reduced[startIndex].begin();
   queue.push(it);
+  // set the starting Airport to visited
   visited[startIndex] = true;
   while (!queue.empty()) {
     std::list<RouteEdge>::iterator current = queue.front();
     std::list<RouteEdge>::iterator it = current;
     queue.pop();
+    // check if the RouteEdge is not the departure Airport
     if (it->distance_km > 0) {
         Airport temp_airport = airport_map_reduced[it->airport_dest];
         it = adj_list_reduced[temp_airport.getIndex()].begin();
         pathMap[it->airport_dest] = current->airport_dep;
     }
+    // check if we have found what we are looking for
     if (it->airport_dest == end.getID()) {
-      std::string currentAirport = pathMap[end.getID()]; //YYC
+      std::string currentAirport = pathMap[end.getID()];
       path.push_back(end.getID());
+      // add all airports in the map to a vector output of BFS in reverse order, and then reverse to get the output
       while (currentAirport != start.getID()) {
         path.push_back(currentAirport);
         currentAirport = pathMap[currentAirport];
@@ -519,15 +524,13 @@ std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
 
       path.push_back(start.getID());
       reverse(path.begin(), path.end());
-      /*for (unsigned i = 0; i < path.size(); i++) {
-        std::cout << path[i] << std::endl;
-      }*/
       return path;
     }
     
     int new_index = airport_map_reduced[it->airport_dep].getIndex();
     it++;
     while (it != adj_list_reduced[new_index].end()) {
+      // add iterators to the current airports neighbors to the queue
       int index = airport_map_reduced[it->airport_dest].getIndex();
       if (!visited[index]) {
         pathMap[it->airport_dest] = current->airport_dest;
@@ -547,10 +550,12 @@ std::unordered_map<std::string, Airport> Graph::getReducedMap() {
 
 std::vector<Routes> Graph::BFSRouteConvert(std::vector<std::string> airports) {
   std::vector<Routes> output;
+  // iterate through the vector of airports and create a route between consecutive airports
   for (unsigned i = 0; i < airports.size() - 1; i++) {
     Airport dep = airport_map_reduced[airports[i]];
     Airport dest = airport_map_reduced[airports[i + 1]];
     Routes converted = Routes(dep, dest);
+    // add the created route to a vector of routes
     output.push_back(converted);
   }
   return output;
