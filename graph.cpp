@@ -9,10 +9,12 @@ Graph::Graph() {
 
 Graph::Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<Routes> route_list) {
     this->airport_map = airport_map;
+    // remove all unused airports and routes from the input
     reduceAirportMap(route_list);
     reduceRouteList(route_list);
     route_list = route_list_reduced;
     size_t airPortSize = airport_map_reduced.size();
+    // initialize a vector of empty lists
     for (size_t i = 0; i < airPortSize; i++) {
         adj_list_reduced.push_back(std::list<RouteEdge>());
     }
@@ -21,17 +23,18 @@ Graph::Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<R
         std::string start = route_list[i].getDeparture(); //check routes class for functions
         std::string dest = route_list[i].getDestination();
         int start_idx = airport_map_reduced[start].getIndex();
-        //int dest_idx = airport_map[dest].getIndex();
         double distance = route_list[i].calculateDistance(airport_map_reduced[start], airport_map_reduced[dest]);
+        // create a RouteEdge with the destination, distance, and departure from the current route and add to list
         RouteEdge temp_route_node(dest, distance, start);
         adj_list_reduced[start_idx].insert(adj_list_reduced[start_idx].begin(), temp_route_node); 
     }
-
+    // iterate through the airports in the reduced airport map
     for (const auto it : airport_map_reduced) {
         double distance = 0;
         int index = it.second.getIndex();
         std::string start = it.first;
         RouteEdge temp_route_node(start, distance, start);
+        // add a RouteEdge from departure to departurn to the beginning of the list at its corresponding index
         adj_list_reduced[index].insert(adj_list_reduced[index].begin(), temp_route_node); 
     }
 }
@@ -42,11 +45,13 @@ void Graph::writeAdjListToFile() {
     std::ofstream route_matrix_stream;
     route_matrix_stream.open("Adj_list.txt");
 
+    // add each airport ID to its corresponding index in the airport_ids vector
     for (const auto it : airport_map_reduced) {
         int index = it.second.getIndex();
         airport_ids[index] = it.first;
     }
 
+    // write the adjacency list to a file in a format that makes it easy to visualize
     for (unsigned long i = 0; i < adj_list_reduced.size(); i++) {
         route_matrix_stream << std::setw(7) << std::left << airport_ids[i];
         for (auto route : adj_list_reduced[i]) {
@@ -98,29 +103,17 @@ std::vector<std::list<Graph::RouteEdge> >& Graph::getAdjList() {
 //}
 
 std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) {
-    //std::vector<std::list<RouteEdge> > adj_list_reduced;
     size_t sizeOfGraph =  adj_list_reduced.size(); // number of vertices in the graph
     previous.resize(sizeOfGraph, ""); // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
     distance.resize(sizeOfGraph, INT_MAX); // intialie an array that holds the distance value for each vertex in the graph
 
-    // for(size_t i = 0; i < sizeOfGraph; i++){
-    //     previous[i] = "";
-    //     distance[i] = INT_MAX;
-    // }
-    //figure out start airport**********
     Airport start_airport = airport_map_reduced[start_id];
     distance[start_airport.getIndex()] = 0;
     //inlcude an index, with each distance value
     // so know where to find it in the adjacency list
     
-    //int, vector<pair<int, int>>, greater<pair<int, int>>
     std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, compareInt> min_heap;
     //builds heap
-    // for(size_t i = 0; i < sizeOfGraph; i++){
-    //     int tempInt = distance[i];
-    //     std::string tempString = previous[i];
-    //     min_heap.push(std::make_pair(tempInt, tempString));
-    // }
     min_heap.push(std::make_pair(0, start_airport.getID()));
     //initialize return vector T
     std::vector<std::pair<bool, std::string>> T(sizeOfGraph, std::pair<bool, std::string>(false, ""));
@@ -131,15 +124,12 @@ std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) 
         //check if in T. if not, add to return vector T. skip otherwise
         std::string dep_id = smallest_route.second;
         int dep_index = airport_map_reduced[dep_id].getIndex();
-        //std::cout << "Size of graph: " << sizeOfGraph << " Size of T: " << T.size();
-        //std::cout << z << " ";
         if (T[dep_index].first) {
             continue;
         }
         T[dep_index] = std::pair<bool, std::string>(true, dep_id);
         //find neighbors of currently removed vertex
         //list of neighboring edges of smallest element
-        // adj_list_reduced[smallest_route.first];
         std::list<RouteEdge>::iterator it;
         for(it = adj_list_reduced[dep_index].begin(); it != adj_list_reduced[dep_index].end(); it++) {
             if (it == adj_list_reduced[dep_index].begin()) it++;
@@ -291,6 +281,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to) {
 }
 
 void Graph::thickenDot(int x, int y, int hue) {
+    // color the pixels in a 3x3 square so airports and routes are more visible
     for (int i = x-1; i < x + 2; i++) {
         for (int  j = y-1; j < y + 2; j++) {
             HSLAPixel& curr = geoMap->getPixel(i,j);
@@ -414,7 +405,6 @@ std::pair<double, double> Graph::cart_to_lat_long(double x, double y, double z) 
 
     double phi = asin(z / re);
 
-    // std::cout << "testing number ========> " << y - re * cos(phi) << std::endl;
     double neg = 1.0;
     if(y < 0) {
         neg = -1.0;
@@ -430,13 +420,10 @@ std::pair<double, double> Graph::cart_to_lat_long(double x, double y, double z) 
     // std::cout << "lda = " << lda << std::endl;
     // std::cout << "x,y,z" << x << ", " << y << ", " << z << std::endl;
     // std::cout << "===================================================" << std::endl;
-    // std::cout << std::endl;
     // std::cout << "printing lat_ " << lat_ <<std::endl;
     // std::cout << "printing long_ " << long_ <<std::endl;
     lat_long.first = lat_;
     lat_long.second = long_;
-    // std::cout << "inside cart_to_lat_long" << std::endl;
-    // std::cout << lat_ << ", " << long_ << std::endl;
 
     return lat_long;
 }
@@ -464,7 +451,7 @@ std::vector<double> Graph::crossProd(std::vector<double> c1, std::vector<double>
     double by = c2[1]/6378.1;
     double az = c1[2]/6378.1;
     double bz = c2[2]/6378.1;
-    //for i componenet
+    //for i component
     product.push_back(ay*bz - az*by);
     product.push_back(-(ax*bz - az*bx));
     product.push_back(ax*by - ay*bx);
