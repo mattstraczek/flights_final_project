@@ -20,12 +20,12 @@ class Graph{
           RouteEdge(std::string airport_dest_, int distance_km_, std::string airport_dep_) {
             airport_dest = airport_dest_;
             distance_km = distance_km_;
-<<<<<<< HEAD
+//<<<<<<< HEAD
             // key value
             // previous airport 
-=======
+//=======
             airport_dep = airport_dep_;
->>>>>>> effcd421d004071f56135315b751bea6f42610e2
+//>>>>>>> effcd421d004071f56135315b751bea6f42610e2
           }
           std::string airport_dest;
           int distance_km;
