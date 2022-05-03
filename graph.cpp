@@ -239,7 +239,17 @@ void Graph::initgeoMap() {
     geoMap->readFromFile("mercator_map.png");
     geoMap->scale(3);
 }
-void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to) {
+
+void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to, int hue) {
+
+    if(routes.size() == 0)  {
+        geoMap->writeToFile(save_to);
+        std::cout << "route is empty so no routes were created" << std::endl;
+        std::cout << "The number of airports on this map is: " << airport_map_reduced.size() << std::endl;
+        std::cout << "The number of routes created on this map is: " << routes.size() << std::endl;
+        delete geoMap;
+        return;
+    }
     std::unordered_map<std::string, Airport>::iterator it;
 
     for(it = airport_map_reduced.begin(); it != airport_map_reduced.end(); it++) {
@@ -268,7 +278,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to) {
             std::pair<int, int> path_coordinate = plotOnMap(geoMap, path[i].first, path[i].second);
             // std::cout << path_coordinate.first << ", " << path_coordinate.second << std::endl;
             HSLAPixel& curr = geoMap->getPixel(path_coordinate.first, path_coordinate.second);
-            curr.h = 120;
+            curr.h = hue;
             curr.s = 1;
             curr.l = 0.5;
         }
@@ -277,8 +287,12 @@ void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to) {
     geoMap->writeToFile(save_to);
     std::cout << "The number of airports on this map is: " << airport_map_reduced.size() << std::endl;
     std::cout << "The number of routes created on this map is: " << routes.size() << std::endl;
-    delete geoMap;
+    // delete geoMap;
 }
+void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to) {
+    plotgeoMap(routes, save_to, 120);
+}
+
 
 void Graph::thickenDot(int x, int y, int hue) {
     // color the pixels in a 3x3 square so airports and routes are more visible
@@ -478,6 +492,20 @@ std::vector<double> Graph::findVec(std::vector<double> c1, std::vector<double> c
 
 
 std::vector<std::string> Graph::BFS(Airport start, Airport end) { //"YXU" "YYC"
+  if (airport_map_reduced[start.getID()].getID() == "" || airport_map_reduced[end.getID()].getID() == "") {
+    std::cout << "Start and/or end Airport does not exist in airport map" << std::endl;
+    return std::vector<std::string>();
+  }
+
+  if (start.getID() == end.getID()) {
+    std::cout << "Start and end Airport is " << start.getID() << ". You can not create a route from same start and end point" << std::endl;
+    return std::vector<std::string>();
+  }
+
+  if ((start.getLatitude() == end.getLatitude()) && (start.getLongitude() == end.getLongitude())) {
+    std::cout << "Start and end Airport has the same geographic location" << std::endl;
+    return std::vector<std::string>();
+  }
   std::vector<std::string> path;
   std::unordered_map<std::string, std::string> pathMap;
   std::vector<bool> visited;
