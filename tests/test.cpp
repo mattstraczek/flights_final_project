@@ -565,3 +565,164 @@ TEST_CASE("testPrimsOneAriport", "[weight=10][part20]") {
 
   
 }
+<<<<<<< HEAD
+=======
+
+TEST_CASE("testPrimsNULL", "[weight=10][part18]") {
+  //should print a map that has No routes
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+  airport_map = graph.getReducedMap();
+  
+  graph.initgeoMap();
+
+  //Try to start Prims in fake airport called "ABC"
+  graph.printPrimsMST("ABC", "geographic_map.png");
+
+}
+
+TEST_CASE("testBFSNULL", "[weight=10][part19]") {
+  //should print a map that has No routes
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+  airport_map = graph.getReducedMap();
+  
+  //Create fake airport
+  Airport a1 = Airport();
+  Airport a2("FAKE", 0, 0, -420);
+  Airport Chicago = airport_map.find("ORD")->second;
+  Airport a3("LAX", 0, 0, -420);
+  Airport a4("BCN", 0, 0, -420);
+  REQUIRE((graph.BFS(a1, Chicago)).size() == 0);
+  REQUIRE((graph.BFS(Chicago, a2)).size() == 0);
+  REQUIRE((graph.BFS(a1, a2)).size() == 0);
+  REQUIRE((graph.BFS(Chicago, Chicago)).size() == 0);
+  REQUIRE((graph.BFS(a3,a4)).size() == 0);
+}
+
+TEST_CASE("testBFS1", "[weight=10][part20]") {
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+  airport_map = graph.getReducedMap();
+
+  Airport a1 = airport_map.find("SBY")->second;
+  Airport a2 = airport_map.find("CLT")->second;
+  
+  std::vector<std::string> bfs1 = graph.BFS(a1, a2);
+  REQUIRE(bfs1.size() == 2);
+  REQUIRE(bfs1[0] == "SBY");
+  REQUIRE(bfs1[1] == "CLT");
+
+  Routes route(a1, a2);
+
+  std::vector<Routes> routes;
+  routes.push_back(route);
+
+  graph.initgeoMap();
+  graph.plotgeoMap(routes, "tests/bfs1.png");
+}
+
+TEST_CASE("testBFS2", "[weight=10][part20]") {
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+  airport_map = graph.getReducedMap();
+
+  Airport a1 = airport_map.find("LAX")->second;
+  Airport a2 = airport_map.find("GEA")->second;
+  Airport a3 = airport_map.find("NOU")->second;
+  REQUIRE((graph.BFS(a1,a2)).size() == 0);
+  REQUIRE((graph.BFS(a1,a3)).size() > 0);
+}
+
+
+TEST_CASE("testBFS3", "[weight=10][part21]") {
+  Parsing parse;
+  parse.extractAirports("airports.txt");
+  std::vector<Routes> list = parse.extractRoutes("routes.txt");
+  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+  Graph graph(airport_map, list);
+  airport_map = graph.getReducedMap();
+  graph.initgeoMap();
+
+
+  std::vector<std::string> bfsroute = graph.BFS(airport_map.find("ORD")->second, airport_map.find("NOU")->second);
+  std::vector<Routes> shortest_route = graph.BFSRouteConvert(bfsroute);
+  
+  graph.plotgeoMap(shortest_route, "tests/bfs3.png", 0);
+
+  //Test potential alternative route;
+  Airport lax = airport_map.find("LAX")->second;
+  Airport nou = airport_map.find("NOU")->second;
+  Airport bne = airport_map.find("BNE")->second;
+  Airport ord = airport_map.find("ORD")->second;
+  
+  Routes r1(ord, lax);
+  Routes r2(lax, bne);
+  Routes r3(bne, nou);
+
+  std::vector<Routes> routes;
+
+  routes.push_back(r1);
+  routes.push_back(r2);
+  routes.push_back(r3);
+
+  graph.plotgeoMap(routes, "tests/bfs3.png");
+  
+  //compare alternative route distance with shortest path determined through BFS
+  REQUIRE(shortest_route.size() <= routes.size());
+  std::list<Graph::RouteEdge>::iterator it;
+  for (it = (graph.getAdjList())[ord.getIndex()].begin(); it != (graph.getAdjList())[ord.getIndex()].end(); it++) {
+    REQUIRE("NOU" != (*it).airport_dest);
+  }
+}
+
+
+
+// TEST_CASE("testHandleNULLAirport_1", "[weight=10][part18]") {
+//   //case where the airport added is not appropriate
+//   std::cout << "------------------------------------------------------------" << std::endl;
+//   //wrap long range route (international)
+//   Parsing parse;
+//   parse.extractAirports("airports.txt");
+//   std::vector<Routes> list = parse.extractRoutes("routes.txt");
+//   std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+//   Graph graph(airport_map, list);
+
+//   airport_map = graph.getReducedMap();
+//   // std::cout << "Size of Routes: " << list.size() << std::endl;
+//   // std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
+//   std::cout << "Creating large wrap routes from fake airport (ABC) --> Japan Tokyo Narita Airport (NRT)" << std::endl;
+
+
+//   Airport a1 = airport_map.find("ABC")->second; 
+//   Airport a2 = airport_map.find("NRT")->second;
+
+//   Routes route(a1, a2);
+
+//   std::vector<Routes> routes;
+//   routes.push_back(route);
+
+//   graph.initgeoMap();
+
+//   assert(routes.size() == 0);
+//   graph.plotgeoMap(routes, "tests/geoMapNULLAirport.png");
+//   std::cout << "It should create no routes" << std::endl;
+// }
+
+// TEST_CASE("testHandleNULLAirport_2", "[weight=10][part19]") {
+//   //case where the route does not actually exist commercially
+  
+// }
+>>>>>>> 07ed7e61c678e91f44c64229f11369ca04950f37

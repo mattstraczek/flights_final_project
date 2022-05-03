@@ -53,7 +53,11 @@ int main() {
     //     }
     // }
     graph.initgeoMap();
+<<<<<<< HEAD
     //graph.plotgeoMap(graph.getReducedRouteList(), "geographic_map.png");
+=======
+//    graph.plotgeoMap(graph.getReducedRouteList(), "geographic_map.png");
+>>>>>>> 07ed7e61c678e91f44c64229f11369ca04950f37
     // ///***************Constructing routes from Prims*******************
     // std::vector<std::pair<bool, std::string>> T;
     // T = graph.primsMST("ORD");
@@ -70,8 +74,32 @@ int main() {
     // ///***************Constructing routes from Prims*******************
 
     // graph.plotgeoMap(primRoute);
+<<<<<<< HEAD
     // graph.plotgeoMap(primRoute, "geographic_map.png");
     //****graph.printPrimsMST("GEA", "geographic_map.png");
+=======
+    std::vector<std::string> bfsroute = graph.BFS(airport_map.find("ORD")->second, airport_map.find("NOU")->second);
+    std::vector<Routes> shortest_route = graph.BFSRouteConvert(bfsroute);
+    Airport lax = airport_map.find("LAX")->second;
+    Airport nou = airport_map.find("NOU")->second;
+    Airport nrt = airport_map.find("NRT")->second;
+    Airport bne = airport_map.find("BNE")->second;
+    Airport ord = airport_map.find("ORD")->second;
+    
+    Routes r1(ord, lax);
+    Routes r2(lax, bne);
+    Routes r3(bne, nou);
+
+    std::vector<Routes> routes;
+
+    routes.push_back(r1);
+    routes.push_back(r2);
+    routes.push_back(r3);
+    // graph.printPrimsMST("ORD", "geographic_map.png");
+    graph.plotgeoMap(routes, "geographic_map1.png");
+    graph.plotgeoMap(shortest_route, "geographic_map2.png", 0);
+    
+>>>>>>> 07ed7e61c678e91f44c64229f11369ca04950f37
     // std::cout << "Number of vertices in MST: " << count << std::endl;
     // std::cout << "Verify routes in primRoute: " << primRoute.size() << std::endl;
 
