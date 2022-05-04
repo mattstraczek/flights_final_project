@@ -27,25 +27,22 @@ int main() {
     std::cout << "What would you like to run?" << std::endl;
     std::cout << "a. Prim's" << std::endl;
     std::cout << "b. BFS" << std::endl;
-    std::cout << "c. Plot a route" << std::endl;
+    std::cout << "c. Plot a single, direct route" << std::endl;
     std::cout << "d. Quit" << std::endl;
     std::cout << "Enter a, b, c, or d: ";
     std::cin >> c;
-    std::cout << std::endl;
     if (c == 'a') {
       std::string id;
       std::cout << "Please enter a starting airport ID (example: ORD, LAX): ";
       std::cin >> id;
-      std::cout << std::endl;
       Airport airport = (graph.getReducedMap())[id];
-      std::cout << airport.getID() << std::endl;//
       if (airport.getID() == "") {
-        std::cout << "Invalid input, exiting..." << std::endl;
+        std::cout << "Airport does not exist, exiting..." << std::endl;
         return 0;
       }
       graph.initgeoMap();
       graph.printPrimsMST(airport.getID(), "geographic_map.png");
-      std::cout << "Prim's output image saved to mst_output.png" << std::endl;
+      std::cout << "Prim's output image saved to geographic_map.png" << std::endl;
       std::vector<std::pair<bool, std::string>> T;
       T = graph.primsMST(airport.getID());
       std::vector<std::string> prev = graph.getPreviousVec();
@@ -58,18 +55,29 @@ int main() {
         }
       }
       std::cout << "All MST routes are exported to text_output.txt" << std::endl;
+      return 0;;
     } else if (c == 'b') {
       std::string start;
       std::string end;
-      std::cout << "Enter a starting airport index (example: ORD, LAX): ";
+      std::cout << "Please enter a starting airport ID (example: ORD, LAX): ";
       std::cin >> start;
-      std::cout << std::endl;
-      std::cout << "Enter a ending airport index (example: ORD, LAX): ";
-      std::cin >> end;
-      std::cout << std::endl;
       Airport dep = graph.getReducedMap()[start];
+      if (dep.getID() == "") {
+        std::cout << "Airport does not exist, exiting..." << std::endl;
+        return 0;
+      }
+      std::cout << "Please enter an ending airport ID (example: ORD, LAX): ";
+      std::cin >> end;
       Airport dest = graph.getReducedMap()[end];
+      if (dest.getID() == "") {
+        std::cout << "Airport does not exist, exiting..." << std::endl;
+        return 0;
+      }
       std::vector<std::string> airports = graph.BFS(dep, dest);
+      if (airports.size() == 0) {
+        std::cout << "BFS did not find a path from the start to end airport, meaning they are unconnected. Exiting..." << std::endl;
+        return 0;
+      }
       std::ofstream output;
       output.open("text_output.txt");
       for (unsigned i = 0; i < airports.size(); i++) {
@@ -78,8 +86,47 @@ int main() {
       std::vector<Routes> routes = graph.BFSRouteConvert(airports);
       graph.initgeoMap();
       graph.plotgeoMap(routes, "geographic_map.png");
+      std::cout << "BFS output image saved to geographic_map.png" << std::endl;
+      std::cout << "BFS airports are exported to text_output.txt" << std::endl;
+      return 0;
     } else if (c == 'c') {
-      
+      std::string start;
+      std::cout << "Please enter a starting airport ID (example: ORD, LAX): ";
+      std::cin >> start;
+      Airport dep = graph.getReducedMap()[start];
+      if (dep.getID() == "") {
+        std::cout << "Airport does not exist, exiting..." << std::endl;
+        return 0;
+      }
+      std::string end;
+      std::cout << "Please enter an ending airport ID (example: ORD, LAX): ";
+      std::cin >> end;
+      Airport dest = graph.getReducedMap()[end];
+      if (dest.getID() == "") {
+        std::cout << "Airport does not exist, exiting..." << std::endl;
+        return 0;
+      }
+      std::vector<Airport> destinations = graph.getDestinations(dep.getIndex());
+      bool exists = false;
+      for (unsigned i = 0; i < destinations.size(); i++) {
+        if (destinations[i].getID() == dest.getID()) {
+          exists = true;
+          break;
+        }
+      }
+      if (!exists) {
+        std::cout << "A direct route between these two airports does not exist, exiting..." << std::endl;
+        return 0;
+      }
+      else {
+        Routes route(dep, dest);
+        std::vector<Routes> routes;
+        routes.push_back(route);
+        graph.initgeoMap();
+        graph.plotgeoMap(routes, "geographic_map.png");
+        std::cout << "Route plotted and saved in geographic_map.png" << std::endl;
+      }
+      return 0;
     } else if (c == 'd') {
       return 0;
     } else {
@@ -96,7 +143,7 @@ int main() {
     // graph.writeReducedMatrixToFile();
     //graph.initgeoMap();
     //graph.plotgeoMap();
-    std::vector<std::string> vec;
+//    std::vector<std::string> vec;
     // vec = graph.BFS(graph.getReducedMap()["YXU"], graph.getReducedMap()["YYC"]);
     // // for (auto airport : vec) {
     // //     std::cout << airport << std::endl;
@@ -117,7 +164,7 @@ int main() {
     //         primRoute.push_back(graph.getReducedRouteList()[i]);
     //     }
     // }
-    graph.initgeoMap();
+//    graph.initgeoMap();
 //<<<<<<< HEAD
     //graph.plotgeoMap(graph.getReducedRouteList(), "geographic_map.png");
 //=======
