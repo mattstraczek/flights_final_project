@@ -56,27 +56,7 @@ class Graph{
       /**
        * writes a visual representation of the adjacency list to a file to help with testing and structure visualization
        **/
-      void writeAdjListToFile();
-
-      /**
-       * returns the adjacency list so it can be accessed in main.cpp
-       * @return the adjacency list, which is a vector of lists of RouteEdges, with the first element of each list
-       *   representing the departure of the routes, indexed by the unique airport index, and the following elements
-       *   as the destinations
-       **/
-      std::vector<std::list<RouteEdge> >& getAdjList();
-
-      /**
-       * removes all Airports with no routes going to or from them from the airport map
-       * @param route_list is a vector of Routes between Airports
-       **/
-      void reduceAirportMap(std::vector<Routes> &route_list);
-
-      /**
-       * removes all routes from the route list that include airports not in airport_map_reduced
-       * @param route_list is a vector of Routes
-       **/
-      void reduceRouteList(std::vector<Routes> route_list);
+      void writeAdjListToFile(); // *******maybe move to private unless we want to run in main*******
 
       /**
        * returns the reduced airport map so it can be accessed in main.cpp
@@ -145,7 +125,36 @@ class Graph{
        **/
       void plotgeoMap(std::vector<Routes> routes, std::string save_to);
 
+      /**
+       * converts a vector of string airport IDs to a vector of routes in the same order as the airports, allowing us to
+       *   plot the output of BFS to a PNG
+       * @param airports is a vector of strings representing airport IDs in the order they are visited in BFS
+       * @return a vector of Routes created using the airport IDs from airports, keeping the BFS order
+       **/
+      std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
+      
+      std::vector<Airport> getDestinations(int index); // ******add comments******
 
+    private:
+      /**
+       * returns the adjacency list so it can be accessed in main.cpp
+       * @return the adjacency list, which is a vector of lists of RouteEdges, with the first element of each list
+       *   representing the departure of the routes, indexed by the unique airport index, and the following elements
+       *   as the destinations
+       **/
+      std::vector<std::list<RouteEdge> >& getAdjList();
+
+      /**
+       * removes all Airports with no routes going to or from them from the airport map
+       * @param route_list is a vector of Routes between Airports
+       **/
+      void reduceAirportMap(std::vector<Routes> &route_list);
+
+      /**
+       * removes all routes from the route list that include airports not in airport_map_reduced
+       * @param route_list is a vector of Routes
+       **/
+      void reduceRouteList(std::vector<Routes> route_list);
 
       /**
        * A function that transforms latitude and longitude GIS information to the 2D canvas created
@@ -204,19 +213,19 @@ class Graph{
       double getDistance(std::vector<double> loc1, std::vector<double> loc2);
 
       /**
-       * Returns the magnitude of the 3 dimensional vector
-       * @param loca a vector of the current location
-       * @return the magnitude of the inputted vector
-       **/
-      double getMagnitude(std::vector<double> loc);
-
-      /**
        * Rehighlights surrounding dot to create thicker lines or thicker dot
        * @param x coordinate on the 2d map plane
        * @param y corrdinate of the 2d map plane
        * @param hue of the color
        **/
       void thickenDot(int x, int y, int hue);
+
+      /**
+       * Returns the magnitude of the 3 dimensional vector
+       * @param loca a vector of the current location
+       * @return the magnitude of the inputted vector
+       **/
+      double getMagnitude(std::vector<double> loc);
 
       /**
        * calculates the vector difference between point A and B
@@ -226,17 +235,6 @@ class Graph{
        **/
       std::vector<double> findVec(std::vector<double> c1, std::vector<double> c2);
 
-      /**
-       * converts a vector of string airport IDs to a vector of routes in the same order as the airports, allowing us to
-       *   plot the output of BFS to a PNG
-       * @param airports is a vector of strings representing airport IDs in the order they are visited in BFS
-       * @return a vector of Routes created using the airport IDs from airports, keeping the BFS order
-       **/
-      std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
-      
-      std::vector<Airport> getDestinations(int index); // ******add comments******
-
-    private:
         //helper data structures
         std::unordered_map<std::string, Airport> airport_map; // maps string IDs to corresponding Airports
         std::unordered_map<std::string, Airport> airport_map_reduced; // airport map after all Airports with no routes have been removed

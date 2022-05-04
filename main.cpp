@@ -9,15 +9,7 @@ int main() {
     Parsing parse;
     parse.extractAirports("airports.txt");
     std::vector<Routes> list = parse.extractRoutes("routes.txt");
-    //std::cout << "hello" << std::endl;
-
-    //std::cout << list.empty() << std::endl;
-
-    // for(Routes route : list) {
-    //     std::cout << route.getDeparture() << " --> " << route.getDestination() << std::endl;
-    // }
     std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
-    
     Graph graph(airport_map, list);
     std::cout << "Size of Routes: " << list.size() << std::endl;
     std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
@@ -218,4 +210,3 @@ int main() {
 //    graph.plotgeoMap(graph.getReducedRouteList());
 // // >>>>>>> 5f96e5f32efebecb70bc1e948e8da9651e89f29b
 }
-
