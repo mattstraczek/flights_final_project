@@ -21,6 +21,71 @@ int main() {
     Graph graph(airport_map, list);
     std::cout << "Size of Routes: " << list.size() << std::endl;
     std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
+    airport_map = graph.getReducedMap();
+
+    char c;
+    std::cout << "What would you like to run?" << std::endl;
+    std::cout << "a. Prim's" << std::endl;
+    std::cout << "b. BFS" << std::endl;
+    std::cout << "c. Plot a route" << std::endl;
+    std::cout << "d. Quit" << std::endl;
+    std::cout << "Enter a, b, c, or d: ";
+    std::cin >> c;
+    std::cout << std::endl;
+    if (c == 'a') {
+      std::string id;
+      std::cout << "Please enter a starting airport ID (example: ORD, LAX): ";
+      std::cin >> id;
+      std::cout << std::endl;
+      Airport airport = (graph.getReducedMap())[id];
+      std::cout << airport.getID() << std::endl;//
+      if (airport.getID() == "") {
+        std::cout << "Invalid input, exiting..." << std::endl;
+        return 0;
+      }
+      graph.initgeoMap();
+      graph.printPrimsMST(airport.getID(), "geographic_map.png");
+      std::cout << "Prim's output image saved to mst_output.png" << std::endl;
+      std::vector<std::pair<bool, std::string>> T;
+      T = graph.primsMST(airport.getID());
+      std::vector<std::string> prev = graph.getPreviousVec();
+      size_t starting_idx = graph.getReducedMap()[airport.getID()].getIndex();
+      std::ofstream prims;
+      prims.open("text_output.txt");
+      for (size_t i = 0; i < T.size(); i++) {
+        if (T[i].first) {
+          prims << "Route #" << i << ": " << "[" << prev[i] << ", " << T[i].second << "]" << std::endl;
+        }
+      }
+      std::cout << "All MST routes are exported to text_output.txt" << std::endl;
+    } else if (c == 'b') {
+      std::string start;
+      std::string end;
+      std::cout << "Enter a starting airport index (example: ORD, LAX): ";
+      std::cin >> start;
+      std::cout << std::endl;
+      std::cout << "Enter a ending airport index (example: ORD, LAX): ";
+      std::cin >> end;
+      std::cout << std::endl;
+      Airport dep = graph.getReducedMap()[start];
+      Airport dest = graph.getReducedMap()[end];
+      std::vector<std::string> airports = graph.BFS(dep, dest);
+      std::ofstream output;
+      output.open("text_output.txt");
+      for (unsigned i = 0; i < airports.size(); i++) {
+        output << airports[i] << std::endl;
+      }
+      std::vector<Routes> routes = graph.BFSRouteConvert(airports);
+      graph.initgeoMap();
+      graph.plotgeoMap(routes, "geographic_map.png");
+    } else if (c == 'c') {
+      
+    } else if (c == 'd') {
+      return 0;
+    } else {
+      std::cout << "Invalid input, exiting..." << std::endl;
+      return 0;
+    }
     //graph.writeAdjListToFile();
 	// graph.printRouteMatrixLimited(10);
     // graph.writeRouteMatrixToFile();
