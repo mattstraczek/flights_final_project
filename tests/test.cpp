@@ -549,104 +549,192 @@ bool testFiles(string f1, string f2) {
 // TEST_CASE("testHandleNULLAirport_2", "[weight=10][part19]") {
 //   //case where the route does not actually exist commercially
   
+//}
+// If only one airport is read from the airport text file 
+// TEST_CASE("testPrimsOneAriport", "[weight=10][part24]") {
+//   std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
+//   Parsing parse;
+//   parse.extractAirports("single_airport.txt");
+//   std::vector<Routes> list = parse.extractRoutes("routes.txt");
+//   std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+//   Graph graph(airport_map, list);
+//   //intialize a vector to store the MST 
+//   std::vector<std::pair<bool, std::string>> mst = graph.primsMST("ORL");
+//   REQUIRE (graph.getReducedMap().size() == 0);
+//   REQUIRE (mst.size() == 0);
 // }
 
-TEST_CASE("testPrimsOneAriport", "[weight=10][part20]") {
-  std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
-  Parsing parse;
-  parse.extractAirports("single_airport.txt");
-  std::vector<Routes> list = parse.extractRoutes("routes.txt");
-  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
-  Graph graph(airport_map, list);
-  std::vector<std::pair<bool, std::string>> mst = graph.primsMST("ORL");
-   std::cout << "mst size" << mst.size()<<  std::endl;
-  REQUIRE (mst.size() == 1);
-  REQUIRE (mst[0].first == true);
 
+//Make sure sarting Airport is apart of the graph, connected to other nodes
+// TEST_CASE("testPrimsConnectedStart", "[weight=10][part25]") {
+//   std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
+//   Parsing parse;
+//   parse.extractAirports("airports.txt");
+//   std::vector<Routes> list = parse.extractRoutes("tests/primsDirection.txt");
+//   std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+//   Graph graph(airport_map, list);
+//   //intialize a vector to store the MST 
+//   std::vector<std::pair<bool, std::string>> mst = graph.primsMST("ORD");
+//   std::cout << mst.size();
+//   REQUIRE (mst.size() == 0);
+// }
+
+// std::cout << mst.size() << "\n";
+// 	for(int i = 0; i < (int)mst.size(); i++){
+// 		std::cout << mst[i].first <<  " ";
+// 		std::cout << mst[i].second << "\n";
+// 	}
+ // Eveery Node  traverses departure to destination 
+ // VALID MST:
+ // KZN -> AER
+ // Although these airports are included in the destinations of other routes, the other airpo
+ // Prims starts at the destination airport and moves out from there 
+//  TEST_CASE("testPrimsDirection", "[weight=10][part26]") {
+// 	std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
+// 	Parsing parse;
+// 	parse.extractAirports("airports.txt");
+// 	std::vector<Routes> list = parse.extractRoutes("tests/primsDirection.txt");
+// 	std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+// 	Graph graph(airport_map, list);
+// 	//std::cout << "Route List " << graph.getReducedRouteList().size() << "\n";
+// 	//intialize a vector to store the MST 
+// 	std::vector<std::pair<bool, std::string>> mst = graph.primsMST("KZN");
+// 	//std::cout << mst.size() << "\n";
+// 	int count = 0;
+// 	for(int i = 0; i < (int)mst.size(); i++){
+// 		if(mst[i].first == true){
+// 			if(mst[i].second == "AER" || mst[i].second == "KZN"){
+// 				REQUIRE(true == true);
+// 			}
+// 		}
+// 	}
+//  }
+// // Attempts Prims on a Small Graph
+// TEST_CASE("testPrimsSmallGraph", "[weight=10][part27]") {
+// 	std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
+// 	Parsing parse;
+// 	parse.extractAirports("airports.txt");
+// 	std::vector<Routes> list = parse.extractRoutes("tests/primsSmallGraph.txt");
+// 	std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+// 	Graph graph(airport_map, list);
+	
+// 	//intialize a vector to store the MST 
+// 	std::vector<std::pair<bool, std::string>> mst = graph.primsMST("AER");
+// 	int count = 0;
+// 	for(int i = 0; i < (int)mst.size(); i++){
+// 		if(mst[i].first == true){
+// 			count++;
+// 			if(mst[i].second == "AER" || mst[i].second == "ASF" || mst[i].second == "KZN"){
+//  				REQUIRE(true == true);
+//  			}
+// 		}
+// 	}
+// 	REQUIRE(count == 3);
+//  }
+
+// In a connected graph, all airports are apart of the MST Tree
+TEST_CASE("testPrimsSmallGraph2", "[weight=10][part28]") {
+	std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
+	Parsing parse;
+	parse.extractAirports("airports.txt");
+	std::vector<Routes> list = parse.extractRoutes("tests/primsSmallGraph2.txt");
+	std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+	Graph graph(airport_map, list);
+	
+	//intialize a vector to store the MST 
+	std::vector<std::pair<bool, std::string>> mst = graph.primsMST("ZRH");
+	
+	int count = 0;
+	for(int i = 0; i < (int)mst.size(); i++){
+		if(mst[i].first == true){
+			count++;
+ 			}
+	}
+	REQUIRE(count == mst.size());
+ }
+
+//<<<<<<< HEAD
+//=======
+
+// TEST_CASE("testPrimsNULL", "[weight=10][part18]") {
+//   //should print a map that has No routes
+//   Parsing parse;
+//   parse.extractAirports("airports.txt");
+//   std::vector<Routes> list = parse.extractRoutes("routes.txt");
+//   std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+//   Graph graph(airport_map, list);
+//   airport_map = graph.getReducedMap();
   
-}
-<<<<<<< HEAD
-=======
+//   graph.initgeoMap();
 
-TEST_CASE("testPrimsNULL", "[weight=10][part18]") {
-  //should print a map that has No routes
-  Parsing parse;
-  parse.extractAirports("airports.txt");
-  std::vector<Routes> list = parse.extractRoutes("routes.txt");
-  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
-  Graph graph(airport_map, list);
-  airport_map = graph.getReducedMap();
+//   //Try to start Prims in fake airport called "ABC"
+//   graph.printPrimsMST("ABC", "geographic_map.png");
+
+// }
+
+// TEST_CASE("testBFSNULL", "[weight=10][part19]") {
+//   //should print a map that has No routes
+//   Parsing parse;
+//   parse.extractAirports("airports.txt");
+//   std::vector<Routes> list = parse.extractRoutes("routes.txt");
+//   std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+//   Graph graph(airport_map, list);
+//   airport_map = graph.getReducedMap();
   
-  graph.initgeoMap();
+//   //Create fake airport
+//   Airport a1 = Airport();
+//   Airport a2("FAKE", 0, 0, -420);
+//   Airport Chicago = airport_map.find("ORD")->second;
+//   Airport a3("LAX", 0, 0, -420);
+//   Airport a4("BCN", 0, 0, -420);
+//   REQUIRE((graph.BFS(a1, Chicago)).size() == 0);
+//   REQUIRE((graph.BFS(Chicago, a2)).size() == 0);
+//   REQUIRE((graph.BFS(a1, a2)).size() == 0);
+//   REQUIRE((graph.BFS(Chicago, Chicago)).size() == 0);
+//   REQUIRE((graph.BFS(a3,a4)).size() == 0);
+// }
 
-  //Try to start Prims in fake airport called "ABC"
-  graph.printPrimsMST("ABC", "geographic_map.png");
+// TEST_CASE("testBFS1", "[weight=10][part20]") {
+//   Parsing parse;
+//   parse.extractAirports("airports.txt");
+//   std::vector<Routes> list = parse.extractRoutes("routes.txt");
+//   std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+//   Graph graph(airport_map, list);
+//   airport_map = graph.getReducedMap();
 
-}
-
-TEST_CASE("testBFSNULL", "[weight=10][part19]") {
-  //should print a map that has No routes
-  Parsing parse;
-  parse.extractAirports("airports.txt");
-  std::vector<Routes> list = parse.extractRoutes("routes.txt");
-  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
-  Graph graph(airport_map, list);
-  airport_map = graph.getReducedMap();
+//   Airport a1 = airport_map.find("SBY")->second;
+//   Airport a2 = airport_map.find("CLT")->second;
   
-  //Create fake airport
-  Airport a1 = Airport();
-  Airport a2("FAKE", 0, 0, -420);
-  Airport Chicago = airport_map.find("ORD")->second;
-  Airport a3("LAX", 0, 0, -420);
-  Airport a4("BCN", 0, 0, -420);
-  REQUIRE((graph.BFS(a1, Chicago)).size() == 0);
-  REQUIRE((graph.BFS(Chicago, a2)).size() == 0);
-  REQUIRE((graph.BFS(a1, a2)).size() == 0);
-  REQUIRE((graph.BFS(Chicago, Chicago)).size() == 0);
-  REQUIRE((graph.BFS(a3,a4)).size() == 0);
-}
+//   std::vector<std::string> bfs1 = graph.BFS(a1, a2);
+//   REQUIRE(bfs1.size() == 2);
+//   REQUIRE(bfs1[0] == "SBY");
+//   REQUIRE(bfs1[1] == "CLT");
 
-TEST_CASE("testBFS1", "[weight=10][part20]") {
-  Parsing parse;
-  parse.extractAirports("airports.txt");
-  std::vector<Routes> list = parse.extractRoutes("routes.txt");
-  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
-  Graph graph(airport_map, list);
-  airport_map = graph.getReducedMap();
+//   Routes route(a1, a2);
 
-  Airport a1 = airport_map.find("SBY")->second;
-  Airport a2 = airport_map.find("CLT")->second;
-  
-  std::vector<std::string> bfs1 = graph.BFS(a1, a2);
-  REQUIRE(bfs1.size() == 2);
-  REQUIRE(bfs1[0] == "SBY");
-  REQUIRE(bfs1[1] == "CLT");
+//   std::vector<Routes> routes;
+//   routes.push_back(route);
 
-  Routes route(a1, a2);
+//   graph.initgeoMap();
+//   graph.plotgeoMap(routes, "tests/bfs1.png");
+// }
 
-  std::vector<Routes> routes;
-  routes.push_back(route);
+// TEST_CASE("testBFS2", "[weight=10][part20]") {
+//   Parsing parse;
+//   parse.extractAirports("airports.txt");
+//   std::vector<Routes> list = parse.extractRoutes("routes.txt");
+//   std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+//   Graph graph(airport_map, list);
+//   airport_map = graph.getReducedMap();
 
-  graph.initgeoMap();
-  graph.plotgeoMap(routes, "tests/bfs1.png");
-}
+//   Airport a1 = airport_map.find("LAX")->second;
+//   Airport a2 = airport_map.find("GEA")->second;
+//   Airport a3 = airport_map.find("NOU")->second;
+//   REQUIRE((graph.BFS(a1,a2)).size() == 0);
+//   REQUIRE((graph.BFS(a1,a3)).size() > 0);
+// }
 
-TEST_CASE("testBFS2", "[weight=10][part20]") {
-  Parsing parse;
-  parse.extractAirports("airports.txt");
-  std::vector<Routes> list = parse.extractRoutes("routes.txt");
-  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
-  Graph graph(airport_map, list);
-  airport_map = graph.getReducedMap();
-
-  Airport a1 = airport_map.find("LAX")->second;
-  Airport a2 = airport_map.find("GEA")->second;
-  Airport a3 = airport_map.find("NOU")->second;
-  REQUIRE((graph.BFS(a1,a2)).size() == 0);
-  REQUIRE((graph.BFS(a1,a3)).size() > 0);
-}
-
-
+/*
 TEST_CASE("testBFS3", "[weight=10][part21]") {
   Parsing parse;
   parse.extractAirports("airports.txt");
@@ -687,6 +775,7 @@ TEST_CASE("testBFS3", "[weight=10][part21]") {
     REQUIRE("NOU" != (*it).airport_dest);
   }
 }
+*/
 
 
 
@@ -725,4 +814,4 @@ TEST_CASE("testBFS3", "[weight=10][part21]") {
 //   //case where the route does not actually exist commercially
   
 // }
->>>>>>> 07ed7e61c678e91f44c64229f11369ca04950f37
+//>>>>>>> 07ed7e61c678e91f44c64229f11369ca04950f37

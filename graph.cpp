@@ -106,7 +106,16 @@ std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) 
     size_t sizeOfGraph =  adj_list_reduced.size(); // number of vertices in the graph
     previous.resize(sizeOfGraph, ""); // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
     distance.resize(sizeOfGraph, INT_MAX); // intialie an array that holds the distance value for each vertex in the graph
-
+    // check to see if all airports are unconnected with each other
+    if(airport_map_reduced.size() == 0){
+        return std::vector<std::pair<bool, std::string>>();
+    }
+    //check to see if the start_id is included in the airport map
+    std::unordered_map<std::string, Airport>::iterator it = airport_map_reduced.find(start_id);
+    if(it == airport_map_reduced.end())
+    {
+        return std::vector<std::pair<bool, std::string>>();
+    }
     Airport start_airport = airport_map_reduced[start_id];
     distance[start_airport.getIndex()] = 0;
     //inlcude an index, with each distance value
