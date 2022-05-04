@@ -6,7 +6,10 @@ The final project git repo for team the four amigos
 - The main goal of our final project is to operate an airline as efficiently as possible. We will use the airport and route data from openflights.org and store this data in an adjacency list, which can then be represented by a graph. The vertices of this graph will be the airports and the edges will be the flight paths from one airport to another. The specific problem we are trying to solve is to minimize the amount of service routes as much as possible, while still being able to connect all of the airports in a region.
 ## Building Project
 - Clone Repository from https://github-dev.cs.illinois.edu/cs225-sp22/lboelke2-aosepek2-junryuf2-mstrac4.git
-
+## DataSet 
+- https://openflights.org/data.html
+- Airports: [a relative link](airports.txt)
+- Routes: [a relative link](routes.txt)
 - - - -
 ## Testing Instructions
 - Type `make test` 
