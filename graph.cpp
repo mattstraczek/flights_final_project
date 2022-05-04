@@ -110,8 +110,6 @@ std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) 
     distance.resize(0);
     previous.resize(sizeOfGraph, ""); // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
     distance.resize(sizeOfGraph, INT_MAX); // intialie an array that holds the distance value for each vertex in the graph
-<<<<<<< HEAD
-=======
     // check to see if all airports are unconnected with each other
     if(airport_map_reduced.size() == 0){
         return std::vector<std::pair<bool, std::string>>();
@@ -122,7 +120,6 @@ std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) 
     {
         return std::vector<std::pair<bool, std::string>>();
     }
->>>>>>> 4536c6cef9cc6231db3178d93f14616928319fb7
     Airport start_airport = airport_map_reduced[start_id];
     distance[start_airport.getIndex()] = 0;
     //inlcude an index, with each distance value
@@ -308,6 +305,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to, int hue)
             curr.l = 0.5;
         }
     }
+    std::cout << "Flight path creation is done, exporting image...." << std::endl;
     //output the image to the final file
     geoMap->writeToFile(save_to);
     std::cout << "The number of airports on this map is: " << airport_map_reduced.size() << std::endl;
