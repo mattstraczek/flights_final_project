@@ -103,11 +103,26 @@ std::vector<std::list<Graph::RouteEdge> >& Graph::getAdjList() {
 //}
 
 std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) {
+    previous.resize(0);
+    distance.resize(0);
     size_t sizeOfGraph =  adj_list_reduced.size(); // number of vertices in the graph
     previous.resize(0);
     distance.resize(0);
     previous.resize(sizeOfGraph, ""); // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
     distance.resize(sizeOfGraph, INT_MAX); // intialie an array that holds the distance value for each vertex in the graph
+<<<<<<< HEAD
+=======
+    // check to see if all airports are unconnected with each other
+    if(airport_map_reduced.size() == 0){
+        return std::vector<std::pair<bool, std::string>>();
+    }
+    //check to see if the start_id is included in the airport map
+    std::unordered_map<std::string, Airport>::iterator it = airport_map_reduced.find(start_id);
+    if(it == airport_map_reduced.end())
+    {
+        return std::vector<std::pair<bool, std::string>>();
+    }
+>>>>>>> 4536c6cef9cc6231db3178d93f14616928319fb7
     Airport start_airport = airport_map_reduced[start_id];
     distance[start_airport.getIndex()] = 0;
     //inlcude an index, with each distance value
@@ -219,8 +234,12 @@ void Graph::printPrimsMST(std::string start_id, std::string save_to) {
         //the index of the center or start of MST
         int start_index = airport_map_reduced.find(start_id)->second.getIndex();
         std::vector<std::string> prev = getPreviousVec();
+        std::cout << "before for loop" << std::endl;
+        std::cout << T.size() << std::endl;
         for(int i = 0; i < (int)T.size(); i++) {
             if(T[i].first) {
+            std::cout << "in if statement" << std::endl;
+	    std::cout << T.size() << std::endl;
                 if((airport_map_reduced.find(prev[i]) != airport_map_reduced.end()) && (airport_map_reduced.find(T[i].second) != airport_map_reduced.end())) {
                     Airport current_dep = airport_map_reduced.find(prev[i])->second;
                     int current_dep_id = current_dep.getIndex();
@@ -580,5 +599,15 @@ std::vector<Routes> Graph::BFSRouteConvert(std::vector<std::string> airports) {
     output.push_back(converted);
   }
   return output;
+}
+
+std::vector<Airport> Graph::getDestinations(int index) { // *****add comments*****
+  std::vector<Airport> destinations;
+  std::list<RouteEdge>::iterator it;
+  for (it = adj_list_reduced[index].begin(); it != adj_list_reduced[index].end(); it++) {
+    Airport current = airport_map_reduced[it->airport_dest];
+    destinations.push_back(current);
+  }
+  return destinations;
 }
 
