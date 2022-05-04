@@ -133,7 +133,12 @@ class Graph{
        **/
       std::vector<Routes> BFSRouteConvert(std::vector<std::string> airports);
       
-      std::vector<Airport> getDestinations(int index); // ******add comments******
+      /**
+       * returns a vector of the airports in the list at the given index of the adjacency list
+       * @param index is the index of the adjacency list to be accessed
+       * @return a vector of airports that are destinations of the index's corresponding departure airport
+       **/
+      std::vector<Airport> getDestinations(int index);
 
     private:
       /**
