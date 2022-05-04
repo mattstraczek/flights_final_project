@@ -104,9 +104,10 @@ std::vector<std::list<Graph::RouteEdge> >& Graph::getAdjList() {
 
 std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) {
     size_t sizeOfGraph =  adj_list_reduced.size(); // number of vertices in the graph
+    previous.resize(0);
+    distance.resize(0);
     previous.resize(sizeOfGraph, ""); // intialize an array that holds the previous airport of the current airport, (aka where it came from) 
     distance.resize(sizeOfGraph, INT_MAX); // intialie an array that holds the distance value for each vertex in the graph
-
     Airport start_airport = airport_map_reduced[start_id];
     distance[start_airport.getIndex()] = 0;
     //inlcude an index, with each distance value
@@ -201,6 +202,11 @@ void Graph::printPrimsMST(std::string start_id, std::string save_to) {
         //Only go inside this loop if airport exists and included in MST
         std::cout << "Creating PRIM's MST from start point " << start_id << std::endl;
         T = primsMST(start_id);
+        int count = 0;
+        for (auto t:T) {
+            if (t.first) count++;
+        }
+        std::cout << "Size of T in printPrims(): "<< count << std::endl;
 
 
     //     for (size_t i = 0; i < T.size(); i++) {
