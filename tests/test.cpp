@@ -551,6 +551,7 @@ bool testFiles(string f1, string f2) {
   
 //}
 // If only one airport is read from the airport text file 
+// Since only one node exists in the graph, a MST is unable to be built
 // TEST_CASE("testPrimsOneAriport", "[weight=10][part24]") {
 //   std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
 //   Parsing parse;
@@ -565,7 +566,7 @@ bool testFiles(string f1, string f2) {
 // }
 
 
-//Make sure sarting Airport is apart of the graph, connected to other nodes
+//Make sure the starting Airport is apart of the graph
 // TEST_CASE("testPrimsConnectedStart", "[weight=10][part25]") {
 //   std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
 //   Parsing parse;
@@ -584,11 +585,15 @@ bool testFiles(string f1, string f2) {
 // 		std::cout << mst[i].first <<  " ";
 // 		std::cout << mst[i].second << "\n";
 // 	}
- // Eveery Node  traverses departure to destination 
- // VALID MST:
- // KZN -> AER
- // Although these airports are included in the destinations of other routes, the other airpo
- // Prims starts at the destination airport and moves out from there 
+//  
+// VALID MST:
+// KZN -> AER
+//  Check to see if valid routes are supplied to Prims, so that airplanes have an available route to a future airport
+// 	Example: The Airport is currently at the airport "ORD", 
+//  	A valid input route: AA,24,ORD,3830,ALO,5718,Y,0,ERD: the airport traversal is directed; and would proceed to "ALO"
+//  	An invalid route: AA,24,ALO,5718,ORD,3830,Y,0,ERD: even though "ORD" is included in the route information, since "ORD" is not listed as
+//  the start airport, "ALO" would not be visited in Prims, the above route would be needed in the routes.txt for "ALO" to be visited
+
 //  TEST_CASE("testPrimsDirection", "[weight=10][part26]") {
 // 	std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
 // 	Parsing parse;
@@ -632,7 +637,7 @@ bool testFiles(string f1, string f2) {
 // 	REQUIRE(count == 3);
 //  }
 
-// In a connected graph, all airports are apart of the MST Tree
+// In a connected graph, check to see if all airports are apart of the MST Tree
 TEST_CASE("testPrimsSmallGraph2", "[weight=10][part28]") {
 	std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
 	Parsing parse;
@@ -816,7 +821,4 @@ TEST_CASE("testBFS3", "[weight=10][part21]") {
 //   //case where the route does not actually exist commercially
   
 // }
-<<<<<<< HEAD
 //>>>>>>> 07ed7e61c678e91f44c64229f11369ca04950f37
-=======
->>>>>>> e6425122ca4e50f49779b93661ff42dd6aabed01
