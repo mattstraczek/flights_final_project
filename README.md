@@ -43,7 +43,14 @@ The final project git repo for team the four amigos
     - Quits the program
 - Any invalide entry
     - The user will be alerted of their invalid entry and the program will sequentally 
-## Breadth First Search (BFS)
+
+## Algorithms
+- BFS
+    - Find the shortest path between two airports
+- Prims
+    - Find a MST of all airports globally
+- Geographical Output
+    - Create an image that highlights the routes included Prims and BFS
 
 ## Presentation
 - ***ADD link to presentation video
