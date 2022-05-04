@@ -29,19 +29,19 @@ class Parsing {
         std::vector<Routes> extractRoutes(string fileName);
 
         /**
-         * iterates through the airports in the airport map and writes the ID, latitude, and longitude of each to a file
-         *   to assist in testing if the airport map is properly populated
-         * @param filename is a string representing the name of the file to write to
-         **/
-        void writeAirports(string fileName);
-
-        /**
          * returns the airport map so that it is accessible in graph.cpp and main.cpp
          * @return the airport map
          **/
         std::unordered_map<std::string, Airport> getAirportMap();
 
     private:
+        /**
+         * iterates through the airports in the airport map and writes the ID, latitude, and longitude of each to a file
+         *   to assist in testing if the airport map is properly populated
+         * @param filename is a string representing the name of the file to write to
+         **/
+        void writeAirports(string fileName);
+
         /**
          * takes a vector of strings from a line of data, and creates an Airport object with the airport ID, latitude, and
          *   longitude of the vector

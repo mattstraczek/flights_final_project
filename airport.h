@@ -27,24 +27,6 @@ class Airport {
         double getLongitude();
 
         /**
-         * sets the latitude to a new value
-         * @param lat_ is the new latitude
-         **/
-        void setLatitude(double lat_);
-
-        /**
-         * sets the longitude to a new value
-         * @param long_ is the new longitude
-         **/
-        void setLongitude(double long_);
-
-        /**
-         * sets the airport ID to a new value
-         * @param id is the new ID
-         **/
-        void setID(std::string id);
-
-        /**
          * returns the airport ID
          * @return the airport ID of this Airport
          **/
@@ -63,6 +45,24 @@ class Airport {
         void setIndex(int idx);
 
     private:
+        /**
+         * sets the latitude to a new value
+         * @param lat_ is the new latitude
+         **/
+        void setLatitude(double lat_);
+
+        /**
+         * sets the longitude to a new value
+         * @param long_ is the new longitude
+         **/
+        void setLongitude(double long_);
+
+        /**
+         * sets the airport ID to a new value
+         * @param id is the new ID
+         **/
+        void setID(std::string id);
+
         double latitude; // the latitude of this Airport
         double longitude; // the longitude of this Airport
         std::string ID; // the airport ID of this Airport
