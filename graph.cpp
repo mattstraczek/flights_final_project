@@ -285,7 +285,7 @@ void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to, int hue)
     //HARD CODE AIRPORTS AND ROUTES HERE
     Airport a1;
     Airport a2;
-
+    std::cout << "========================Creating Flight Path========================" << std::endl;
     for(int i = 0; i < (int)routes.size(); i++) {
         if(airport_map_reduced.find(routes[i].getDeparture()) != airport_map_reduced.end()) {
             a1 = airport_map_reduced.find(routes[i].getDeparture())->second;
@@ -305,12 +305,24 @@ void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to, int hue)
             curr.l = 0.5;
         }
     }
+
+    std::cout << 
+            "                           ______ " << "\n" <<
+            "        _| _~-|___                "<< "\n" <<
+            "=  = ==(___CS225__D               "<< "\n" <<
+            "            |__|___________________,-~~~~~~~`-.._" << "\n" <<
+            "            /     o O o o o o O O o o o o o o O o  |l_ " << "\n" <<
+            "            `~-.__        ___..----..                  ) " << "\n" <<
+            "                `---~~|___________/------------````` " << "\n" <<
+            "                =  ===(_________D " << "\n \n" << "=========================ARRIVAL==========================" << std::endl;
+
     std::cout << "Flight path creation is done, exporting image...." << std::endl;
     //output the image to the final file
     geoMap->writeToFile(save_to);
     std::cout << "The number of airports on this map is: " << airport_map_reduced.size() << std::endl;
     std::cout << "The number of routes created on this map is: " << routes.size() << std::endl;
     // delete geoMap;
+    delete geoMap;
 }
 void Graph::plotgeoMap(std::vector<Routes> routes, std::string save_to) {
     plotgeoMap(routes, save_to, 120);
@@ -370,7 +382,7 @@ std::vector<std::pair<double, double>> Graph::drawLine(Routes route, int n) {
     std::vector<std::pair<double, double>> recorded_path;
     std::vector<double> current = threeDCoord1;
 
-    std::cout << "========================Creating Flight Path========================" << std::endl;
+    
     bool not_arrived = true;
     //set i boundary by calculating the distance between to come up with optimal sample size
     
@@ -381,20 +393,13 @@ std::vector<std::pair<double, double>> Graph::drawLine(Routes route, int n) {
         current[2] += unit_product[2] * n;
         normalize(current);
         if(getDistance(current, threeDCoord2) < 10) {
-            std::cout << 
-            "                           ______ " << "\n" <<
-            "        _| _~-|___                "<< "\n" <<
-            "=  = ==(___CS225__D               "<< "\n" <<
-            "            |__|___________________,-~~~~~~~`-.._" << "\n" <<
-            "            /     o O o o o o O O o o o o o o O o  |l_ " << "\n" <<
-            "            `~-.__        ___..----..                  ) " << "\n" <<
-            "                `---~~|___________/------------````` " << "\n" <<
-            "                =  ===(_________D " << "\n \n" << "=========================ARRIVAL==========================" << std::endl;
 
             break;
         }
         recorded_path.push_back(cart_to_lat_long(current[0], current[1], current[2]));
     }
+    
+    
     return recorded_path;
 }
 
