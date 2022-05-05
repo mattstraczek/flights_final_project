@@ -1,7 +1,6 @@
 # lboelke2-aosepek2-junryuf2-mstrac4
 The final project git repo for team the four amigos
 # CS 225 Spring 2021 Final Project
-
 ## Overview
 - The main goal of our final project is to operate an airline as efficiently as possible. We will use the airport and route data from openflights.org and store this data in an adjacency list, which can then be represented by a graph. The vertices of this graph will be the airports and the edges will be the flight paths from one airport to another. The specific problem we are trying to solve is to minimize the amount of service routes as much as possible, while still being able to connect all of the airports in a region.
 ## Building Project
@@ -11,54 +10,62 @@ The final project git repo for team the four amigos
 - Airports: [a relative link](airports.txt)
 - Routes: [a relative link](routes.txt)
 - - - -
-## Testing Instructions
-- Type `make test` 
-- Then, type `./test` which will run the test file executable 
-- The written code for the test cases can be found in the file test.cpp under the tests directory in our main branch. Associated text files used for various test cases can also be found within the tests directory. 
-- Test Cases:
-    - Parsing Text File:
-        - Ensures data being read from text file is formatted correctly or else it is not included in our data
-    - Prims:
-        - Check to see if the starting airport is inlcuded in the graph and connected to at least one other airport
-        - If invalid route structures are passed to Prims, associated airports would not be included in the MSTChec
-        - Check to see that the minimal edge (route) is selected when constructing the MST
-    - BFS:
-        - Checks to see if start node is equal to end node
-        - Checks if the start node and end node are connected 
-        
-    - GeoGraphical OutPut:
-        - Outputs an image labelled similar to geoMap image, which can be compared to the associated geoMap_SOLN
-        - ex: Outputed file from test case: geoMap_testCOMBINED.png 
-        -     Solution file screenshotted from Google Maps: geoMap_testCOMBINED_SOLN.png
-
-
+## Algorithms and Parsing
+- BFS
+    - Find the least amount of transfers between two airports
+    - [a relative link](graph.h)
+    - [a relative link](graph.cpp)
+- Prims
+    - Find a MST of all airports globally
+    - [a relative link](graph.h)
+    - [a relative link](graph.cpp)
+- Geographical Output
+    - Create an image that highlights the routes included in Prims and BFS
+    - [a relative link](graph.h)
+    - [a relative link](graph.cpp)
+- Parses the data from Openflights
+    - [a relative link](parsing.h)
+    - [a relative link](parsing.cpp)
 ## Running Instructions
 - Type `make out` to create the executable file 
 - Then type, `./out` to run the executable 
 - After runnning the executable, the terminal will prompt the user which algorithm or graphical output program they will like to run
 - Type `a` for Prims
-    - Then enter the starting airport ID for Prim's algorithm (ex: ORD, LAX)
+    - When prompted enter the starting airport ID for Prim's algorithm (ex: ORD, LAX)
     - Saves a list of routes included in the MST to the file text_output.txt 
     - Saves a visualize image of the MST output to the file geographic_map.png
 - Type `b` for BFS
-    - When prompted enter a start airport ID, then enter a destination airport ID when asked(ex: ORD, LAX) 
+    - When prompted enter a start airport ID, then enter a destination airport ID when asked (ex: ORD, LAX) 
     - Saves an image of the BFS traversal to a png file geographic_map.png
     - Saves a list of airports in the order they were visited to a text file, text_output.png 
 - Type `c` for plotting a route between two airports
     - When prompted enter a start airport ID, then enter a destination airport ID when asked (ex: ORD, LAX)
-    - Save an image to the png file geographic_map.png,  highlighting the visual route between a start and a destination airport
+    - Save an image to a png file labelled geographic_map.png, which highlights visually a route between the start and a destination airport
 - Type `d` to quit
     - Quits the program 
 - Any invalid entry
     - The user will be alerted of their invalid entry and the program will sequentially exist
 
-## Algorithms
-- BFS
-    - Find the least amount of transfers between two airports
-- Prims
-    - Find a MST of all airports globally
-- Geographical Output
-    - Create an image that highlights the routes included in Prims and BFS
-
+## Testing Instructions
+- Type `make test` 
+- Then, type `./test` which will run the test file executable 
+- The written code for the test cases can be found in file test.cpp under the tests directory in our main branch. Associated text files used for various test cases can also be found within the tests directory. 
+- Overview of Test Cases:
+    - Parsing Text File:
+        - Ensures data being read from text file is formatted correctly or else it is not included in our data
+    - Prims:
+        - Check to see if the starting airport is inlcuded in the graph and connected to at least one other airport
+        - If an invalid route structure is passed to Prims, associated airports would not be included in the MST
+        - Check to see that the minimal edge (route) is selected when constructing the MST
+    - BFS:
+        - Checks to see if start node is equal to end node
+        - Checks if the start node and end node are connected 
+        - Checks adjacent airports, whether unconnected graphs are handled
+    - GeoGraphical OutPut:
+        - Outputs a geoMap image into the tests directory, which can be compared to the associated geoMap_SOLN also within the tests directory
+        - ex: Outputed file from test case: geoMap_testCOMBINED.png 
+        -     Solution file screenshotted from Google Maps: geoMap_testCOMBINED_SOLN.png
+            - Compare the visualize similarities between the outputted png file to the solution png file
 ## Presentation
-- ***ADD link to presentation video
+- Final Presentation Link: https://drive.google.com/file/d/14iz0k2oXFrMGJCOiCea34snWzdpGwRrK/view?usp=drivesdk
+- Written Report Link: *******
