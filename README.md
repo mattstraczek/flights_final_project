@@ -20,7 +20,8 @@ The final project git repo for team the four amigos
         - Ensures data being read from text file is formatted correctly or else it is not included in our data
     - Prims:
         - Check to see if the starting airport is inlcuded in the graph and connected to at least one other airport
-        - If invalid Route structures are passed to Prims, associated airports would not be included in the MST
+        - If invalid route structures are passed to Prims, associated airports would not be included in the MSTChec
+        - Check to see that the minimal edge (route) is selected when constructing the MST
     - BFS:
         - Checks to see if start node is equal to end node
         - Checks if the start node and end node are connected 
@@ -45,8 +46,8 @@ The final project git repo for team the four amigos
     - Save an image to the png file geographic_map.png,  highlighting the visual route between a start and a destination airport
 - Type `d` to quit
     - Quits the program
-- Any invalide entry
-    - The user will be alerted of their invalid entry and the program will sequentally 
+- Any invalid entry
+    - The user will be alerted of their invalid entry and the program will sequentially exist
 
 ## Algorithms
 - BFS
@@ -54,7 +55,7 @@ The final project git repo for team the four amigos
 - Prims
     - Find a MST of all airports globally
 - Geographical Output
-    - Create an image that highlights the routes included Prims and BFS
+    - Create an image that highlights the routes included in Prims and BFS
 
 ## Presentation
 - ***ADD link to presentation video
