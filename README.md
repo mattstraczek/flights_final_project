@@ -68,7 +68,8 @@ The final project git repo for team the four amigos
         - Checks adjacent airports, whether unconnected graphs are handled
     - GeoGraphical OutPut:
         - Outputs a geoMap image into the tests directory, which can be compared to the associated geoMap_SOLN also within the tests directory
-        - ex: Outputed file from test case: geoMap_testCOMBINED.png 
+        - example:
+        -  Outputed file from test case: geoMap_testCOMBINED.png 
         - Solution file screenshotted from Google Maps: geoMap_testCOMBINED_SOLN.png
             - Compare the visualize similarities between the outputted png file to the solution png file
 ## Presentation
