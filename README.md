@@ -1,31 +1,36 @@
 # lboelke2-aosepek2-junryuf2-mstrac4
 The final project git repo for team the four amigos
-# CS 225 Spring 2021 Final Project
+- Project Contributors: Luke Boelke, Junryu Fu, Matt Straczek, Andrew Osepek
+# CS 225 Spring 2022 Final Project
 ## Overview
 - The main goal of our final project is to operate an airline as efficiently as possible. We will use the airport and route data from openflights.org and store this data in an adjacency list, which can then be represented by a graph. The vertices of this graph will be the airports and the edges will be the flight paths from one airport to another. The specific problem we are trying to solve is to minimize the amount of service routes as much as possible, while still being able to connect all of the airports in a region.
 ## Building Project
 - Clone Repository from https://github-dev.cs.illinois.edu/cs225-sp22/lboelke2-aosepek2-junryuf2-mstrac4.git
 ## DataSet 
 - https://openflights.org/data.html
-- Airports: [a relative link](airports.txt)
-- Routes: [a relative link](routes.txt)
+- Airports: [Airpot Data](airports.txt)
+- Routes: [Routes Data](routes.txt)
 - - - -
 ## Algorithms and Parsing
 - BFS
     - Find the least amount of transfers between two airports
-    - [a relative link](graph.h)
-    - [a relative link](graph.cpp)
+    - Files:
+    - [graph.h](graph.h)
+    - [graph.cpp](graph.cpp)
 - Prims
     - Find a MST of all airports globally
-    - [a relative link](graph.h)
-    - [a relative link](graph.cpp)
+    - Files:
+    - [graph.h](graph.h)
+    - [graph.cpp](graph.cpp)
 - Geographical Output
     - Create an image that highlights the routes included in Prims and BFS
-    - [a relative link](graph.h)
-    - [a relative link](graph.cpp)
+    - Files:
+    - [graph.h](graph.h)
+    - [graph.cpp](graph.cpp)
 - Parses the data from Openflights
-    - [a relative link](parsing.h)
-    - [a relative link](parsing.cpp)
+    - Files:
+    - [parsing.h](parsing.h)
+    - [parsing.cpp](parsing.cpp)
 ## Running Instructions
 - Type `make out` to create the executable file 
 - Then type, `./out` to run the executable 
@@ -64,7 +69,7 @@ The final project git repo for team the four amigos
     - GeoGraphical OutPut:
         - Outputs a geoMap image into the tests directory, which can be compared to the associated geoMap_SOLN also within the tests directory
         - ex: Outputed file from test case: geoMap_testCOMBINED.png 
-        -     Solution file screenshotted from Google Maps: geoMap_testCOMBINED_SOLN.png
+        - Solution file screenshotted from Google Maps: geoMap_testCOMBINED_SOLN.png
             - Compare the visualize similarities between the outputted png file to the solution png file
 ## Presentation
 - Final Presentation Link: https://drive.google.com/file/d/14iz0k2oXFrMGJCOiCea34snWzdpGwRrK/view?usp=drivesdk
