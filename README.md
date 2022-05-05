@@ -23,6 +23,7 @@ The final project git repo for team the four amigos
         - If invalid Route structures are passed to Prims, associated airports would not be included in the MST
     - BFS:
         - Checks to see if start node is equal to end node
+        - Checks if the start node and end node are connected 
         
     - GeoGraphical OutPut:
 
@@ -49,7 +50,7 @@ The final project git repo for team the four amigos
 
 ## Algorithms
 - BFS
-    - Find the shortest path between two airports
+    - Find the least amount of transfers between two airports
 - Prims
     - Find a MST of all airports globally
 - Geographical Output
