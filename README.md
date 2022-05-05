@@ -31,7 +31,7 @@ The final project git repo for team the four amigos
 
 ## Running Instructions
 - Type `make out` to create the executable file 
-- Then type, `./out/` to run the executable 
+- Then type, `./out` to run the executable 
 - After runnning the executable, the terminal will prompt the user which algorithm or graphical output program they will like to run
 - Type `a` for Prims
     - Then enter the starting airport ID for Prim's algorithm (ex: ORD, LAX)
