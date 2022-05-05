@@ -551,7 +551,7 @@ bool testFiles(string f1, string f2) {
   
 //}
 // If only one airport is read from the airport text file 
-// TEST_CASE("testPrimsOneAriport", "[weight=10][part24]") {
+// TEST_CASE("testPrimsOneAirport", "[weight=10][part24]") {
 //   std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
 //   Parsing parse;
 //   parse.extractAirports("single_airport.txt");
@@ -565,7 +565,7 @@ bool testFiles(string f1, string f2) {
 // }
 
 
-//Make sure sarting Airport is apart of the graph, connected to other nodes
+//Make sure sarting Airport is apart of the graph, connected to other nodes 
 // TEST_CASE("testPrimsConnectedStart", "[weight=10][part25]") {
 //   std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
 //   Parsing parse;
