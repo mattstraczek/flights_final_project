@@ -1,2 +1,3 @@
-LAX
 NRT
+SFO
+HND
