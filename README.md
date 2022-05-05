@@ -66,7 +66,7 @@ The final project git repo for team the four amigos
         - Checks to see if start node is equal to end node
         - Checks if the start node and end node are connected 
         - Checks adjacent airports, whether unconnected graphs are handled
-    - GeoGraphical OutPut:
+    - GeoGraphical Output:
         - Outputs a geoMap image into the tests directory, which can be compared to the associated geoMap_SOLN also within the tests directory
         - example:
             - Outputed file from test case: geoMap_testCOMBINED.png 
