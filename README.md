@@ -27,6 +27,9 @@ The final project git repo for team the four amigos
         - Checks if the start node and end node are connected 
         
     - GeoGraphical OutPut:
+        - Outputs an image labelled similar to geoMap image, which can be compared to the associated geoMap_SOLN
+        - ex: Outputed file from test case: geoMap_testCOMBINED.png 
+        -     Solution file screenshotted from Google Maps: geoMap_testCOMBINED_SOLN.png
 
 
 ## Running Instructions
@@ -45,7 +48,7 @@ The final project git repo for team the four amigos
     - When prompted enter a start airport ID, then enter a destination airport ID when asked (ex: ORD, LAX)
     - Save an image to the png file geographic_map.png,  highlighting the visual route between a start and a destination airport
 - Type `d` to quit
-    - Quits the program
+    - Quits the program 
 - Any invalid entry
     - The user will be alerted of their invalid entry and the program will sequentially exist
 
