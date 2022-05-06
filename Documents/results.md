@@ -1,6 +1,4 @@
 ## CS 225 Final Report
-## Link to Results Written Report:
-  - https://docs.google.com/document/d/1k62TsFhNNjGs5AQkMXCKsqBkoqhLATMZ7sopfZQqaW4/edit?usp=sharing
 
 ## Breadth First Search
   - Output/highlight part of the full scale run
@@ -32,3 +30,6 @@
 
 ## Concluding Thoughts:
   - We successfully answered our leading question. When we began our project, our main goal was to simulate the operation of an airline. We desired to create an airline that would connect all airports across the globe as efficiently as possible.  We used the BFS algorithm to find the least amount of transfers between two airports. We used Prim's algorithm to find the minimum number of routes needed to connect every airport in the world, while ensuring that the total distance of all routes was also minimized. When doing this, however, we discovered something that we found very interesting: although we had 3241 airports in our adjacency list, there were only 3190 routes in the minimum spanning tree. This meant that there were roughly fifty airports that were not included in the minimum spanning tree when we ran Prim’s algorithm starting from major airports, such as O’Hare. After discussing possible reasons for this, we came to the conclusion that the reason that these airports were not connected was because they were purely domestic flights. They were only connected to each other, making them unreachable from other airports in the world. We were able to prove this by focusing on a cluster of these graphs on the island of New Caledonia. We ran Prim’s algorithm starting from one of these unconnected airports, and the minimum spanning tree that was produced included only the other airports in New Caledonia.
+## Link to Results Written Report (Google Docs):
+  - https://docs.google.com/document/d/1k62TsFhNNjGs5AQkMXCKsqBkoqhLATMZ7sopfZQqaW4/edit?usp=sharing
+  - 
