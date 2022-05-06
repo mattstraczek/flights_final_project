@@ -1,4 +1,4 @@
-## CS 225 Final Report - the four amigos
+## CS 225 Final Report
 
 ## Breadth First Search
   - Output/highlight part of the full scale run
