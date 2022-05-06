@@ -697,39 +697,3 @@ TEST_CASE("testBFS3", "[weight=10][part21]") {
   }
 }
 
-
-TEST_CASE("testHandleNULLAirport_1", "[weight=10][part18]") {
-  //case where the airport added is not appropriate
-  std::cout << "------------------------------------------------------------" << std::endl;
-  //wrap long range route (international)
-  Parsing parse;
-  parse.extractAirports("airports.txt");
-  std::vector<Routes> list = parse.extractRoutes("routes.txt");
-  std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
-  Graph graph(airport_map, list);
-
-  airport_map = graph.getReducedMap();
-  // std::cout << "Size of Routes: " << list.size() << std::endl;
-  // std::cout << "Size of Reduced Routes: " << graph.getReducedRouteList().size() << std::endl;
-  std::cout << "Creating large wrap routes from fake airport (ABC) --> Japan Tokyo Narita Airport (NRT)" << std::endl;
-
-
-  Airport a1 = airport_map.find("ABC")->second; 
-  Airport a2 = airport_map.find("NRT")->second;
-
-  Routes route(a1, a2);
-
-  std::vector<Routes> routes;
-  routes.push_back(route);
-
-  graph.initgeoMap();
-
-  assert(routes.size() == 0);
-  graph.plotgeoMap(routes, "tests/geoMapNULLAirport.png");
-  std::cout << "It should create no routes" << std::endl;
-}
-
-TEST_CASE("testHandleNULLAirport_2", "[weight=10][part19]") {
-  //case where the route does not actually exist commercially
-  
-}

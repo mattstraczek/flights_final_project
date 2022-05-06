@@ -193,20 +193,16 @@ void Graph::printPrimsMST(std::string start_id, std::string save_to) {
         //the index of the center or start of MST
         int start_index = airport_map_reduced.find(start_id)->second.getIndex();
         std::vector<std::string> prev = getPreviousVec();
-        std::cout << "before for loop" << std::endl;
-        std::cout << T.size() << std::endl;
         for(int i = 0; i < (int)T.size(); i++) {
             if(T[i].first) {
-            std::cout << "in if statement" << std::endl;
-	    std::cout << T.size() << std::endl;
+
                 if((airport_map_reduced.find(prev[i]) != airport_map_reduced.end()) && (airport_map_reduced.find(T[i].second) != airport_map_reduced.end())) {
                     Airport current_dep = airport_map_reduced.find(prev[i])->second;
                     int current_dep_id = current_dep.getIndex();
                     Airport current_dest = airport_map_reduced.find(T[i].second)->second;
                     Routes current_route(current_dep, current_dest);
                     routes.push_back(current_route);
-                    std::cout << "about to enter the if statement with potential destination of : " << prev[i] << " and with index "<< i<< std::endl;
-                    std::cout << T.size();
+
                 }
             }
         }
