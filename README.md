@@ -74,4 +74,4 @@ The final project git repo for team the four amigos
             - Compare the visualize similarities between the outputted png file to the solution png file
 ## Presentation
 - Final Presentation Link: https://drive.google.com/file/d/14iz0k2oXFrMGJCOiCea34snWzdpGwRrK/view?usp=drivesdk
-- Written Report Link: *******
+- Written Report Link: [results.md](results.md)
