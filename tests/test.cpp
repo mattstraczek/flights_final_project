@@ -13,108 +13,6 @@
 using namespace cs225;
 using namespace std;
 
-
-// bool testFiles(string f1, string f2) {
-// 	string line1;
-// 	string line2;
-//   	ifstream file1(f1);
-// 	std::vector<string> lines1;
-// 	std::vector<string> lines2;
-
-//   	if(file1.is_open()) {
-//       while(getline(file1, line1)) {
-//         std::cout << line1 << std::endl;
-// 		lines1.push_back(line1);
-// 	  }
-// 	}
-// 	file1.close();
-// 	ifstream file2(f2);
-
-// 	std::cout << "hello" << std::endl;
-// 	if(file2.is_open()) {
-// 		while(getline(file2, line2)) {
-// 			std::cout << line2 << std::endl;
-// 			lines2.push_back(line2);
-// 	  	}
-// 	}
-// 	file2.close();
-
-// 	for(size_t i = 0; i < lines1.size(); i++) {
-// 		if(lines1[i] != lines2[i]) {
-// 			return false;
-// 		}
-// 	}
-// 	return true;
-// }
-
-// TEST_CASE("Parse airport data", "[weight=10][part1]") {
-// 	Parsing parse_test;
-
-// 	parse_test.extractAirports("test_airport.txt");
-// 	parse_test.writeAirports("test_airport_returning.txt");
-
-// 	REQUIRE(testFiles("/workspaces/CS 225/junryuf2/lboelke2-aosepek2-junryuf2-mstrac4/tests/test_airport_soln.txt", "workspaces/CS 225/junryuf2/lboelke2-aosepek2-junryuf2-mstrac4/tests/test_airport_returning.txt"));
-// }
-
-// TEST_CASE("Adjacency matrix construction", "[weight=10][part2]") {
-// 	std::unordered_map<std::string, Airport> airport_map;
-// 	std::vector<Routes> route_list;
-
-// 	//Creating airport map
-// 	Airport ORD("ORD", 41.9786, -87.9048, 0);
-// 	Airport MIA("MIA", 25.7931, -80.2906, 1);
-// 	Airport SEA("SEA", 47.449001, -122.308998, 2);
-
-// 	airport_map[ORD.getID()] = ORD;
-// 	airport_map[MIA.getID()] = MIA;
-// 	airport_map[SEA.getID()] = SEA;
-
-// 	//Creating route list
-// 	Routes ORDMIA(ORD, MIA);
-// 	Routes MIASEA(MIA, SEA);
-// 	Routes SEAORD(SEA, ORD);
-
-// 	route_list.push_back(ORDMIA);
-// 	route_list.push_back(MIASEA);
-// 	route_list.push_back(SEAORD);
-
-// 	//Creating graph
-// 	Graph graph(airport_map, route_list);
-// 	graph.printRouteMatrix();
-
-// 	//Solution (Expected) Matrix
-// 	//            ORD      MIA       SEA       
-// 	// ORD       -1        1932      -1        
-// 	// MIA       -1        -1        4384      
-// 	// SEA       2764      -1        -1       
-
-// 	//Creating solution graph
-// 	std::vector<std::vector<int> >& route_matrix = graph.getRouteMatrix();
-// 	std::vector<std::vector<int> > solution;
-
-// 	std::vector<int> SEA_;
-// 	SEA_.push_back(-1);
-// 	SEA_.push_back(1932);
-// 	SEA_.push_back(-1);
-
-// 	std::vector<int> ORD_;
-// 	ORD_.push_back(-1);
-// 	ORD_.push_back(-1);
-// 	ORD_.push_back(4384);
-
-// 	std::vector<int> MIA_;
-// 	MIA_.push_back(2764);
-// 	MIA_.push_back(-1);
-// 	MIA_.push_back(-1);
-
-// 	solution.push_back(SEA_);
-// 	solution.push_back(ORD_);
-// 	solution.push_back(MIA_);
-
-// 	//Test that resultant matrix matches solution
-// 	REQUIRE(solution == route_matrix);
-// }
-
 TEST_CASE("Extract airport single line", "[weight=10][part3]") {
   Parsing output;
   output.extractAirports("tests/single_airport.txt");
@@ -593,16 +491,14 @@ TEST_CASE("testPrimsDirection", "[weight=10][part26]") {
 	std::vector<Routes> list = parse.extractRoutes("tests/primsDirection.txt");
 	std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
 	Graph graph(airport_map, list);
-	//std::cout << "Route List " << graph.getReducedRouteList().size() << "\n";
 	//intialize a vector to store the MST 
 	std::vector<std::pair<bool, std::string>> mst = graph.primsMST("KZN");
-	//std::cout << mst.size() << "\n";
-	int count = 0;
+  std::vector<std::string> prev = graph.getPreviousVec();
+	std::vector<std::string> sol = {"", "KZN"};
+
 	for(int i = 0; i < (int)mst.size(); i++){
 		if(mst[i].first == true){
-			if(mst[i].second == "AER" || mst[i].second == "KZN"){
-				REQUIRE(true == true);
-			}
+      REQUIRE(prev[i] == sol[i]);
 		}
 	}
 }
@@ -617,13 +513,13 @@ TEST_CASE("testPrimsSmallGraph", "[weight=10][part27]") {
 	
 	//intialize a vector to store the MST 
 	std::vector<std::pair<bool, std::string>> mst = graph.primsMST("AER");
+  std::vector<std::string> prev = graph.getPreviousVec();
+	std::vector<std::string> sol = {"KZN", "", "AER"};
 	int count = 0;
 	for(int i = 0; i < (int)mst.size(); i++){
 		if(mst[i].first == true){
 			count++;
-			if(mst[i].second == "AER" || mst[i].second == "ASF" || mst[i].second == "KZN"){
- 				REQUIRE(true == true);
- 			}
+      REQUIRE(prev[i] == sol[i]);
 		}
 	}
 	REQUIRE(count == 3);
@@ -640,16 +536,42 @@ TEST_CASE("testPrimsSmallGraph2", "[weight=10][part28]") {
 	
 	//intialize a vector to store the MST 
 	std::vector<std::pair<bool, std::string>> mst = graph.primsMST("ZRH");
+	std::vector<std::string> prev = graph.getPreviousVec();
+	std::vector<std::string> sol = {"", "NCE", "HAM", "NCE", "ZRH", "BOD", "ZRH", "NCE"};
 	
 	int count = 0;
 	for(int i = 0; i < (int)mst.size(); i++){
 		if(mst[i].first == true){
 			count++;
+			REQUIRE(prev[i] == sol[i]);
  			}
 	}
 	REQUIRE(count == mst.size());
  }
 
+// In a connected graph, check to see that proper MST is found when multiple spanning trees exist
+TEST_CASE("testPrimsSmallGraph3", "[weight=10][part28]") {
+	std::vector<std::pair<bool, std::string>> primsMST(std::string start_id);
+	Parsing parse;
+	parse.extractAirports("airports.txt");
+	std::vector<Routes> list = parse.extractRoutes("tests/primsSmallGraph3.txt");
+	std::unordered_map<std::string, Airport> airport_map = parse.getAirportMap();
+	Graph graph(airport_map, list);
+	
+	//intialize a vector to store the MST 
+	std::vector<std::pair<bool, std::string>> mst = graph.primsMST("ZRH");
+	std::vector<std::string> prev = graph.getPreviousVec();
+	std::vector<std::string> sol = {"", "NCE", "CGN", "NCE", "ZRH", "BRS", "ZRH", "ZRH"};
+	
+	int count = 0;
+	for(int i = 0; i < (int)mst.size(); i++){
+		if(mst[i].first == true){
+			count++;
+			REQUIRE(prev[i] == sol[i]);
+ 		}
+	}
+	REQUIRE(count == mst.size());
+ }
 
 TEST_CASE("testPrimsNULL", "[weight=10][part18]") {
   //should print a map that has No routes
@@ -742,7 +664,7 @@ TEST_CASE("testBFS3", "[weight=10][part21]") {
 
   std::vector<std::string> bfsroute = graph.BFS(airport_map.find("ORD")->second, airport_map.find("NOU")->second);
   std::vector<Routes> shortest_route = graph.BFSRouteConvert(bfsroute);
-  
+	std::cout << "Passed BFS";
   graph.plotgeoMap(shortest_route, "tests/bfs3.png", 0);
 
   //Test potential alternative route;
@@ -761,19 +683,19 @@ TEST_CASE("testBFS3", "[weight=10][part21]") {
   routes.push_back(r2);
   routes.push_back(r3);
 
+  graph.initgeoMap();
   graph.plotgeoMap(routes, "tests/bfs3.png");
   
   //compare alternative route distance with shortest path determined through BFS
   REQUIRE(shortest_route.size() <= routes.size());
-  
+  std::cout << "Passed vector creation\n";
   int index = ord.getIndex();
   std::vector<Airport> airports = graph.getDestinations(index);
+  std::cout << "Passed getDestinations()\n";
   for (unsigned i = 0; i < airports.size(); i++) {
     REQUIRE("NOU" != airports[i].getID());
   }
 }
-
-
 
 
 TEST_CASE("testHandleNULLAirport_1", "[weight=10][part18]") {

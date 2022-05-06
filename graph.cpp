@@ -6,7 +6,6 @@ Graph::Graph() {
     
 }
 
-
 Graph::Graph(std::unordered_map<std::string, Airport> airport_map, std::vector<Routes> route_list) {
     this->airport_map = airport_map;
     // remove all unused airports and routes from the input
@@ -65,42 +64,6 @@ void Graph::writeAdjListToFile() {
 std::vector<std::list<Graph::RouteEdge> >& Graph::getAdjList() {
     return adj_list_reduced;
 }
-//Algorithms
-//std::vector<std::string>& Graph::primsMST() {
-   // read from adjacency matrix 
-    //  in route_matrix each cell acts as an edge in the graph
-    //  where the edges weight is determined by its geographical distance between airports (vertices)
-    
-    // set an arbitrary airport within route_matrix as the start matrix
-
-    // create a distance vector to keep track of distance from previous airport
-    // create a predecessor vector to keep track of previous airport
-    // to initialize set all airport (vertices)... 
-    //  -> distance[i] = infinity
-    //  -> pred[i] = null;
-    // For Start:
-    //      -> dist[start_index] = 0
-    //      -> pred[start_index] = null
-    // can maybe avoid using multiple vectors if each element within the priority queue holds distance and predecessor value  
-
-    // create a priority queue, where each element in the queue holds two values: distance and predecessor 
-    // -> distance describes the geographical distance between airport and neighboring airport 
-    // -> predecessor describes the previous airport
-    // the priority queue is sorted by the distance characteristic of each element in the queue
-    // Offers insight how to create a min-heap using C++'s STL of priority queues  https://www.geeksforgeeks.org/implement-min-heap-using-stl/
-
-    // LOOP thru until the queue is empty
-    //
-    // pop the minimum element from the heap, meaning the airport with the minimum distance  
-    // at first the starting airport is popped because 0 <<< infinity
-    //
-    // add the popped element, aiport,   to the MST vector 
-    // for all adjacent (neighboring) airports of popped airport update their distances using the data from the adjacency matrix
-    // update their distance in the priority queue, so the airport with the smallest distance is placed at the top of the 
-    // priority queue
-    // Go back to top of loop
-    //
-//}
 
 std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) {
     previous.resize(0);
@@ -122,7 +85,7 @@ std::vector<std::pair<bool, std::string>> Graph::primsMST(std::string start_id) 
     }
     Airport start_airport = airport_map_reduced[start_id];
     distance[start_airport.getIndex()] = 0;
-    //inlcude an index, with each distance value
+    //include an index, with each distance value
     // so know where to find it in the adjacency list
     
     std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, compareInt> min_heap;
@@ -189,7 +152,6 @@ void Graph::reduceAirportMap(std::vector<Routes>& route_list) {
             airport_map_reduced[airport.second.getID()] = temp;
         }
     }
-    std::cout << "Reduced airport_map size: " << airport_map_reduced.size() << std::endl;
 }
 void Graph::reduceRouteList(std::vector<Routes> route_list) {
     std::vector<Routes> new_route_list;

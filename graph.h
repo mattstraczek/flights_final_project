@@ -104,8 +104,6 @@ class Graph{
 
       //Helpers for geo-plotting algorithm
 
-//      void writeReducedMatrixToFile(); *****delete?
-
       /**
        * Sets the canvas for the geographic map output from Mercator Projection
        **/
